@@ -36,7 +36,7 @@ public class URIInfo
 	{
 		
 		char[] c = s.toCharArray();
-		int i = 0;
+		int    i = 0;
 		
 		StringBuilder protocolBuilder = new StringBuilder();
 		
@@ -60,6 +60,7 @@ public class URIInfo
 	{
 		port = -1;
 	}
+	
 	
 	@Override
 	public String toString()
@@ -87,6 +88,7 @@ public class URIInfo
 		return sb.toString();
 		
 	}
+	
 	
 	public URI toURI()
 	{

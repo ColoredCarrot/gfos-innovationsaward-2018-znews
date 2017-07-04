@@ -80,7 +80,7 @@ public class ZNewsServer extends Thread
 			AtomicInteger shutdownCount = new AtomicInteger(0);
 			GenericFutureListener<? extends Future<Object>> f = a ->
 			{
-				//Log.debug("Closing IO-Threads (" + shutdownCount.incrementAndGet() + "/2)");
+				//Log.debu g("Closing IO-Threads (" + shutdownCount.incrementAndGet() + "/2)");
 			};
 			
 			workerGroup.shutdownGracefully().addListener(f);

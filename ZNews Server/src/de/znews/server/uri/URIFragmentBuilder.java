@@ -8,11 +8,13 @@ public class URIFragmentBuilder
 	
 	private List<URIFragment> fragments = new ArrayList<>();
 	
+	
 	public URIFragmentBuilder add(URIFragment fragment)
 	{
 		fragments.add(fragment);
 		return this;
 	}
+	
 	
 	public URIFragmentBuilder add(String... fragments)
 	{
@@ -20,6 +22,7 @@ public class URIFragmentBuilder
 			add(URIFragment.fromFragment(fragment));
 		return this;
 	}
+	
 	
 	public URIFragment build()
 	{

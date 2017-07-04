@@ -13,8 +13,5 @@
     <orderEntry type="library" name="io.netty:netty-all:4.0.48.Final" level="project" />
     <orderEntry type="library" name="org.projectlombok:lombok-maven-plugin:1.16.16.0" level="project" />
     <orderEntry type="library" name="org.reflections:reflections:0.9.11" level="project" />
-    <orderEntry type="library" name="org.glassfish.hk2:hk2-utils:2.5.0-b38" level="project" />
-    <orderEntry type="library" name="org.glassfish.hk2:hk2-core:2.5.0-b38" level="project" />
-    <orderEntry type="library" name="org.glassfish.hk2:hk2-locator:2.5.0-b36" level="project" />
   </component>
 </module>

@@ -22,8 +22,8 @@ public class APIResource extends Resource
 	@Override
 	public void handleRequest(ChannelHandlerContext ctx, Param... params)
 	{
-		byte[] respBytes = ("API Version: " + params[0].getValue()).getBytes(StandardCharsets.UTF_8);
-		ByteBuf resp = ctx.alloc().buffer(respBytes.length);
+		byte[]  respBytes = ("API Version: " + params[0].getValue()).getBytes(StandardCharsets.UTF_8);
+		ByteBuf resp      = ctx.alloc().buffer(respBytes.length);
 		resp.writeBytes(respBytes);
 		ctx.writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, resp));
 	}
@@ -34,7 +34,6 @@ public class APIResource extends Resource
 	{
 		return String.format("{\"status\":\"OK\",\"version\":\"%s\"}", apiVersion);
 	}*/
-	
 	
 	
 }

@@ -3,7 +3,6 @@ package de.znews.server.uri;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -21,11 +20,11 @@ public class URIFragment
 	private String fragment;
 	
 	@Getter
-	@Nullable
+	
 	private URIFragment previous;
 	@Getter
-	@Nullable
-	public URIFragment next;
+	
+	public  URIFragment next;
 	
 	private URIQuery query;
 	
@@ -38,7 +37,7 @@ public class URIFragment
 		this(null, s);
 	}
 	
-	public URIFragment(@Nullable URIFragment previous, String s)
+	public URIFragment(URIFragment previous, String s)
 	{
 		this.previous = previous;
 		
@@ -72,6 +71,7 @@ public class URIFragment
 		return next != null;
 	}
 	
+	
 	@Override
 	public String toString()
 	{
@@ -96,6 +96,7 @@ public class URIFragment
 	{
 		return fragment.startsWith("{") && fragment.endsWith("}");
 	}
+	
 	
 	public String getAsParam()
 	{

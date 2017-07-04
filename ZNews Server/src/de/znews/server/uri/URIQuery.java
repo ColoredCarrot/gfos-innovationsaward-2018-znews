@@ -46,6 +46,7 @@ public class URIQuery
 		
 	}
 	
+	
 	@Override
 	public String toString()
 	{
