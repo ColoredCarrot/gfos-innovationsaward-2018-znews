@@ -16,14 +16,18 @@ public class RequestContext
 	
 	private final Params urlParams;
 	private final Params queryParams;
+	private final Params postParams;
+	private final Params cookieParams;
 	private final Params params;
 	
-	public RequestContext(ChannelHandlerContext channelHandlerContext, Params urlParams, Params queryParams)
+	public RequestContext(ChannelHandlerContext channelHandlerContext, Params urlParams, Params queryParams, Params postParams, Params cookieParams)
 	{
 		this.channelHandlerContext = channelHandlerContext;
 		this.urlParams = urlParams;
 		this.queryParams = queryParams;
-		this.params = new Params(urlParams, queryParams);
+		this.postParams = postParams;
+		this.cookieParams = cookieParams;
+		this.params = new Params(urlParams, queryParams, postParams, cookieParams);
 	}
 	
 	public String getStringParam(String key)
@@ -36,6 +40,16 @@ public class RequestContext
 		return queryParams.getParamStringValue(key);
 	}
 	
+	public String getStringPostParam(String key)
+	{
+		return postParams.getParamStringValue(key);
+	}
+	
+	public String getStringCookieParam(String key)
+	{
+		return cookieParams.getParamStringValue(key);
+	}
+	
 	public boolean hasParam(String key)
 	{
 		return params.hasParam(key);
@@ -44,6 +58,16 @@ public class RequestContext
 	public boolean hasQueryParam(String key)
 	{
 		return queryParams.hasParam(key);
+	}
+	
+	public boolean hasPostParam(String key)
+	{
+		return postParams.hasParam(key);
+	}
+	
+	public boolean hasCookieParam(String key)
+	{
+		return cookieParams.hasParam(key);
 	}
 	
 	protected void writeAndFlushOK(byte[] bytes)

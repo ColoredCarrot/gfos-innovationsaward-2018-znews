@@ -55,7 +55,7 @@ public class ZNewsNettyServer extends Thread
 					      ch.pipeline().addLast("decompressor", new HttpContentDecompressor());  // GZIP decompression
 					      ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));  // Aggregate framed messages
 					      ch.pipeline().addLast("chunking", new ChunkedWriteHandler());  // Handle chunked input (e.g. ChunkedFile)
-					      ch.pipeline().addLast(new FullHttpRequestToURIFragmentDecoder());  // Decode FullHttpRequest to URIFragment
+					      ch.pipeline().addLast(new FullHttpRequestDecoder());  // Decode FullHttpRequest to URIFragment
 					      ch.pipeline().addLast(resourceProviderHandler = new ResourceProviderHandler(znews));
 				      }
 			      });

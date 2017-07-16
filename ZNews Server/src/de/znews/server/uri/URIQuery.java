@@ -1,5 +1,6 @@
 package de.znews.server.uri;
 
+import de.znews.server.resources.Params;
 import lombok.Getter;
 
 import javax.annotation.concurrent.Immutable;
@@ -99,6 +100,11 @@ public class URIQuery
 		
 		return new URIQuery(params);
 		
+	}
+	
+	public Params toParams()
+	{
+		return new Params(params);
 	}
 	
 }

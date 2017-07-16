@@ -1,15 +1,22 @@
 package de.znews.server.resources;
 
+import io.netty.handler.codec.http.cookie.Cookie;
 import lombok.SneakyThrows;
 
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 
 public class Params
 {
+	
+	public static Params fromCookies(Set<Cookie> cookies)
+	{
+		return new Params(cookies.stream().map(cookie -> new Param(cookie.name(), cookie.value())).toArray(Param[]::new));
+	}
 	
 	private final Param[] indexedParams;
 	private final Map<String, Param> params = new HashMap<>();

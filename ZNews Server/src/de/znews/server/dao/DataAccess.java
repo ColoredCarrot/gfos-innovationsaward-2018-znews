@@ -1,5 +1,7 @@
 package de.znews.server.dao;
 
+import de.znews.server.auth.Authenticator;
+import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
 import lombok.Getter;
 
@@ -15,6 +17,14 @@ public abstract class DataAccess implements Closeable
 	public abstract void storeRegistrationList(RegistrationList list) throws IOException;
 	
 	public abstract RegistrationList queryRegistrationList() throws IOException;
+	
+	public abstract void storeAuthenticator(Authenticator authenticator) throws IOException;
+	
+	public abstract Authenticator queryAuthenticator() throws IOException;
+	
+	public abstract void storeNewsletterManager(NewsletterManager newsletterManager) throws IOException;
+	
+	public abstract NewsletterManager queryNewsletterManager() throws IOException;
 	
 	public abstract void doClose();
 	

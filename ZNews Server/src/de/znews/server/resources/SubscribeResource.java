@@ -1,6 +1,7 @@
 package de.znews.server.resources;
 
 import de.znews.server.ZNews;
+import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -16,7 +17,7 @@ public class SubscribeResource extends Resource
 	}
 	
 	@Override
-	public RequestResponse handleRequest(RequestContext ctx)
+	public RequestResponse handleRequest(RequestContext ctx) throws HttpException
 	{
 		
 		if (!ctx.hasQueryParam("email"))

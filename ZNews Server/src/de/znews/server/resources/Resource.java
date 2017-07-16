@@ -1,6 +1,7 @@
 package de.znews.server.resources;
 
 import de.znews.server.ZNews;
+import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
 import lombok.Getter;
 
@@ -18,7 +19,7 @@ public abstract class Resource
 		this.params = params;
 	}
 	
-	public abstract RequestResponse handleRequest(RequestContext ctx);
+	public abstract RequestResponse handleRequest(RequestContext ctx) throws HttpException;
 	
 	public boolean appliesTo(URIFragment firstFragment)
 	{

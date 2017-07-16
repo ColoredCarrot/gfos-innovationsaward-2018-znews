@@ -3,6 +3,7 @@ package de.znews.server.dao;
 import lombok.SneakyThrows;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 
 public abstract class DataAccessConfiguration
 {
@@ -26,6 +27,12 @@ public abstract class DataAccessConfiguration
 			dataAccess = null;
 		}
 		dataAccess = newDataAccess();
+	}
+	
+	public void closeAccess() throws IOException
+	{
+		if (dataAccess != null && !dataAccess.isClosed())
+			dataAccess.close();
 	}
 	
 	protected abstract DataAccess newDataAccess();

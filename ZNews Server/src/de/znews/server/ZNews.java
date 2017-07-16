@@ -1,8 +1,11 @@
 package de.znews.server;
 
+import de.znews.server.auth.Authenticator;
 import de.znews.server.config.ZNewsConfiguration;
 import de.znews.server.netty.ZNewsNettyServer;
+import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
+import de.znews.server.sessions.SessionManager;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -17,6 +20,9 @@ public class ZNews
 	
 	public final ZNewsConfiguration config;
 	public final RegistrationList   registrationList;
+	public final Authenticator      authenticator;
+	public final SessionManager     sessionManager;
+	public final NewsletterManager  newsletterManager;
 	
 	private ZNewsNettyServer server;
 	
@@ -39,6 +45,14 @@ public class ZNews
 		
 		// Load registrationList
 		registrationList = config.getDataAccessConfig().access().queryRegistrationList();
+		
+		// Load newsletters
+		newsletterManager = config.getDataAccessConfig().access().queryNewsletterManager();
+		
+		// Load authenticator (list of admins)
+		authenticator = config.getDataAccessConfig().access().queryAuthenticator();
+		
+		sessionManager = new SessionManager(authenticator);
 		
 	}
 	
@@ -82,10 +96,23 @@ public class ZNews
 			try
 			{
 				config.getDataAccessConfig().access().storeRegistrationList(registrationList);
+				config.getDataAccessConfig().access().storeAuthenticator(authenticator);
+				config.getDataAccessConfig().access().storeNewsletterManager(newsletterManager);
 			}
 			catch (IOException e)
 			{
 				throw new UncheckedIOException(e);
+			}
+			finally
+			{
+				try
+				{
+					config.getDataAccessConfig().closeAccess();
+				}
+				catch (IOException e)
+				{
+					throw new UncheckedIOException(e);
+				}
 			}
 		}).start();
 	}
