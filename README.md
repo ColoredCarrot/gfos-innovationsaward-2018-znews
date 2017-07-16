@@ -1,2 +1,2 @@
-# GFOS Innovationsaward 2018 - ZNews##
-######\\\\####asdaasfasd
+# GFOS Innovationsaward 2018 - ZNews
+
