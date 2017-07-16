@@ -13,7 +13,7 @@ public class Param
 	
 	public boolean getValueAsBoolean()
 	{
-		return value.equalsIgnoreCase("true");
+		return Boolean.parseBoolean(value);
 	}
 	
 	public int getValueAsInt()

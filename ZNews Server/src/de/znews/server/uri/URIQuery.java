@@ -2,17 +2,31 @@ package de.znews.server.uri;
 
 import lombok.Getter;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.HashMap;
 import java.util.Map;
 
+@Immutable
 public class URIQuery
 {
 	
-	@Getter
-	private Map<String, String> params = new HashMap<>();
-	
-	public URIQuery(String s)
+	public static URIQuery fromString(String queryString)
 	{
+		return new URIQuery(queryString);
+	}
+	
+	@Getter
+	private final Map<String, String> params;
+	
+	public URIQuery(Map<String, String> params)
+	{
+		this.params = new HashMap<>(params);
+	}
+	
+	private URIQuery(String s)
+	{
+		
+		params = new HashMap<>();
 		
 		if (s.startsWith("?"))
 			s = s.substring(1);
@@ -46,7 +60,6 @@ public class URIQuery
 		
 	}
 	
-	
 	@Override
 	public String toString()
 	{
@@ -70,6 +83,21 @@ public class URIQuery
 			sb.setLength(sb.length() - 1);
 		
 		return sb.toString();
+		
+	}
+	
+	public URIQuery withParams(Map<String, String> paramAssignments)
+	{
+		
+		Map<String, String> params = new HashMap<>(this.params);
+		
+		paramAssignments.forEach((paramKey, paramValue) ->
+		{
+			if (params.containsKey(paramKey))
+				params.put(paramKey, paramValue);
+		});
+		
+		return new URIQuery(params);
 		
 	}
 	

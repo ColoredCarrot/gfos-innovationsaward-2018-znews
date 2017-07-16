@@ -1,82 +1,68 @@
 package de.znews.server.netty;
 
-import de.znews.server.Main;
-import de.znews.server.resources.APIResource;
+import de.znews.server.ZNews;
 import de.znews.server.resources.Param;
-import de.znews.server.staticweb.StaticWeb;
+import de.znews.server.resources.Params;
+import de.znews.server.resources.RequestContext;
+import de.znews.server.resources.Resource;
+import de.znews.server.resources.SubscribeResource;
+import de.znews.server.static_web.StaticWeb;
 import de.znews.server.uri.URIFragment;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
-import io.netty.util.ReferenceCountUtil;
-import lombok.SneakyThrows;
+import lombok.Getter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A <code>SimpleChannelInboundHandler</code> that accepts <code>URIFragment</code>s.<br>
+ * Responsible for calling {@link Resource}s and {@link StaticWeb}
+ */
+@Getter
 public class ResourceProviderHandler extends SimpleChannelInboundHandler<URIFragment>
 {
 	
-	private APIResource api = new APIResource();
-	private byte[] favicon;
-	private StaticWeb staticWeb = new StaticWeb(new File("static_web"));
+	private final List<Resource> resources = new ArrayList<>();
+	private final StaticWeb staticWeb;
 	
-	@SneakyThrows
-	public ResourceProviderHandler()
+	public ResourceProviderHandler(ZNews znews)
 	{
-		
-		try (InputStream in = Main.class.getResourceAsStream("/resources/favicon.ico");
-		     ByteArrayOutputStream out = new ByteArrayOutputStream())
-		{
-			int read;
-			while ((read = in.read()) != -1)
-				out.write(read);
-			favicon = out.toByteArray();
-		}
-		
+		// FINDME: Register resources here
+		resources.addAll(Arrays.asList(new SubscribeResource(znews)));
+		staticWeb = new StaticWeb(new File("static_web"), znews.config.getStaticWebConfig());
 	}
 	
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, URIFragment firstFragment) throws Exception
 	{
 		
-		// TODO why dis no work?!??! maybe dimensions not correct?
-		if (firstFragment.toString().equals("favicon.ico"))
-		{
-			ByteBuf faviconByteBuf = ctx.alloc().buffer(favicon.length);
-			ctx.writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, faviconByteBuf));
-			ctx.close();
-			return;
-		}
-		
 		System.out.println("Access " + firstFragment);
 		
-		if (api.appliesTo(firstFragment))
-		{
-			
-			List<Param> params = new ArrayList<>();
-			
-			for (int i = 0; i < api.getParamNames().length; i++)
-				if (api.getParamNames()[i] != null)
-					params.add(new Param(api.getParamNames()[i], firstFragment.get(i).get()));
-			
-			api.handleRequest(ctx, params.toArray(new Param[0]));
-			
-		}
-		else
-		{
-			staticWeb.send404NotFound(ctx);
-		}
+		for (Resource resource : resources)
+			if (resource.appliesTo(firstFragment))
+			{
+				// We found a matching resource
+				
+				List<Param> params = new ArrayList<>();
+				resource.getParams().forEachIndexed((i, f) ->
+				{
+					if (f.isParam())
+						params.add(new Param(f.getAsParam(), firstFragment.get(i).getContent()));
+				});
+				
+				resource.handleRequest(new RequestContext(ctx,
+						new Params(params.toArray(new Param[params.size()])),
+						new Params(firstFragment.getQuery().getParams()).withURLDecodedValues()))
+				        .respond(ctx);
+				
+				return;
+				
+			}
 		
-		ReferenceCountUtil.release(firstFragment);
-		ctx.close();
-		
+		staticWeb.getResponse(firstFragment.toString()).respond(ctx);
 	}
 	
 }

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.net.URI;
 
+@Deprecated
 @Getter
 public class URIInfo
 {

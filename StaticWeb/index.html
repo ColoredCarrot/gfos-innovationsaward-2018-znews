@@ -1,40 +1,84 @@
-<!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+<head>
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <title>ZNews</title>
 
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+    <link rel="stylesheet" href="css/articles.css">
+    
+    <link rel="stylesheet" href="fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/animate.css">
 
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+</head>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
-    </body>
+<body>
+
+<div class="background">
+
+    <div class="container foreground">
+
+        <!-- Main Logo/Title -->
+        <div class="big row">
+            <div class="col s12 center-align">
+                <img src="/img/logo.jpg" alt="ZNEWS" />
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- Articles container -->
+            <div class="col s8">
+
+                <!-- Main article container -->
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <!-- Headline -->
+                            <div class="col s12">
+                                <h4 class="red-text text-lighten-1 article-headline">Article 1</h4>
+                            </div>
+                            <!-- Text -->
+                            <div class="col s12">
+                                <p class="article-text">My name is this guy.<br>
+                                    I am a genius for doing this really long sentence so I can test the line break stuff n things.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribe action / etc. (boxes) -->
+            <div class="col s4 subscribe-container">
+
+                <div class="row">
+
+                    <div class="col s12 center-align subscribe-header">
+                        <h5>Don't wanna miss a newsletter?</h5>
+                    </div>
+
+                    <div class="col s12">
+                        <form method="post" class="input-field subscribe-field-container" id="subscribe-form">
+                            <input type="email" id="sub-email" class="validate">
+                            <label for="sub-email">E-Mail</label>
+                        </form>
+                        <p class="center-align green-text text-darken-1" id="check-your-email" hidden="hidden">Check your Email!</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="js/subscribe.js"></script>
+
+</body>
+
 </html>
