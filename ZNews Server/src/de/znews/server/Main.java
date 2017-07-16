@@ -11,22 +11,22 @@ public class Main
 {
 	
 	@Getter
-	private static ZNews zNews;
+	private static ZNews znews;
 	
 	public static void main(String[] args) throws IOException
 	{
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("Shutdown complete! Have a nice day ;-)")));
 		
-		zNews = new ZNews();
+		znews = new ZNews();
 		
-		zNews.startServer();
+		znews.startServer();
 		
-		readConsole(zNews);
+		readConsole();
 		
 	}
 	
-	private static void readConsole(ZNews znews) throws IOException
+	private static void readConsole() throws IOException
 	{
 		
 		BufferedReader sinReader = new BufferedReader(new InputStreamReader(System.in));
@@ -45,15 +45,31 @@ public class Main
 				System.out.println("Restarting...");
 				znews.stopServer(() ->
 				{
-					znews.startServer();
-					try
+					new Thread(() ->
 					{
-						readConsole(znews);
-					}
-					catch (IOException e)
-					{
-						throw new UncheckedIOException(e);
-					}
+						try
+						{
+							for (int i = 5; i > 0; i--)
+							{
+								System.out.println("Sstarting in " + i + " second(s)");
+								Thread.sleep(1000);
+							}
+						}
+						catch (InterruptedException ignored)
+						{
+						}
+						try
+						{
+							
+							znews = new ZNews();
+							znews.startServer();
+							readConsole();
+						}
+						catch (IOException e)
+						{
+							throw new UncheckedIOException(e);
+						}
+					}).start();
 				});
 				break;
 			}
