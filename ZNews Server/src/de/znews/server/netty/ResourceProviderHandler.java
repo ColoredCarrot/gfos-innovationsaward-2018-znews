@@ -15,7 +15,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.Getter;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,11 +31,11 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	private final List<Resource> resources = new ArrayList<>();
 	private final StaticWeb staticWeb;
 	
-	public ResourceProviderHandler(ZNews znews)
+	public ResourceProviderHandler(ZNews znews, StaticWeb staticWeb)
 	{
 		// FINDME: Register resources here
 		resources.addAll(Arrays.asList(new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews)));
-		staticWeb = new StaticWeb(new File("static_web"), znews.config.getStaticWebConfig());
+		this.staticWeb = staticWeb;
 	}
 	
 	@Override

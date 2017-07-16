@@ -1,6 +1,7 @@
 package de.znews.server.netty;
 
 import de.znews.server.ZNews;
+import de.znews.server.static_web.StaticWeb;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -15,18 +16,24 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import lombok.RequiredArgsConstructor;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@RequiredArgsConstructor
 public class ZNewsNettyServer extends Thread
 {
 	
 	private final ZNews znews;
 	private final int   port;
+	private final StaticWeb staticWeb;
 	
-	private ResourceProviderHandler resourceProviderHandler;
+	public ZNewsNettyServer(ZNews znews, int port)
+	{
+		super("server-thread");
+		this.znews = znews;
+		this.port = port;
+		this.staticWeb = new StaticWeb(new File("static_web"), znews.config.getStaticWebConfig());
+	}
 	
 	private Channel channel;
 	
@@ -56,7 +63,7 @@ public class ZNewsNettyServer extends Thread
 					      ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));  // Aggregate framed messages
 					      ch.pipeline().addLast("chunking", new ChunkedWriteHandler());  // Handle chunked input (e.g. ChunkedFile)
 					      ch.pipeline().addLast(new FullHttpRequestDecoder());  // Decode FullHttpRequest to URIFragment
-					      ch.pipeline().addLast(resourceProviderHandler = new ResourceProviderHandler(znews));
+					      ch.pipeline().addLast(new ResourceProviderHandler(znews, staticWeb));
 				      }
 			      });
 			
@@ -102,7 +109,7 @@ public class ZNewsNettyServer extends Thread
 			channel.close().addListener(f ->
 			{
 				channel = null;
-				resourceProviderHandler.getStaticWeb().purgeCache();
+				staticWeb.purgeCache();
 				if (callback != null)
 					callback.run();
 			});
