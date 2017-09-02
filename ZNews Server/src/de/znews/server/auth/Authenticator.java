@@ -1,10 +1,12 @@
 package de.znews.server.auth;
 
+import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Authenticator implements Serializable
+public class Authenticator implements Serializable, JsonSerializable
 {
 	
 	// <username, email>

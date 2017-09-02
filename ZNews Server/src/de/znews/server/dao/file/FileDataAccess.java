@@ -1,5 +1,9 @@
 package de.znews.server.dao.file;
 
+import com.coloredcarrot.jsonapi.Json;
+import com.coloredcarrot.jsonapi.generation.JsonOutput;
+import com.coloredcarrot.jsonapi.parsing.JsonInput;
+import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.dao.DataAccess;
 import de.znews.server.newsletter.NewsletterManager;
@@ -29,38 +33,56 @@ public class FileDataAccess extends DataAccess
 	@Override
 	public void storeRegistrationList(RegistrationList list) throws IOException
 	{
-		storeSerializable(list, registrationsFile);
+		storeJsonSerializable(list, registrationsFile);
 	}
 	
 	@Override
 	public RegistrationList queryRegistrationList() throws IOException
 	{
-		return querySerializable(registrationsFile, RegistrationList::new);
+		return queryJsonSerializable(registrationsFile, RegistrationList::new, RegistrationList.class);
 	}
 	
 	@Override
 	public void storeAuthenticator(Authenticator authenticator) throws IOException
 	{
-		storeSerializable(authenticator, authFile);
+		storeJsonSerializable(authenticator, authFile);
 	}
 	
 	@Override
 	public Authenticator queryAuthenticator() throws IOException
 	{
-		return querySerializable(authFile, Authenticator::new);
+		return queryJsonSerializable(authFile, Authenticator::new, Authenticator.class);
 	}
 	
 	@Override
 	public void storeNewsletterManager(NewsletterManager newsletterManager) throws IOException
 	{
-		storeSerializable(newsletterManager, newslettersFile);
+		storeJsonSerializable(newsletterManager, newslettersFile);
 	}
 	
 	@Override
 	public NewsletterManager queryNewsletterManager() throws IOException
 	{
-		return querySerializable(newslettersFile, NewsletterManager::new);
+		return queryJsonSerializable(newslettersFile, NewsletterManager::new, NewsletterManager.class);
 	}
+    
+    private void storeJsonSerializable(JsonSerializable serializable, File file) throws IOException
+    {
+        try (JsonOutput out = new JsonOutput(Json.getOutputStream(new BufferedOutputStream(new FileOutputStream(file)))))
+        {
+            out.write(serializable);
+        }
+    }
+    
+    private <T extends JsonSerializable> T queryJsonSerializable(File file, Supplier<T> ifNotExistsGet, Class<T> clazz) throws IOException
+	{
+		if (!file.exists())
+			return ifNotExistsGet.get();
+        try (JsonInput<T> in = new JsonInput<>(Json.getInputStream(new BufferedInputStream(new FileInputStream(file))), clazz))
+        {
+            return in.read();
+        }
+    }
 	
 	private void storeSerializable(Serializable serializable, File file) throws IOException
 	{

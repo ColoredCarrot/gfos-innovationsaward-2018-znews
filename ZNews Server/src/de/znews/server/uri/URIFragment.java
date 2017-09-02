@@ -99,7 +99,7 @@ public class URIFragment
 			next.toString(append);
 		}
 		else if (query != null)
-			append.append(query.toString());
+			append.append('?').append(query.toString());
 	}
 	
 	/**

@@ -31,11 +31,11 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	private final List<Resource> resources = new ArrayList<>();
 	private final StaticWeb staticWeb;
 	
-	public ResourceProviderHandler(ZNews znews, StaticWeb staticWeb)
+	public ResourceProviderHandler(ZNews znews)
 	{
 		// FINDME: Register resources here
 		resources.addAll(Arrays.asList(new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews)));
-		this.staticWeb = staticWeb;
+		this.staticWeb = znews.staticWeb;
 	}
 	
 	@Override
@@ -53,8 +53,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 					// We found a matching resource
 					
 					// Convert post-data ByteBuf to Params
-					// We utilize URIQuery because the post data is also
-					//  encoded x-www-form-urlencoded
+					// We utilize URIQuery because the post data is also x-www-form-urlencoded
 					Params postParams = URIQuery.fromString(request.getPost().toString(StandardCharsets.UTF_8)).toParams().withURLDecodedValues();
 					
 					// URL params (/api/{version})

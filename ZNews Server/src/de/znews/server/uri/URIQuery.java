@@ -6,6 +6,7 @@ import lombok.Getter;
 import javax.annotation.concurrent.Immutable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 @Immutable
 public class URIQuery
@@ -64,27 +65,9 @@ public class URIQuery
 	@Override
 	public String toString()
 	{
-		
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append('?');
-		
-		params.forEach((key, value) ->
-		{
-			sb.append(key);
-			if (!value.trim().isEmpty())
-			{
-				sb.append('=');
-				sb.append(value);
-			}
-			sb.append('&');
-		});
-		
-		if (sb.length() != 1)
-			sb.setLength(sb.length() - 1);
-		
-		return sb.toString();
-		
+        StringJoiner sj = new StringJoiner("&");
+        params.forEach((key, value) -> sj.add(value.trim().isEmpty() ? key : key + '=' + value));
+		return sj.toString();
 	}
 	
 	public URIQuery withParams(Map<String, String> paramAssignments)

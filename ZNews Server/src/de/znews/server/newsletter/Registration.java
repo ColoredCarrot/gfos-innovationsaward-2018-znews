@@ -1,11 +1,12 @@
 package de.znews.server.newsletter;
 
+import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import lombok.Getter;
 
 import java.io.Serializable;
 
 @Getter
-public class Registration implements Serializable
+public class Registration implements Serializable, JsonSerializable
 {
 	
 	private static final long serialVersionUID = -8221233446973804554L;
@@ -22,5 +23,5 @@ public class Registration implements Serializable
 	private Registration()
 	{
 	}
-	
+    
 }

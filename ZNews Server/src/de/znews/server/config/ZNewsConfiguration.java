@@ -41,8 +41,9 @@ public class ZNewsConfiguration
 		}
 		
 		staticWebConfig = new StaticWeb.Config();
-		staticWebConfig.setEnableCaching(getBoolean("enable_caching"));
+		staticWebConfig.setEnableCaching(getBoolean("cache.enabled"));
 		staticWebConfig.setErr404Path(props.getProperty("err_docs.404"));
+		staticWebConfig.setCacheSize(getInt("cache.size"));
 		
 	}
 	

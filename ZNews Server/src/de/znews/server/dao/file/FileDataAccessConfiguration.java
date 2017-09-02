@@ -16,7 +16,7 @@ public class FileDataAccessConfiguration extends DataAccessConfiguration
 	
 	public FileDataAccessConfiguration()
 	{
-		this(new File("registrations.ser"), new File("auth.ser"), new File("newsletters.ser"));
+		this(new File("registrations.json"), new File("auth.json"), new File("newsletters.json"));
 	}
 	
 	@Override
