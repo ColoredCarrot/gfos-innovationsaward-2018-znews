@@ -1,0 +1,21 @@
+.background
+{
+    background-color: #e8e8e8;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+}
+
+.foreground
+{
+    background-color: #ffffff;
+    height: 100%;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+div.big.row
+{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}

@@ -27,7 +27,7 @@ public class RequestContext
 		this.queryParams = queryParams;
 		this.postParams = postParams;
 		this.cookieParams = cookieParams;
-		this.params = new Params(urlParams, queryParams, postParams, cookieParams);
+		this.params = new Params(urlParams, queryParams, postParams /* Exclude cookies */);
 	}
 	
 	public String getStringParam(String key)
@@ -54,8 +54,8 @@ public class RequestContext
 	{
 		return params.hasParam(key);
 	}
-	
-	public boolean hasQueryParam(String key)
+    
+    public boolean hasQueryParam(String key)
 	{
 		return queryParams.hasParam(key);
 	}

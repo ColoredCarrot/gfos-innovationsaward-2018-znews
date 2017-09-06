@@ -244,7 +244,7 @@ public class URIFragment
 		while ((fragment = fragment.next) != null)
 			if (fragment.query != null)
 				return fragment.query;
-		return null;
+        return URIQuery.EMPTY;
 	}
 	
 	@Override

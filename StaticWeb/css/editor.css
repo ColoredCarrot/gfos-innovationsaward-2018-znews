@@ -1,0 +1,22 @@
+.format-icon
+{
+    /*border: 5px solid #959595;
+    border-radius: 2px;*/
+}
+
+.format-icon.active
+{
+    background-color: #91ff96;
+}
+
+.format-icon:hover
+{
+    background-color: #7fed84;
+    cursor: pointer;
+}
+
+div.editor-outline
+{
+    border: 5px solid #959595;
+    border-radius: 4px;
+}

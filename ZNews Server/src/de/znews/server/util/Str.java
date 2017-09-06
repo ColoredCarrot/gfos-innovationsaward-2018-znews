@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
+public class Str implements CharSequence, Cloneable, Comparable<CharSequence>, Appendable
 {
     
     public static Str copyOf(char[] data)
@@ -19,24 +19,53 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
         return new Str(Arrays.copyOfRange(data, offset, offset + length));
     }
     
-    private char[] data;
-    private int    length;
+    private char[]  buffer;
+    private int     length;
+    private Builder b;
     
     public Str(String source)
     {
-        data = source.toCharArray();
-        length = data.length;
+        buffer = source.toCharArray();
+        length = buffer.length;
     }
     
-    public Str(char[] mut)
+    public Str(char[] buffer)
     {
-        this(mut, mut.length);
+        this(buffer, buffer.length);
     }
     
-    public Str(char[] mut, int length)
+    public Str(char[] buffer, int length)
     {
-        this.data = mut;
+        this.buffer = buffer;
         this.length = length;
+    }
+    
+    public Str(byte[] bytes)
+    {
+        this(new String(bytes));
+    }
+    
+    public Str(int initBufferLen)
+    {
+        buffer = new char[initBufferLen];
+        length = 0;
+    }
+    
+    private Builder b()
+    {
+        if (b == null)
+            b = new Builder();
+        return b;
+    }
+    
+    public char[] toCharArray()
+    {
+        return Arrays.copyOf(buffer, buffer.length);
+    }
+    
+    public char[] getBuffer()
+    {
+        return buffer;
     }
     
     public Str replaceOnce(CharSequence search, CharSequence replacement)
@@ -119,13 +148,18 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
                     charsLen - len  /* Shift by the difference between charsLen and len to make room */);
         }
         
-        System.arraycopy(chars, charsOffset, data, index, charsLen);
+        System.arraycopy(chars, charsOffset, buffer, index, charsLen);
         
         return this;
         
     }
     
-    
+    public Str setChar(int index, char c)
+    {
+        ensureCapacity(length + 1);
+        buffer[index] = c;
+        return this;
+    }
     
     public String[] splitString(char[] search, int limit)
     {
@@ -142,13 +176,13 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
         {
             result = new ArrayList<>(limit);
             for (int i = 0; index != -1 && i++ < limit; index = indexOf(search, index + search.length))
-                result.add(String.valueOf(data, index, search.length));
+                result.add(String.valueOf(buffer, index, search.length));
         }
         else
         {
             result = new ArrayList<>();
             for (; index != -1; index = indexOf(search, index + search.length))
-                result.add(String.valueOf(data, index, search.length));
+                result.add(String.valueOf(buffer, index, search.length));
         }
         
         return result.toArray(new String[result.size()]);
@@ -159,7 +193,7 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     {
         // Assume split.length >= 1
         // Assume limit is a sanely chosen value
-    
+        
         int index = indexOf(search);
         if (index == -1)
             // No match
@@ -170,13 +204,13 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
         {
             result = new ArrayList<>(limit);
             for (int i = 0; index != -1 && i++ < limit; index = indexOf(search, index + search.length))
-                result.add(new Str(Arrays.copyOfRange(data, index, index + search.length)));
+                result.add(new Str(Arrays.copyOfRange(buffer, index, index + search.length)));
         }
         else
         {
             result = new ArrayList<>();
             for (; index != -1; index = indexOf(search, index + search.length))
-                result.add(new Str(Arrays.copyOfRange(data, index, index + search.length)));
+                result.add(new Str(Arrays.copyOfRange(buffer, index, index + search.length)));
         }
         return result.toArray(new Str[result.size()]);
     }
@@ -185,7 +219,7 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     {
         // Assume ensureCapacity has already been called
         // Assume we need not care about the characters at the to-be-shifted-away-from positions
-        System.arraycopy(data, index, data, index + amount, len);
+        System.arraycopy(buffer, index, buffer, index + amount, len);
         return this;
     }
     
@@ -204,11 +238,11 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
         outer:
         for (int i = startSearchAt; i < length - search.length + 1; i++)
         {
-            if (search[0] == data[i])
+            if (search[0] == buffer[i])
             {
                 // Match of first char of search at i
                 for (int j = 1; j < search.length; j++)
-                    if (data[i + j] != search[j])
+                    if (buffer[i + j] != search[j])
                         continue outer;
                 // Everything matches!
                 return i;
@@ -226,7 +260,7 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     @Override
     public char charAt(int index)
     {
-        return data[index];
+        return buffer[index];
     }
     
     @Override
@@ -234,19 +268,19 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     {
         // TODO: What would maybe be cool is to return a view of this Str, like List#subList
         //        We'd need to have an offset property in Str as well though... hmm.
-        return new Str(Arrays.copyOfRange(data, start, end));
+        return new Str(Arrays.copyOfRange(buffer, start, end));
     }
     
     public Str ensureCapacity(int minCapacity)
     {
-        if (data.length < minCapacity)
+        if (buffer.length < minCapacity)
             setLength(minCapacity);
         return this;
     }
     
     public Str setLength(int newLength)
     {
-        data = Arrays.copyOf(data, newLength);
+        buffer = Arrays.copyOf(buffer, newLength);
         return this;
     }
     
@@ -254,7 +288,7 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     @Override
     public String toString()
     {
-        return new String(data);
+        return new String(buffer);
     }
     
     public StringBuilder toStringBuilder()
@@ -271,6 +305,16 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     public int compareToIgnoreCase(@Nonnull CharSequence o)
     {
         return toString().compareToIgnoreCase(o.toString());
+    }
+    
+    public Str copy()
+    {
+        return new Str(Arrays.copyOf(buffer, buffer.length), length);
+    }
+    
+    public Str copyRange(int start, int end)
+    {
+        return new Str(Arrays.copyOfRange(buffer, start, end), length);
     }
     
     @SuppressWarnings("MethodDoesntCallSuperMethod")
@@ -291,6 +335,55 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>
     {
         return obj == this
                 || obj != null && obj.getClass() == getClass() && obj.toString().equals(toString());
+    }
+    
+    @Override
+    public Str append(CharSequence csq)
+    {
+        if (csq instanceof Str)
+            b().append(((Str) csq).buffer);
+        else
+            b().append(csq.toString().toCharArray());
+        return this;
+    }
+    
+    @Override
+    public Str append(CharSequence csq, int start, int end)
+    {
+        if (csq instanceof Str)
+            b().append(((Str) csq).buffer, start, end - start);
+        else
+            b().append(csq.subSequence(start, end).toString().toCharArray());
+        return this;
+    }
+    
+    @Override
+    public Str append(char c)
+    {
+        b().append(c);
+        return this;
+    }
+    
+    private class Builder
+    {
+        int writeIndex;
+    
+        void append(char c)
+        {
+            setChar(writeIndex++, c);
+        }
+    
+        void append(char[] chars)
+        {
+            setChars(writeIndex, chars.length, chars);
+            writeIndex += chars.length;
+        }
+    
+        void append(char[] chars, int charsOffset, int charsLen)
+        {
+            setChars(writeIndex, charsLen, chars, charsOffset, charsLen);
+            writeIndex += charsLen;
+        }
     }
     
 }

@@ -21,11 +21,10 @@ public class NewsletterManager implements Serializable, JsonSerializable
 		newsletters.add(0, newsletter);
 	}
 	
-	public void getLatestNewsletters(Newsletter[] buffer)
-	{
-		for (int i = 0; i < buffer.length; i++)
-			buffer[i] = newsletters.get(i);
-	}
+    public Iterable<Newsletter> getLatestNewsletters(int amount)
+    {
+        return amount >= newsletters.size() ? newsletters : newsletters.subList(0, amount);
+    }
     
     @JsonDeserializer
     public static NewsletterManager deserializeJson(JsonObject json)

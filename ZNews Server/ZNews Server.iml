@@ -23,5 +23,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="JsonApi" />
+    <orderEntry type="library" name="commons-validator:commons-validator:1.6" level="project" />
   </component>
 </module>

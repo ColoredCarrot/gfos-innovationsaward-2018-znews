@@ -27,6 +27,11 @@ public class RegistrationList implements Serializable, JsonSerializable
 		return registeredEmails.get(email);
 	}
     
+    public boolean isRegistered(String email)
+    {
+        return registeredEmails.containsKey(email);
+    }
+    
     @JsonDeserializer
     static RegistrationList deserializeJson(JsonObject json)
     {

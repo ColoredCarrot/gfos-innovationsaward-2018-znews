@@ -60,6 +60,11 @@ public class StaticWeb
         
     }
     
+    public String getString(String path)
+    {
+        return new String(get(path));
+    }
+    
     public byte[] get(String path)
     {
         try

@@ -188,9 +188,15 @@ public class JsonObject extends JsonContainer
         {
             return g(key).doubleValue();
         }
-        
+    
         public JsonObject get()
         {
+            return JsonObject.this;
+        }
+        
+        public JsonObject build()
+        {
+            builder = null;
             return JsonObject.this;
         }
         

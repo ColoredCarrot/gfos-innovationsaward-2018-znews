@@ -1,6 +1,7 @@
 package de.znews.server.netty;
 
 import de.znews.server.ZNews;
+import de.znews.server.resources.IndexResource;
 import de.znews.server.resources.Param;
 import de.znews.server.resources.Params;
 import de.znews.server.resources.RequestContext;
@@ -13,7 +14,6 @@ import de.znews.server.static_web.StaticWeb;
 import de.znews.server.uri.URIQuery;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import lombok.Getter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import java.util.List;
  * A <code>SimpleChannelInboundHandler</code> that accepts <code>URIFragment</code>s.<br>
  * Responsible for calling {@link Resource}s and {@link StaticWeb}
  */
-@Getter
 public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRequest>
 {
 	
@@ -34,7 +33,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	public ResourceProviderHandler(ZNews znews)
 	{
 		// FINDME: Register resources here
-		resources.addAll(Arrays.asList(new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews)));
+		resources.addAll(Arrays.asList(new IndexResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews)));
 		this.staticWeb = znews.staticWeb;
 	}
 	
@@ -93,4 +92,13 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 		
 	}
 	
+	public List<Resource> getResources()
+	{
+		return this.resources;
+	}
+	
+	public StaticWeb getStaticWeb()
+	{
+		return this.staticWeb;
+	}
 }

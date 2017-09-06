@@ -11,12 +11,23 @@ import io.netty.util.HttpHeaderNames;
 import lombok.Getter;
 
 import javax.annotation.Nullable;
+import java.nio.charset.StandardCharsets;
 
 @Getter
 public class RequestResponse
 {
-	
-	private byte[]             data;
+    
+    public static RequestResponse ok(byte[] data)
+    {
+        return new RequestResponse(HttpResponseStatus.OK, data);
+    }
+    
+    public static RequestResponse ok(String data)
+    {
+        return new RequestResponse(HttpResponseStatus.OK, data.getBytes(StandardCharsets.UTF_8));
+    }
+    
+    private byte[]             data;
 	private HttpVersion        httpVersion;
 	private HttpResponseStatus status;
 	@Nullable

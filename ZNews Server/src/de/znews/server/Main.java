@@ -51,7 +51,7 @@ public class Main
 						{
 							for (int i = 5; i > 0; i--)
 							{
-								System.out.println("Sstarting in " + i + " second(s)");
+								System.out.println("Starting in " + i + " second(s)");
 								Thread.sleep(1000);
 							}
 						}
@@ -73,7 +73,12 @@ public class Main
 				});
 				break;
 			}
-		}
+            if (command.equalsIgnoreCase("reset caches") || command.equalsIgnoreCase("rs"))
+            {
+                znews.staticWeb.purgeCache();
+                System.out.println("Caches reset");
+            }
+        }
 		
 	}
 	
