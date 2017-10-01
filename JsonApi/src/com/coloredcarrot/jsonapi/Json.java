@@ -10,6 +10,7 @@ import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.ast.JsonString;
 import com.coloredcarrot.jsonapi.generation.JsonGenerator;
 import com.coloredcarrot.jsonapi.generation.JsonOutputStream;
+import com.coloredcarrot.jsonapi.generation.PrettyJsonGenerator;
 import com.coloredcarrot.jsonapi.parsing.JsonInputStream;
 import com.coloredcarrot.jsonapi.parsing.JsonParser;
 import com.coloredcarrot.jsonapi.parsing.lex.JsonLexer;
@@ -80,6 +81,11 @@ public class Json
     public static JsonOutputStream getOutputStream(Writer target)
     {
         return new JsonGenerator(target);
+    }
+    
+    public static JsonOutputStream getOutputStream(Writer target, boolean enablePrettyPrinting)
+    {
+        return enablePrettyPrinting ? new PrettyJsonGenerator(target) : new JsonGenerator(target);
     }
     
     public static JsonNode serialize(Object obj)

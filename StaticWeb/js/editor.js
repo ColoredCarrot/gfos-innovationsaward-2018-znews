@@ -1,8 +1,5 @@
-(function($)
+$(function()
 {
-
-    $(document).ready(function() { Materialize.updateTextFields(); });
-
     function onFormat()
     {
         const $this = $(this);
@@ -21,4 +18,14 @@
 
     $('.format-icon').click(onFormat);
 
-})(jQuery);
+    //$('textarea.richtext').ckeditor();
+    AlloyEditor.editable('richtext');
+
+    $('body').click(function()
+    {
+        // on click
+        // delegate to iframe's globalOnClick() function
+        document.getElementById("toolbar-frame").contentWindow.globalOnClick();
+    });
+
+});

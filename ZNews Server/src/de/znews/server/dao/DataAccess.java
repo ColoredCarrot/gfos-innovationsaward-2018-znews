@@ -1,5 +1,6 @@
 package de.znews.server.dao;
 
+import de.znews.server.ZNews;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
@@ -11,8 +12,15 @@ import java.io.IOException;
 public abstract class DataAccess implements Closeable
 {
 	
+	private final ZNews znews;
+	
 	@Getter
 	private boolean isClosed;
+	
+	protected DataAccess(ZNews znews)
+	{
+		this.znews = znews;
+	}
 	
 	public abstract void storeRegistrationList(RegistrationList list) throws IOException;
 	
@@ -36,5 +44,10 @@ public abstract class DataAccess implements Closeable
 		doClose();
 		isClosed = true;
 	}
-	
+    
+    protected ZNews getZNews()
+    {
+        return znews;
+    }
+    
 }

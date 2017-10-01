@@ -1,0 +1,79 @@
+<html>
+<head>
+
+    <link rel="stylesheet" href="../../fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="../../css/materialize.min.css">
+
+    <style>
+        .fab-left
+        {
+            /*left: 0;*/
+        }
+        a:not([href])
+        {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="fixed-action-btn toolbar fab-left">
+    <a class="btn-floating btn-large red">
+        <i class="large material-icons">drafts</i>
+    </a>
+    <ul>
+        <li class="waves-effect waves-light tb-element red">
+            <a id="act-save">
+                <span><i class="material-icons">save</i></span>
+                <span>Save</span>
+            </a>
+        </li>
+        <li class="waves-effect waves-light tb-element red">
+            <a id="act-delete">
+                <span><i class="material-icons">delete_forever</i></span>
+                <span>Delete</span>
+            </a>
+        </li>
+        <li class="waves-effect waves-light tb-element red">
+            <a id="act-publish">
+                <span><i class="material-icons">publish</i></span>
+                <span>Publish</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="progress">
+    <div class="determinate" id="progress-bar"></div>
+</div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/materialize.min.js"></script>
+
+<script>
+    $(function()
+    {
+        $('.tb-element').hover(function()
+        {
+            // hover in
+            $(this).addClass('darken-1');
+        }, function()
+        {
+            // hover out
+            $(this).removeClass('darken-1');
+        });
+    });
+
+    function globalOnClick()
+    {
+        // called when clicked, even outside iframe
+        // delegate click
+        $('body').trigger('click');
+    }
+</script>
+
+<script src="toolbar.js"></script>
+
+</body>
+</html>

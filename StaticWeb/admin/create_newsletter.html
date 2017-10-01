@@ -3,12 +3,13 @@
 
     <title>Create Newsletter | ZNews</title>
 
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/editor.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/editor.css">
 
-    <link rel="stylesheet" href="/fonts/material_icons/material_icons.css">
-    <link rel="stylesheet" href="/css/materialize.min.css">
-    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="../fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="../css/materialize.min.css">
+    <link rel="stylesheet" href="../css/animate.css">
+    <link rel="stylesheet" href="../alloy-editor/assets/alloy-editor-ocean-min.css">
 
 </head>
 <body>
@@ -20,7 +21,7 @@
         <!-- Main Logo/Title -->
         <div class="big row">
             <div class="col s12 center-align">
-                <img src="/img/logo.jpg" alt="ZNEWS"/>
+                <img src="../img/logo.jpg" alt="ZNEWS"/>
             </div>
         </div>
 
@@ -37,8 +38,8 @@
 
                 <!-- Title container -->
                 <div class="row">
-                    <div class="col s12 input-field">
-                        <input id="ntitle">
+                    <div class="input-field col s12">
+                        <input id="ntitle" type="text">
                         <label for="ntitle">Title</label>
                     </div>
                 </div>
@@ -47,47 +48,38 @@
                 <div class="row">
                     <div class="col s12 editor-outline">
 
-                        <!-- Editor Actions -->
-                        <div class="row">
+                        <!-- Editor Actions
+                        <div class="row editor-actions-row">
                             <div class="col s12">
                                 <table>
                                     <tbody>
                                     <tr>
                                         <td class="format-icon"><a><i class="material-icons small">format_bold</i></a></td>
                                         <td class="format-icon"><a><i class="material-icons small">format_italic</i></a></td>
+                                        <td class="format-icon"><a><i class="material-icons small">format_underlined</i></a></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="row">
                             <div class="col s12">
-                                <textarea class="materialize-textarea" name="text" id="ntext" cols="30" rows="100"></textarea>
+                                <!--<textarea class="materialize-textarea" name="text" id="ntext" cols="30" rows="100"></textarea>
+                                <textarea name="richtext" id="richtext" class="richtext" cols="50" rows="30"></textarea>-->
+                                <div id="richtext"></div>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <!--<div class="row">
-                    <div class="col s12">
-                        <h4 class="red-text text-lighten-1 article-headline">Article 1</h4>
-                    </div>
-                    <div class="col s12">
-                        <p class="article-text">My name is this guy.<br>
-                            I am a genius for doing this really long sentence so I can test the line break stuff n things.</p>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col s12">
-                        <h4 class="red-text text-lighten-1 article-headline">Article 1</h4>
+                        <!-- .fixed-action-btn.toolbar>(a.btn-floating.btn-large.red>i.large.material-icons{mode_edit})+ul>(li.waves-effect.waves-light>a[href]{Save})*3 -->
+                        <iframe id="toolbar-frame" src="create_newsletter/toolbar.html" frameborder="0" width="100%" height="90px"></iframe>
                     </div>
-                    <div class="col s12">
-                        <p class="article-text">My name is this guy.<br>
-                            I am a genius for doing this really long sentence so I can test the line break stuff n things.</p>
-                    </div>
-                </div>-->
+                </div>
             </div>
 
         </div>
@@ -96,11 +88,14 @@
 
 </div>
 
-<script src="/js/jquery.min.js"></script>
-<script src="/js/materialize.min.js"></script>
-<script src="/js/subscribe.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/materialize.min.js"></script>
+<!--<script src="../ckeditor/ckeditor.js"></script>
+<script src="../ckeditor/adapters/jquery.js"></script>-->
+<script src="../alloy-editor/alloy-editor-all-min.js"></script>
+<script src="../js/subscribe.js"></script>
 
-<script src="/js/editor.js"></script>
+<script src="../js/editor.js"></script>
 
 </body>
 </html>

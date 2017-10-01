@@ -1,0 +1,75 @@
+$(function()
+{
+
+    var $progress = $('#progress-bar');
+    $progress.parent().hide();
+
+    function updateProgress(percent)
+    {
+        console.log('Update progress: ' + percent);
+        $progress.css("width", percent + "%");
+    }
+
+    var actSaving = false;
+
+    $('#act-save').click(function()
+    {
+        // Display loading bar
+        actSaving = true;
+        updateProgress(1);
+        $progress.parent().show();
+
+        // Is a newsletter ID known?
+        var nid = 0;
+
+        var data = {};
+        if (nid)
+            data['nid'] = nid;
+
+        // Send XMLHttpRequest
+        $.ajax('/api/v1/newsletter/save', {
+            cache: false,
+            data: data,
+            success: function(data, textStatus, jqXHR)
+            {
+                console.log("success");
+                console.log(data);
+                console.log(textStatus);
+                console.log(jqXHR);
+            },
+            xhr: function()
+            {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt)
+                {
+                    if (evt.lengthComputable)
+                    {
+                        // Upload progress update
+                        var percentComplete = 100 * (evt.loaded / evt.total);
+                        updateProgress(percentComplete / 2);
+                    }
+                }, false);
+
+                xhr.addEventListener("progress", function(evt)
+                {
+                    if (evt.lengthComputable)
+                    {
+                        // Download progress update
+                        var percentComplete = 100 * (evt.loaded / evt.total);
+                        updateProgress(50 + percentComplete / 2);
+                    }
+                }, false);
+
+                return xhr;
+            },
+            status: {
+                403: function()
+                {
+                    // TODO: handle not authenticated
+                }
+            }
+        })
+
+    });
+
+});

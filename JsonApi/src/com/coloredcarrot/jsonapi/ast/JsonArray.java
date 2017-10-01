@@ -51,6 +51,14 @@ public class JsonArray extends JsonContainer
         return array.get(index);
     }
     
+    public boolean isSimpleArray()
+    {
+        if (array.isEmpty())
+            return true;
+        Class<? extends JsonNode> theClass = array.get(0).getClass();
+        return array.stream().allMatch(j -> j.getClass() == theClass);
+    }
+    
     public Builder builder()
     {
         if (builder == null)
@@ -150,7 +158,7 @@ public class JsonArray extends JsonContainer
             return list;
         }
         
-        public JsonArray get()
+        public JsonArray build()
         {
             return JsonArray.this;
         }

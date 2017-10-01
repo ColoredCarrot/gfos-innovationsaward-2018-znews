@@ -4,12 +4,11 @@ import com.coloredcarrot.jsonapi.Json;
 import com.coloredcarrot.jsonapi.generation.JsonOutput;
 import com.coloredcarrot.jsonapi.parsing.JsonInput;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import de.znews.server.ZNews;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.dao.DataAccess;
 import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -22,13 +21,20 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.function.Supplier;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileDataAccess extends DataAccess
 {
 	
 	private final File registrationsFile;
 	private final File authFile;
 	private final File newslettersFile;
+	
+	public FileDataAccess(ZNews znews, File registrationsFile, File authFile, File newslettersFile)
+	{
+		super(znews);
+		this.registrationsFile = registrationsFile;
+		this.authFile = authFile;
+		this.newslettersFile = newslettersFile;
+	}
 	
 	@Override
 	public void storeRegistrationList(RegistrationList list) throws IOException
@@ -51,7 +57,7 @@ public class FileDataAccess extends DataAccess
 	@Override
 	public Authenticator queryAuthenticator() throws IOException
 	{
-		return queryJsonSerializable(authFile, Authenticator::new, Authenticator.class);
+		return queryJsonSerializable(authFile, () -> new Authenticator(getZNews()), Authenticator.class);
 	}
 	
 	@Override
