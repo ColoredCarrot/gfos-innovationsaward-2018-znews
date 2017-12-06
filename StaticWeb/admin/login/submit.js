@@ -17,19 +17,26 @@ $(function()
             method: 'POST',
             success: function(data, textStatus, jqXHR)
             {
-                // TODO: handle authentication successful
-                // redirect user to some sort of success page maybe?
-                // or an admin management site?
-                console.log("success");
-                console.log(data);
-                console.log(textStatus);
-                console.log(jqXHR);
+                swal({
+                    title: 'Login Successful',
+                    text: 'Click \'OK\' to proceed',
+                    icon: 'success'
+                }).then(function()
+                {
+                    // Redirect user after successful authentication to a main page
+                    // TODO: Create main admin page
+                    window.location.href = '/admin/index.html';
+                });
             },
             statusCode: {
                 403: function()
                 {
-                    // TODO: handle authentication unsuccessful
-                    console.log('403');
+                    // Authentication unsuccessful
+                    swal('Login Unsuccessful', 'Invalid Username or Password', 'error')
+                        .then(function()
+                        {
+                            $('#pw').val('').focus();
+                        });
                 }
             }
         });
