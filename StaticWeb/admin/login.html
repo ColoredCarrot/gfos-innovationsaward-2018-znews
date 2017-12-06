@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Login</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="../css/materialize.min.css">
+
+</head>
+<body>
+
+<div class="background">
+    <div class="container foreground">
+
+        <!-- Main Logo/Title -->
+        <div class="big row">
+            <div class="col s12 center-align">
+                <img src="../img/logo.jpg" alt="ZNEWS"/>
+            </div>
+        </div>
+
+        <div class="row">
+
+
+            <div class="col s12">
+
+                <div class="row">
+                    <div class="col s12">
+                        <h4 class="red-text text-lighten-1 article-headline">Login as Administrator</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <form class="col s12" id="main-form">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" id="usr">
+                                <label for="usr">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="password" id="pw">
+                                <label for="pw">Password</label>
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light" type="submit">Submit</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/materialize.min.js"></script>
+<script>
+    $(function()
+    {
+        // Maximize page height to browser height
+        $('div.background').css('height', window.innerHeight + 'px')
+    });
+</script>
+<script src="login/submit.js"></script>
+
+</body>
+</html>
