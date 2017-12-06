@@ -5,9 +5,9 @@ import de.znews.server.resources.RequestContext;
 import de.znews.server.resources.RequestResponse;
 import de.znews.server.resources.Resource;
 import de.znews.server.resources.exception.Http400BadRequestException;
+import de.znews.server.resources.exception.Http403ForbiddenException;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.nio.charset.StandardCharsets;
 
@@ -36,7 +36,7 @@ public class GetTokenResource extends Resource
 			return new RequestResponse(token.getBytes(StandardCharsets.UTF_8));
 		
 		// Invalid credentials
-		throw new HttpException(HttpResponseStatus.FORBIDDEN, "Invalid Credentials");
+		throw new Http403ForbiddenException("Invalid Credentials");
 		
 	}
 	

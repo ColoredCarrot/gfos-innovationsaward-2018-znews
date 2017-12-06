@@ -46,8 +46,15 @@ public class StaticWeb
         cache.purge();
     }
     
+    protected String normalizePath(String path)
+    {
+        int lastQM = path.lastIndexOf('?');
+        return lastQM == -1 ? path : path.substring(0, lastQM);
+    }
+    
     public RequestResponse getResponse(String path) throws InterruptedException
     {
+        path = normalizePath(path);
         
         File file = getFile(path);
         
@@ -67,6 +74,7 @@ public class StaticWeb
     
     public byte[] get(String path)
     {
+        path = normalizePath(path);
         try
         {
             return cache.compute(path, this::loadFromFile);

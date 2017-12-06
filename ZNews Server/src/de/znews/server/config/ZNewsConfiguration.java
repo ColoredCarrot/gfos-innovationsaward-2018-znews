@@ -1,5 +1,6 @@
 package de.znews.server.config;
 
+import de.znews.server.ZNews;
 import de.znews.server.dao.DataAccessConfiguration;
 import de.znews.server.dao.file.FileDataAccessConfiguration;
 import de.znews.server.static_web.StaticWeb;
@@ -22,7 +23,7 @@ public class ZNewsConfiguration
 	private final DataAccessConfiguration dataAccessConfig;
 	private final StaticWeb.Config        staticWebConfig;
 	
-	public ZNewsConfiguration(File file) throws IOException
+	public ZNewsConfiguration(ZNews znews, File file) throws IOException
 	{
 		
 		props = new Properties();
@@ -34,7 +35,7 @@ public class ZNewsConfiguration
 		switch (props.getProperty("data.method"))
 		{
 		case "file":
-			dataAccessConfig = new FileDataAccessConfiguration();
+			dataAccessConfig = new FileDataAccessConfiguration(znews);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown data storage method: " + props.getProperty("data.method"));

@@ -9,6 +9,7 @@ import de.znews.server.resources.Resource;
 import de.znews.server.resources.SubscribeResource;
 import de.znews.server.resources.admin.GetTokenResource;
 import de.znews.server.resources.admin.PublishNewsletterResource;
+import de.znews.server.resources.admin.SaveNewsletterResource;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.static_web.StaticWeb;
 import de.znews.server.uri.URIQuery;
@@ -33,7 +34,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	public ResourceProviderHandler(ZNews znews)
 	{
 		// FINDME: Register resources here
-		resources.addAll(Arrays.asList(new IndexResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews)));
+		resources.addAll(Arrays.asList(new IndexResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews), new SaveNewsletterResource(znews)));
 		this.staticWeb = znews.staticWeb;
 	}
 	
@@ -44,7 +45,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 		try
 		{
 			
-			System.out.println("Access " + request.getUri());
+			//System.out.println("Access " + request.getUri());
 			
 			for (Resource resource : resources)
 				if (resource.appliesTo(request.getUri()))

@@ -43,7 +43,7 @@ public class ZNews
                     out.write(read);
             }
         }
-        config = new ZNewsConfiguration(cfgFile);
+        config = new ZNewsConfiguration(this, cfgFile);
         
         // Load registrationList
         registrationList = config.getDataAccessConfig().access().queryRegistrationList();
