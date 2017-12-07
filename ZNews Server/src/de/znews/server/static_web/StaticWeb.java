@@ -49,7 +49,8 @@ public class StaticWeb
     protected String normalizePath(String path)
     {
         int lastQM = path.lastIndexOf('?');
-        return lastQM == -1 ? path : path.substring(0, lastQM);
+        path = lastQM == -1 ? path : path.substring(0, lastQM);
+        return path;
     }
     
     public RequestResponse getResponse(String path) throws InterruptedException
@@ -57,6 +58,10 @@ public class StaticWeb
         path = normalizePath(path);
         
         File file = getFile(path);
+        
+        // FINDME here is the default extension
+        if (!file.isFile())
+            file = getFile(path += ".html");
         
         if (file.isFile())
             return new RequestResponse(/* Chrome complains if we don't set the MIME type manually for Stylesheets */ file.getName().endsWith(".css") ? "text/css; charset=UTF-8" : null, get(path));
@@ -96,12 +101,12 @@ public class StaticWeb
     {
         
         File file = new File(root, path);
-    
+        
         byte[] finalResult = loadingFiles.computeIfAbsent(file, f ->
         {
             FutureTask<byte[]> ft = new FutureTask<>(() ->
             {
-            
+                
                 byte[] result;
                 try (InputStream in = new BufferedInputStream(new FileInputStream(file));
                      ByteArrayOutputStream out = new ByteArrayOutputStream())
@@ -111,14 +116,14 @@ public class StaticWeb
                         out.write(read);
                     result = out.toByteArray();
                 }
-            
+                
                 return result;
-            
+                
             });
             ft.run();
             return ft;
         }).get();
-    
+        
         loadingFiles.remove(file);
         
         return finalResult;
