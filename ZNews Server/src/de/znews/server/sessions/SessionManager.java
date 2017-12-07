@@ -21,10 +21,8 @@ public class SessionManager
 		// Invalid credentials?
 		if (!authenticator.isAdmin(username, password))
 			return null;
-		
-		Session session = Session.newSession(username, password);
-		sessionMap.put(session.getToken(), session);
-		return session.getToken();
+        
+        return sessionMap.computeIfAbsent(username, usr -> Session.newSession(username, password)).getToken();
 		
 	}
 	
