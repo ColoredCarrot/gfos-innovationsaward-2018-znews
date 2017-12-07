@@ -8,6 +8,7 @@ import de.znews.server.resources.exception.Http400BadRequestException;
 import de.znews.server.resources.exception.Http403ForbiddenException;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
 
 import java.nio.charset.StandardCharsets;
 
@@ -33,7 +34,11 @@ public class GetTokenResource extends Resource
 		String token = znews.sessionManager.authenticate(ctx.getStringPostParam("usr"), ctx.getStringPostParam("pw"));
 		
 		if (token != null)
-			return new RequestResponse(token.getBytes(StandardCharsets.UTF_8));
+        {
+            RequestResponse resp = new RequestResponse(token.getBytes(StandardCharsets.UTF_8));
+            resp.addCookie(new DefaultCookie("znews_auth", token));
+            return resp;
+        }
 		
 		// Invalid credentials
 		throw new Http403ForbiddenException("Invalid Credentials");
