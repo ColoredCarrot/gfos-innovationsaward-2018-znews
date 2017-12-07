@@ -7,11 +7,15 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.util.HttpHeaderNames;
 import lombok.Getter;
 
 import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 public class RequestResponse
@@ -32,6 +36,7 @@ public class RequestResponse
 	private HttpResponseStatus status;
 	@Nullable
 	private String             contentType;
+	private Set<Cookie> cookies = new HashSet<>();
 	
 	public RequestResponse(byte[] data)
 	{
@@ -84,8 +89,25 @@ public class RequestResponse
 		this.contentType = contentType;
 		return this;
 	}
-	
-	public void respond(ChannelHandlerContext channelHandlerContext)
+    
+    public Set<Cookie> getCookies()
+    {
+        if (cookies == null)
+            cookies = new HashSet<>();
+        return cookies;
+    }
+    
+    public void setCookies(Set<Cookie> cookies)
+    {
+        this.cookies = cookies;
+    }
+    
+    public void addCookie(Cookie cookie)
+    {
+        getCookies().add(cookie);
+    }
+    
+    public void respond(ChannelHandlerContext channelHandlerContext)
 	{
 		
 		ByteBuf byteBuf = channelHandlerContext.alloc().buffer(data.length);
@@ -98,6 +120,9 @@ public class RequestResponse
 			DefaultHttpHeaders headers = (DefaultHttpHeaders) resp.headers();
 			headers.set(HttpHeaderNames.CONTENT_TYPE, contentType);
 		}
+  
+		if (cookies != null && !cookies.isEmpty())
+            resp.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.LAX.encode(cookies));
 		
 		channelHandlerContext.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
 		
