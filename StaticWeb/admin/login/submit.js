@@ -17,6 +17,14 @@ $(function()
             method: 'POST',
             success: function(data, textStatus, jqXHR)
             {
+
+                // TO/DO: This is a bad workaround...
+                //var cookie = jqXHR.getResponseHeader('Set-Cookie');
+                //document.cookie += 'znews_auth=' + data + '; expires=';
+
+                // FIXME: For some reason, Set-Cookie is (seemingly) not sent
+                console.log(jqXHR.getResponseHeader('Set-Cookie'));
+
                 swal({
                     title: 'Login Successful',
                     text: 'Click \'OK\' to proceed',

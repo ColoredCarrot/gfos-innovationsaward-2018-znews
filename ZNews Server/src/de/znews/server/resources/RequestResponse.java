@@ -15,6 +15,7 @@ import lombok.Getter;
 import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -122,7 +123,11 @@ public class RequestResponse
 		}
   
 		if (cookies != null && !cookies.isEmpty())
-            resp.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.LAX.encode(cookies));
+        {
+            List<String> encodedCookies = ServerCookieEncoder.LAX.encode(cookies);
+            for (String encodedCookie : encodedCookies)
+                resp.headers().add(HttpHeaderNames.SET_COOKIE, encodedCookie);
+        }
 		
 		channelHandlerContext.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
 		
