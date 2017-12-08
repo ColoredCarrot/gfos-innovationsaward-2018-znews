@@ -57,7 +57,11 @@ public class FileDataAccess extends DataAccess
 	@Override
 	public Authenticator queryAuthenticator() throws IOException
 	{
-		return queryJsonSerializable(authFile, () -> new Authenticator(getZNews()), Authenticator.class);
+		Authenticator r = queryJsonSerializable(authFile, () -> new Authenticator(getZNews()), Authenticator.class);
+		// this needs to be here because, when read from JSON,
+        // the znews attribute is null (for some reason D;)
+        r.znews = getZNews();
+		return r;
 	}
 	
 	@Override
