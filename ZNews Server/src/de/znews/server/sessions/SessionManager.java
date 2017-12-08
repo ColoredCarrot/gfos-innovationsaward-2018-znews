@@ -28,7 +28,8 @@ public class SessionManager
 	
 	public boolean isAuthenticated(String token)
 	{
-		return sessionMap.containsKey(token);
+		//return sessionMap.containsKey(token);
+        return sessionMap.values().stream().anyMatch(s -> s.getToken().equals(token));
 	}
 	
 }

@@ -14,7 +14,8 @@ public class SaveNewsletterResource extends JSONResource
     
     public SaveNewsletterResource(ZNews znews)
     {
-        super(znews, "api/v1/newsletter/save");
+        // must be on admin/ for cookies to be sent
+        super(znews, "admin/api/v1/newsletter/save");
     }
     
     @Override

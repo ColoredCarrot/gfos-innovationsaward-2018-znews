@@ -27,7 +27,7 @@ $(function()
             data['nid'] = nid;
 
         // Send XMLHttpRequest
-        $.ajax('/api/v1/newsletter/save', {
+        $.ajax('/admin/api/v1/newsletter/save', {
             cache: false,
             data: data,
             success: function(data, textStatus, jqXHR)
