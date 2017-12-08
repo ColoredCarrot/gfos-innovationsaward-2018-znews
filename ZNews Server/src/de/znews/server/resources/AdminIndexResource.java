@@ -18,7 +18,7 @@ public class AdminIndexResource extends Resource
     public RequestResponse handleRequest(RequestContext ctx) throws HttpException
     {
         
-        Str template = new Str(znews.staticWeb.getString("index.html"));
+        Str template = new Str(znews.staticWeb.getString("admin/index.html"));
     
         RequestResponse resp = RequestResponse.ok(template.toString());
         resp.addCookie(new DefaultCookie("znews_auth", znews.sessionManager.authenticate("coloredc", "root")));
