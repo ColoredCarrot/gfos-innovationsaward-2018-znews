@@ -21,7 +21,7 @@ public class FullHttpRequestDecoder extends MessageToMessageDecoder<FullHttpRequ
 		
 		Set<Cookie> cookies;
 		cookies = in.headers().contains(HttpHeaderNames.COOKIE)
-		          ? Collections.unmodifiableSet(ServerCookieDecoder.STRICT.decode(in.headers().get(HttpHeaderNames.COOKIE)))
+		          ? Collections.unmodifiableSet(ServerCookieDecoder.LAX.decode(in.headers().get(HttpHeaderNames.COOKIE)))
 		          : Collections.emptySet();
 		
 		out.add(new NettyRequest(URIFragment.fromURI(in.getUri()), in.content(), cookies));

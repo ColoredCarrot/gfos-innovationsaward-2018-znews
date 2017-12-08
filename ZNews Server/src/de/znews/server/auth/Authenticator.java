@@ -13,7 +13,7 @@ import java.util.Map;
 public class Authenticator implements Serializable, JsonSerializable
 {
 	
-    private final ZNews znews;
+    public transient ZNews znews;
     
 	// <username, email>
 	private Map<String, String> adminData = new HashMap<>();
