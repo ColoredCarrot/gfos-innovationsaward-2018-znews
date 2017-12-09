@@ -47,7 +47,7 @@ function doSubscribe(email)
 
     // Send data
     // FINDME: JS Access subscribe API here
-    $.ajax('/api/v1/subscribe', {
+    $.ajax('/api/subscribe', {
         data: {
             email: email// NOT encodeURIComponent(email) because that is automatically invoked and a double-call would in turn encode the %40 as %2540
         },

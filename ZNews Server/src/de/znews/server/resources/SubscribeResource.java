@@ -13,7 +13,8 @@ public class SubscribeResource extends JSONResource
     public SubscribeResource(ZNews znews)
     {
         //super(znews, new URIFragmentBuilder().add("api", "v1", "subscribe").build());
-        super(znews, "api/v1/subscribe/{email}");
+        //super(znews, "api/subscribe/{email}");
+        super(znews, "api/subscribe?email={email}&t={DISABLE_CACHING_THROWAWAY_VAR}");  // TODO: The throwaway var should not have to be declared...
     }
     
     @Override
