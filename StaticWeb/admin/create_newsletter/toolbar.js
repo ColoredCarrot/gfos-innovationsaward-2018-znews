@@ -37,7 +37,8 @@ $(function()
                 console.log(textStatus);
                 console.log(jqXHR);
                 updateProgress(100);
-                window.setTimeout(function() { $progress.parent().hide() }, 200);
+                window.setTimeout(function() { $progress.parent().hide() }, 100);
+                parent.displayGlobalToast('Saved Newsletter');
             },
             xhr: function()
             {
