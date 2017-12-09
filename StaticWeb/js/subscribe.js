@@ -38,12 +38,37 @@ $(function()
 function doSubscribe(email)
 {
 
-    // Display "Check your Email!"-animation
-    $('#subscribe-form').animateCss('fadeOut', '.4s', function()
+    function handleSubscribeError(err)
     {
-        $('#subscribe-form').css({ 'display': 'none' });
-        $('#check-your-email').show().animateCss('rotateIn');
-    });
+        swal('Error', 'An unexpected error occured. Please try again later', 'error');
+    }
+
+    function handleSubscribeResponse(data)
+    {
+        data = JSON.parse(data);
+
+        if (data.success)
+        {
+            // Display "Check your Email!"-animation
+            $('#subscribe-form').animateCss('fadeOut', '.4s', function()
+            {
+                $('#subscribe-form').css({ 'display': 'none' });
+                $('#check-your-email').show().animateCss('rotateIn');
+            });
+            return;
+        }
+
+        var err = data.error;
+
+        // TODO: remove error code from message. Currently there for debugging reasons
+        swal('Error', err.message + ' (' + err.code + ')', 'error')
+            .then(function()
+            {
+                // Clear and focus email input field
+                $('#sub-email').val('').focus();
+            });
+
+    }
 
     // Send data
     // FINDME: JS Access subscribe API here
@@ -54,13 +79,15 @@ function doSubscribe(email)
         cache: false,
         error: function(jqXHR, textStatus, errorThrown)
         {
-            console.log('Error: ' + textStatus);
-            console.log(errorThrown)
+            console.log('Subscription error: ' + textStatus + ' =>');
+            console.log(errorThrown);
+            handleSubscribeError(errorThrown);
         },
         success: function(data, textStatus, jqXHR)
         {
-            console.log('Success: ' + textStatus);
+            console.log('Subscription success: ' + textStatus + ' =>');
             console.log(data);
+            handleSubscribeResponse(data);
         }
     });
 
