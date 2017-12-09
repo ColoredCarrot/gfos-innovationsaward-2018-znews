@@ -84,6 +84,14 @@
 
         </div>
 
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal modal-fixed-footer">
+            <div id="login-modal-content" class="modal-content"></div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -98,20 +106,7 @@
 
 <script src="../js/editor.js"></script>
 
-<script>
-    function displayGlobalToast(message, duration = 2000)
-    {
-        Materialize.toast(message, duration);
-    }
-    function getNidIfKnown()
-    {
-        return undefined;
-    }
-    function globalSwal(p1, p2, p3)
-    {
-        return swal(p1, p2, p3);
-    }
-</script>
+<script src="create_newsletter/create_newsletter.js"></script>
 
 </body>
 </html>

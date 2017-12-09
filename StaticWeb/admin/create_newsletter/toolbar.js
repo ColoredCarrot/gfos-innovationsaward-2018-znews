@@ -106,11 +106,20 @@ $(function()
                         {
                             $progress.parent().hide();
                             actSaving = false;
+                            displayLoginIFrame();
                         });
                 }
             }
         })
 
     });
+
+    let $iframe = $('<iframe id="login-iframe" src="/admin/login" frameborder="0" width="100%" height="100%"></iframe>');
+
+    function displayLoginIFrame()
+    {
+        parent.LoginModal.get$().append($iframe);
+        parent.LoginModal.open();
+    }
 
 });
