@@ -23,7 +23,7 @@ public class GetTokenResource extends Resource
 	
 	public GetTokenResource(ZNews znews)
 	{
-		super(znews, URIFragment.fromURI("api/v1/admin/get_token"));
+		super(znews, URIFragment.fromURI("admin/api/get_token"));
 	}
 	
 	@Override
