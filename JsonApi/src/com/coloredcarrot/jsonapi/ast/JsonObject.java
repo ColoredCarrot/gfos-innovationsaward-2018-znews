@@ -12,7 +12,7 @@ public class JsonObject extends JsonContainer
 {
     
     private Map<String, JsonNode> contents;
-    private Builder builder;
+    private transient Builder builder;
     
     public JsonObject()
     {

@@ -11,7 +11,7 @@ public class JsonArray extends JsonContainer
 {
     
     private List<JsonNode> array;
-    private Builder builder;
+    private transient Builder builder;
     
     public JsonArray()
     {
