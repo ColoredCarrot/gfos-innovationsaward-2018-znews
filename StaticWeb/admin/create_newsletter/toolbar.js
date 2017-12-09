@@ -19,7 +19,7 @@ $(function()
         updateProgress(1);
         $progress.parent().show();
 
-        // Is a newsletter ID known?
+        // TODO: Is a newsletter ID known?
         var nid = 0;
 
         var data = {};
@@ -27,7 +27,7 @@ $(function()
             data['nid'] = nid;
 
         // Send XMLHttpRequest
-        $.ajax('/admin/api/v1/newsletter/save', {
+        $.ajax('/admin/api/newsletter/save', {
             cache: false,
             data: data,
             success: function(data, textStatus, jqXHR)
