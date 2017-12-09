@@ -90,6 +90,7 @@
 
 <script src="../js/jquery.min.js"></script>
 <script src="../js/materialize.min.js"></script>
+<script src="../js/sweetalert.min.js"></script>
 <!--<script src="../ckeditor/ckeditor.js"></script>
 <script src="../ckeditor/adapters/jquery.js"></script>-->
 <script src="../alloy-editor/alloy-editor-all-min.js"></script>
@@ -105,6 +106,10 @@
     function getNidIfKnown()
     {
         return undefined;
+    }
+    function globalSwal(p1, p2, p3)
+    {
+        return swal(p1, p2, p3);
     }
 </script>
 

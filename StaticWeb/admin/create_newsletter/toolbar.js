@@ -12,6 +12,35 @@ $(function()
 
     let actSaving = false;
 
+    function handleSaveResult(data)
+    {
+        data = JSON.parse(data);
+        updateProgress(100);
+
+        // Save successful
+        if (data.success)
+        {
+            window.setTimeout(function()
+            {
+                $progress.parent().hide();
+                actSaving = false
+            }, 100);
+            parent.displayGlobalToast('Saved Newsletter');
+            return
+        }
+
+        const err = data.error;
+
+        // Must be in parent window
+        parent.globalSwal('Internal Error', err.message, 'error')
+              .then(function()
+              {
+                  $progress.parent().hide();
+                  actSaving = false;
+              });
+
+    }
+
     $('#act-save').click(function()
     {
         // Spam-click protection
@@ -23,7 +52,7 @@ $(function()
         updateProgress(1);
         $progress.parent().show();
 
-        // TODO: Is a newsletter ID known?
+        // TO/DO: Is a newsletter ID known?
         const nid = parent.getNidIfKnown();
 
         let data = {};
@@ -36,13 +65,11 @@ $(function()
             data: data,
             success: function(data, textStatus, jqXHR)
             {
-                console.log("success");
+                handleSaveResult(data);
+                /*console.log("success");
                 console.log(data);
                 console.log(textStatus);
-                console.log(jqXHR);
-                updateProgress(100);
-                window.setTimeout(function() { $progress.parent().hide(); actSaving = false }, 100);
-                parent.displayGlobalToast('Saved Newsletter');
+                console.log(jqXHR);*/
             },
             xhr: function()
             {
