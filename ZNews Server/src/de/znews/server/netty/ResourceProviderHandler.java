@@ -67,10 +67,10 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 					try
 					{
 						resource.handleRequest(new RequestContext(ctx,
-								new Params(params.toArray(new Param[params.size()])),           // URL params
-								request.getUri().getQuery().toParams().withURLDecodedValues(),  // Query params
-								postParams,                                                     // Post/Put params
-								Params.fromCookies(request.getCookies())))                      // Cookie params
+								new Params(params.toArray(new Param[params.size()])),  // URL params
+								request.getUri().getQuery().toParams().withURLDecodedValues(),   // Query params
+								postParams,                                            // Post/Put params
+								Params.fromCookies(request.getCookies())))                  // Cookie params
 						        .respond(ctx);
 					}
 					catch (HttpException e)

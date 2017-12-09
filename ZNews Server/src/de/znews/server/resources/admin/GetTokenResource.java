@@ -38,7 +38,7 @@ public class GetTokenResource extends Resource
         {
             RequestResponse resp = new RequestResponse(token.getBytes(StandardCharsets.UTF_8));
             DefaultCookie authCookie = new DefaultCookie("znews_auth", token);
-            authCookie.setMaxAge(Cookie.UNDEFINED_MAX_AGE);
+            authCookie.setMaxAge(Cookie.UNDEFINED_MAX_AGE);  // TODO: This doesn't seem to be working (according to EditThisCookie). Require further testing
             resp.addCookie(authCookie);
             return resp;
         }

@@ -64,6 +64,7 @@ public class StaticWeb
             file = getFile(path += ".html");
         
         if (file.isFile())
+            // TODO: This is baaad. There MUST be another way
             return new RequestResponse(/* Chrome complains if we don't set the MIME type manually for Stylesheets */ file.getName().endsWith(".css") ? "text/css; charset=UTF-8" : null, get(path));
         else if (getFile(config.err404Path).isFile())
             return new RequestResponse(HttpResponseStatus.NOT_FOUND, get(config.err404Path));
