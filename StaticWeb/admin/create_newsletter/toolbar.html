@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<div class="fixed-action-btn toolbar fab-left">
+<div id="toolbar-fixed-action-btn" class="fixed-action-btn toolbar fab-left">
     <a class="btn-floating btn-large red">
         <i class="large material-icons">drafts</i>
     </a>
@@ -68,8 +68,9 @@
     function globalOnClick()
     {
         // called when clicked, even outside iframe
-        // delegate click
-        $('body').trigger('click');
+        // delegate click if necessary to close toolbar
+        if ($('#toolbar-fixed-action-btn[data-open=true]').length)
+            $('body').trigger('click');
     }
 </script>
 

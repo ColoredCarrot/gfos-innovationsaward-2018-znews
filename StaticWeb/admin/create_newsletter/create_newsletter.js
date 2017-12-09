@@ -13,6 +13,8 @@ function globalSwal(p1, p2, p3)
     return swal(p1, p2, p3);
 }
 
+// MUST be var; otherwise not accessible from iframe
+// noinspection ES6ConvertVarToLetConst
 var LoginModal = {
     get$: function()
     {

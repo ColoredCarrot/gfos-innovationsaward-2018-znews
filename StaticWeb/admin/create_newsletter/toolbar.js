@@ -1,7 +1,7 @@
 $(function()
 {
 
-    const swal = parent.globalSwal;
+    var swal = parent.globalSwal;
 
     const $progress = $('#progress-bar');
     $progress.parent().hide();
@@ -43,7 +43,7 @@ $(function()
 
     }
 
-    $('#act-save').click(function()
+    let onClickSave = function()
     {
         // Spam-click protection
         if (actSaving)
@@ -101,25 +101,55 @@ $(function()
             statusCode: {
                 403: function()
                 {
-                    swal('Error', 'You are not logged in.', 'error')
-                        .then(function()
+                    // TODO: Why in the world are those buttons not displayed? Gotta have sth to do with parent.swal etc.
+                    parent.swal("Are you sure you want to do this?", {
+                        buttons: ["Oh noez!", true],
+                    });
+                    /*parent.swal('Error', 'You are not logged in. Do you want to log in now?', 'error', {
+                        buttons: {
+                            cancel: 'aaa',
+                            confirm: 'bbb'
+                        }
+                    })
+                        .then(function(value)
                         {
                             $progress.parent().hide();
                             actSaving = false;
-                            displayLoginIFrame();
-                        });
+                            if (value)
+                                displayLoginIFrame();
+                        });*/
                 }
             }
         })
 
-    });
+    };
+    $('#act-save').click(onClickSave);
 
+    // TODO: For some reasons, clicks are not delegated to the iframe
     let $iframe = $('<iframe id="login-iframe" src="/admin/login" frameborder="0" width="100%" height="100%"></iframe>');
 
     function displayLoginIFrame()
     {
         parent.LoginModal.get$().append($iframe);
+        $iframe = parent.LoginModal.get$().children('#login-iframe');
+        $iframe.on('load', function()
+        {
+            // IFrame reloaded
+            const loadedUrl = $iframe[0].contentDocument.location.href;
+            if (!loadedUrl.endsWith('admin/login'))
+            {
+                hideLoginIFrame();
+                onClickSave();
+            }
+        });
         parent.LoginModal.open();
+    }
+
+    function hideLoginIFrame()
+    {
+        parent.LoginModal.get$().remove('#login-iframe');
+        parent.LoginModal.close();
+        $iframe = $('<iframe id="login-iframe" src="/admin/login" frameborder="0" width="100%" height="100%"></iframe>');
     }
 
 });
