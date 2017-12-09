@@ -20,7 +20,7 @@ $(function()
         $progress.parent().show();
 
         // TODO: Is a newsletter ID known?
-        var nid = 0;
+        var nid = undefined;
 
         var data = {};
         if (nid)
