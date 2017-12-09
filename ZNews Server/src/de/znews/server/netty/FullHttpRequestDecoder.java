@@ -24,7 +24,7 @@ public class FullHttpRequestDecoder extends MessageToMessageDecoder<FullHttpRequ
 		          ? Collections.unmodifiableSet(ServerCookieDecoder.LAX.decode(in.headers().get(HttpHeaderNames.COOKIE)))
 		          : Collections.emptySet();
 		
-		out.add(new NettyRequest(URIFragment.fromURI(in.getUri()), in.content(), cookies));
+		out.add(new NettyRequest(in.getUri().equals("/") || in.getUri().isEmpty() ? URIFragment.fromURI("/index.html") : URIFragment.fromURI(in.getUri()), in.content(), cookies));
 		in.content().retain();  // Retain the content because we need it in the next handler
 		//out.add(URIFragment.fromURI(in.getUri().substring(1)));
 		

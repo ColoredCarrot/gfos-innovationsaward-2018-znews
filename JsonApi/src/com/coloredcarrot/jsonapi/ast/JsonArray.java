@@ -1,6 +1,7 @@
 package com.coloredcarrot.jsonapi.ast;
 
 import com.coloredcarrot.jsonapi.Json;
+import com.coloredcarrot.jsonapi.reflect.JsonSerializer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +12,7 @@ public class JsonArray extends JsonContainer
 {
     
     private List<JsonNode> array;
-    private Builder builder;
+    private transient Builder builder;
     
     public JsonArray()
     {
@@ -163,6 +164,12 @@ public class JsonArray extends JsonContainer
             return JsonArray.this;
         }
         
+    }
+    
+    @JsonSerializer
+    private JsonArray _serialize()
+    {
+        return this;
     }
     
 }
