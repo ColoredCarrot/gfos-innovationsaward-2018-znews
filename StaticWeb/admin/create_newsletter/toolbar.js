@@ -1,7 +1,7 @@
 $(function()
 {
 
-    let $progress = $('#progress-bar');
+    const $progress = $('#progress-bar');
     $progress.parent().hide();
 
     function updateProgress(percent)
@@ -10,19 +10,23 @@ $(function()
         $progress.css("width", percent + "%");
     }
 
-    var actSaving = false;
+    let actSaving = false;
 
     $('#act-save').click(function()
     {
+        // Spam-click protection
+        if (actSaving)
+            return;
+
         // Display loading bar
         actSaving = true;
         updateProgress(1);
         $progress.parent().show();
 
         // TODO: Is a newsletter ID known?
-        var nid = 0;
+        const nid = parent.getNidIfKnown();
 
-        var data = {};
+        let data = {};
         if (nid)
             data['nid'] = nid;
 
@@ -37,7 +41,7 @@ $(function()
                 console.log(textStatus);
                 console.log(jqXHR);
                 updateProgress(100);
-                window.setTimeout(function() { $progress.parent().hide() }, 100);
+                window.setTimeout(function() { $progress.parent().hide(); actSaving = false }, 100);
                 parent.displayGlobalToast('Saved Newsletter');
             },
             xhr: function()
@@ -48,7 +52,7 @@ $(function()
                     if (evt.lengthComputable)
                     {
                         // Upload progress update
-                        var percentComplete = 100 * (evt.loaded / evt.total);
+                        let percentComplete = 100 * (evt.loaded / evt.total);
                         updateProgress(percentComplete / 2);
                     }
                 }, false);
@@ -58,7 +62,7 @@ $(function()
                     if (evt.lengthComputable)
                     {
                         // Download progress update
-                        var percentComplete = 100 * (evt.loaded / evt.total);
+                        let percentComplete = 100 * (evt.loaded / evt.total);
                         updateProgress(50 + percentComplete / 2);
                     }
                 }, false);

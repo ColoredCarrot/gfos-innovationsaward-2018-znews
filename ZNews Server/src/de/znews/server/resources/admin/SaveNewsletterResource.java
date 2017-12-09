@@ -29,13 +29,11 @@ public class SaveNewsletterResource extends JSONResource
         
         // Check if both new title and text are supplied
         // TODO: If only one isn't, proceed anyway, not overwriting the corresponding old value
-        if (newTitle == null || newText == null)
+        if (newTitle == null && newText == null)
         {
             return JsonObject.createBuilder()
                              .add("success", false)
-                             .add("error", newTitle == null
-                                           ? JsonObject.createBuilder().add("code", Common.RS_ERR_SAVE_MISSING_TITLE).add("message", "Missing title parameter").build()
-                                           : JsonObject.createBuilder().add("code", Common.RS_ERR_SAVE_MISSING_TEXT ).add("message", "Missing text parameter" ).build())
+                             .add("error", JsonObject.createBuilder().add("code", Common.RS_ERR_SAVE_MISSING_TITLE).add("message", "Missing title and/or text parameter").build())
                              .build();
         }
         
