@@ -1,7 +1,7 @@
 $(function()
 {
 
-    var $progress = $('#progress-bar');
+    let $progress = $('#progress-bar');
     $progress.parent().hide();
 
     function updateProgress(percent)
@@ -42,7 +42,7 @@ $(function()
             },
             xhr: function()
             {
-                var xhr = new window.XMLHttpRequest();
+                let xhr = new window.XMLHttpRequest();
                 xhr.upload.addEventListener("progress", function(evt)
                 {
                     if (evt.lengthComputable)
