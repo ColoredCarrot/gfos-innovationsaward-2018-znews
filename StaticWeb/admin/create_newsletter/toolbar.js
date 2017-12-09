@@ -1,6 +1,8 @@
 $(function()
 {
 
+    const swal = parent.globalSwal;
+
     const $progress = $('#progress-bar');
     $progress.parent().hide();
 
@@ -32,7 +34,7 @@ $(function()
         const err = data.error;
 
         // Must be in parent window
-        parent.globalSwal('Internal Error', err.message, 'error')
+        swal('Internal Error', err.message, 'error')
               .then(function()
               {
                   $progress.parent().hide();
@@ -96,10 +98,15 @@ $(function()
 
                 return xhr;
             },
-            status: {
+            statusCode: {
                 403: function()
                 {
-                    // TODO: handle not authenticated
+                    swal('Error', 'You are not logged in.', 'error')
+                        .then(function()
+                        {
+                            $progress.parent().hide();
+                            actSaving = false;
+                        });
                 }
             }
         })
