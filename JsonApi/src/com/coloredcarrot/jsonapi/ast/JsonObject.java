@@ -1,6 +1,7 @@
 package com.coloredcarrot.jsonapi.ast;
 
 import com.coloredcarrot.jsonapi.Json;
+import com.coloredcarrot.jsonapi.reflect.JsonSerializer;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -200,6 +201,12 @@ public class JsonObject extends JsonContainer
             return JsonObject.this;
         }
         
+    }
+    
+    @JsonSerializer
+    private JsonObject _serialize()
+    {
+        return this;
     }
     
 }

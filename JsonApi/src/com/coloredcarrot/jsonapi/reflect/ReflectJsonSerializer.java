@@ -26,6 +26,9 @@ public class ReflectJsonSerializer
         if (toSerialize == null)
             return serializeNull();
         
+        if (toSerialize instanceof JsonNode)
+            return (JsonNode) toSerialize;
+        
         Method serializerMethod = scanForSerializerMethod(toSerialize.getClass());
         if (serializerMethod != null)
             return serializeUsingSerializer(toSerialize, serializerMethod);
