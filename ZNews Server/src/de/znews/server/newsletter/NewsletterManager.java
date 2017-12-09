@@ -24,7 +24,7 @@ public class NewsletterManager implements Serializable, JsonSerializable
 		newsletters.add(0, newsletter);
 	}
     
-    public Newsletter getNewsletter(String nid)
+    public Newsletter getNewsletter(String nid) throws IllegalArgumentException
     {
         return nidToNewsletter.computeIfAbsent(nid, _nid -> newsletters.stream().filter(n -> n.getId().equals(nid)).findAny().orElseThrow(() -> new IllegalArgumentException("Newsletter is non-existent")));
     }

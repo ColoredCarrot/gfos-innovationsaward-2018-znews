@@ -36,6 +36,8 @@ $(function()
                 console.log(data);
                 console.log(textStatus);
                 console.log(jqXHR);
+                updateProgress(100);
+                window.setTimeout(function() { $progress.parent().hide() }, 200);
             },
             xhr: function()
             {

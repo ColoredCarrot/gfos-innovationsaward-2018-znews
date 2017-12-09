@@ -49,7 +49,21 @@ public class SaveNewsletterResource extends JSONResource
         }
         else
         {
-        
+            try
+            {
+                Newsletter n = znews.newsletterManager.getNewsletter(newsletterId);
+                if (newTitle != null)
+                    n.setTitle(newTitle);
+                if (newText != null)
+                    n.setText(newText);
+            }
+            catch (IllegalArgumentException e)
+            {
+                return JsonObject.createBuilder()
+                                 .add("success", false)
+                                 .add("error", JsonObject.createBuilder().add("code", Common.RS_ERR_SAVE_INVALID_NID).add("message", "Invalid Newsletter ID").build())
+                                 .build();
+            }
         }
         
         JsonObject.Builder data = JsonObject.createBuilder();
@@ -57,6 +71,7 @@ public class SaveNewsletterResource extends JSONResource
         data.add("nid", newsletterId);
         data.add("title", newTitle);
         // don't add text; would be too much
+        // TODO: instead, compute hash and send that
         
         return JsonObject.createBuilder().add("success", true).add("data", data.build()).build();
         
