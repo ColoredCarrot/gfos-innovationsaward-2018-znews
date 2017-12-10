@@ -35,11 +35,11 @@ $(function()
 
         // Must be in parent window
         parent.globalSwal('Internal Error', err.message, 'error')
-              .then(function()
-              {
-                  $progress.parent().hide();
-                  actSaving = false;
-              });
+            .then(function()
+            {
+                $progress.parent().hide();
+                actSaving = false;
+            });
 
     }
 
@@ -106,13 +106,13 @@ $(function()
                 403: function()
                 {
                     parent.notLoggedInSwal()
-                          .then(function(doLoginNow)
-                    {
-                        $progress.parent().hide();
-                        actSaving = false;
-                        if (doLoginNow)
-                            displayLoginIFrame();
-                    });
+                        .then(function(doLoginNow)
+                        {
+                            $progress.parent().hide();
+                            actSaving = false;
+                            if (doLoginNow)
+                                displayLoginIFrame();
+                        });
                 }
             }
         })
@@ -120,7 +120,7 @@ $(function()
     };
     $('#act-save').click(onClickSave);
 
-    // TODO: For some reasons, clicks are not delegated to the iframe
+    // TODO: For some reasons, clicks are not delegated to the iframe (Issue #3)
     let $iframe = $('<iframe id="login-iframe" src="/admin/login" frameborder="0" width="100%" height="100%"></iframe>');
 
     function displayLoginIFrame()
@@ -137,7 +137,11 @@ $(function()
                 onClickSave();
             }
         });
-        parent.LoginModal.open();
+        parent.LoginModal.open(function()
+        {
+            // Called when modal closed
+            parent.LoginModal.get$().find('#login-iframe').remove();
+        });
     }
 
     function hideLoginIFrame()

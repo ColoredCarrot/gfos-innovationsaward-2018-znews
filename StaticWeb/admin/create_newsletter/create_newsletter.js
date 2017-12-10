@@ -27,9 +27,14 @@ var LoginModal = {
     {
         return $('#login-modal');
     },
-    open: function()
+    open: function(completeCallback)
     {
-        LoginModal.get$().modal('open');
+        if (completeCallback)
+            LoginModal.get$().modal('open', {
+                complete: completeCallback
+            });
+        else
+            LoginModal.get$().modal('open');
     },
     close: function()
     {
