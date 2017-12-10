@@ -52,7 +52,7 @@
                             </div>
                             <div class="card-action">
                                 <!-- Different actions -->
-                                <a id="send-btn" class="btn-flat">
+                                <a id="save-btn" class="btn-flat">
                                     <span class="hide-on-med-and-down">Save</span>
                                     <i class="material-icons left">save</i>
                                 </a>
@@ -89,6 +89,8 @@
 <script src="../js/materialize.min.js"></script>
 <script src="../js/sweetalert.min.js"></script>
 <script src="../js/subscribe.js"></script>
+<script src="/js/server-comm.js"></script>
+<script src="edit_newsletter/edit_newsletter.js"></script>
 
 <script>
     /* Automatically set height of editor card/iframe */
@@ -114,7 +116,6 @@
                 $background.css('height', Math.max(initBodyHeight,  curHeight + CARD_ADDITIONAL_HEIGHT + 500) + 'px');
             }
         }, INTERVAL);
-        $editorCard.css('max-height', MAX_CARD_HEIGHT);
     });
 </script>
 
