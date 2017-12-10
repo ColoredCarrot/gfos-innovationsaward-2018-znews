@@ -7,12 +7,20 @@ $(function()
     showdown.setOption('simplifiedAutoLink', true);
     showdown.setOption('excludeTrailingPunctuationFromURLs', true);
     showdown.setOption('tables', true);
+    showdown.setOption('headerLevelStart', 2);
     // This option should be turned off when generating html for display, not in the preview
     showdown.setOption('openLinksInNewWindow', true);
 
     showdown.setFlavor('github');
 
-    let mkToHtmlConverter = new showdown.Converter();
+    let mkToHtmlConverter = new showdown.Converter({
+        noHeaderId: true,
+        simplifiedAutoLink: true,
+        excludeTrailingPunctuationFromURLs: true,
+        tables: true,
+        headerLevelStart: 2,
+        openLinksInNewWindow: true
+    });
 
     /**
      * Renders a preview in $prtab
@@ -22,10 +30,6 @@ $(function()
     {
         let $preview = $prtab.find('#preview');
         let mk = $mktab.find('#markdown').val();
-
-        // Ensure mkToHtmlConverter is a valid converter
-        if (!mkToHtmlConverter)
-            mkToHtmlConverter = new showdown.Converter();
 
         // Convert markdown to html (currently using Showdown)
         let html = mkToHtmlConverter.makeHtml(mk);
