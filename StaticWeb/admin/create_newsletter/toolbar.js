@@ -1,7 +1,7 @@
 $(function()
 {
 
-    var swal = parent.globalSwal;
+    //const swal = parent.globalSwal;
 
     const $progress = $('#progress-bar');
     $progress.parent().hide();
@@ -34,7 +34,7 @@ $(function()
         const err = data.error;
 
         // Must be in parent window
-        swal('Internal Error', err.message, 'error')
+        parent.globalSwal('Internal Error', err.message, 'error')
               .then(function()
               {
                   $progress.parent().hide();
@@ -43,7 +43,11 @@ $(function()
 
     }
 
-    let onClickSave = function()
+    // For some reason, using let instead of var/const does not work
+    // I (@ColoredCarrot) suspect the function is executed within
+    // the parent context after successful iframe login and is not defined there
+    // because let has a more limited scope
+    const onClickSave = function()
     {
         // Spam-click protection
         if (actSaving)
@@ -138,7 +142,7 @@ $(function()
 
     function hideLoginIFrame()
     {
-        parent.LoginModal.get$().remove('#login-iframe');
+        parent.LoginModal.get$().find('#login-iframe').remove();
         parent.LoginModal.close();
         $iframe = $('<iframe id="login-iframe" src="/admin/login" frameborder="0" width="100%" height="100%"></iframe>');
     }
