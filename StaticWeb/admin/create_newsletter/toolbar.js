@@ -101,23 +101,14 @@ $(function()
             statusCode: {
                 403: function()
                 {
-                    // TODO: Why in the world are those buttons not displayed? Gotta have sth to do with parent.swal etc.
-                    parent.swal("Are you sure you want to do this?", {
-                        buttons: ["Oh noez!", true],
+                    parent.notLoggedInSwal()
+                          .then(function(doLoginNow)
+                    {
+                        $progress.parent().hide();
+                        actSaving = false;
+                        if (doLoginNow)
+                            displayLoginIFrame();
                     });
-                    /*parent.swal('Error', 'You are not logged in. Do you want to log in now?', 'error', {
-                        buttons: {
-                            cancel: 'aaa',
-                            confirm: 'bbb'
-                        }
-                    })
-                        .then(function(value)
-                        {
-                            $progress.parent().hide();
-                            actSaving = false;
-                            if (value)
-                                displayLoginIFrame();
-                        });*/
                 }
             }
         })
