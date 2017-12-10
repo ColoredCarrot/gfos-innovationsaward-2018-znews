@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZNews Newsletter Editor</title>
+    <link rel="stylesheet" href="/css/materialize.min.css">
+</head>
+<body>
+
+<!--
+ This is always supposed to be embedded in an iframe.
+
+ -->
+
+<div id="editor">
+
+    <!-- A row for buttons to edit the markdown -->
+    <div class="row">
+        <div class="col s12"></div>
+    </div>
+
+    <!-- Tabs for markdown editor and preview -->
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs tabs-fixed-width">
+                <li class="tab col s6"><a href="#markdown-tab">Markdown</a></li>
+                <li class="tab col s6"><a href="#preview-tab">Preview</a></li>
+            </ul>
+        </div>
+
+        <!-- The markdown editor tab -->
+        <div id="markdown-tab" class="col s12">
+
+        </div>
+
+        <!-- The preview tab -->
+        <div id="preview-tab" class="col s12">
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script src="/js/sweetalert.min.js"></script>
+
+<script src="editor.js"></script>
+
+</body>
+</html>
