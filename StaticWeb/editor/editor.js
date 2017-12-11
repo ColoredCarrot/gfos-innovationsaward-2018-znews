@@ -7,7 +7,7 @@ $(function()
     showdown.setOption('simplifiedAutoLink', true);
     showdown.setOption('excludeTrailingPunctuationFromURLs', true);
     showdown.setOption('tables', true);
-    showdown.setOption('headerLevelStart', 2);
+    showdown.setOption('headerLevelStart', 3);
     // This option should be turned off when generating html for display, not in the preview
     showdown.setOption('openLinksInNewWindow', true);
 
@@ -18,7 +18,7 @@ $(function()
         simplifiedAutoLink: true,
         excludeTrailingPunctuationFromURLs: true,
         tables: true,
-        headerLevelStart: 2,
+        headerLevelStart: 3,
         openLinksInNewWindow: true
     });
 
