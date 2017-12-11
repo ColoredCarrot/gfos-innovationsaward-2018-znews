@@ -26,7 +26,7 @@ ServerComm = (function(sc)
             {
                 callback(data.data);
                 updateProgress(0);
-                console.log('Successfully retrieved articles');
+                console.log('Successfully retrieved articles', data);
             }
             else
             {

@@ -26,8 +26,6 @@ public class SaveNewsletterResource extends JSONResource
         
         String newTitle = ctx.getStringParam("title");
         String newText  = ctx.getStringParam("text");
-    
-        System.out.println("============== " + newText);
         
         // Check if both new title and text are supplied
         // TODO: If only one isn't, proceed anyway, not overwriting the corresponding old value

@@ -29,7 +29,6 @@ jQuery(function($)
     ServerComm.doGetArticles(function(data)
     {
         // Callback: Articles retrieved
-        console.log(data);
 
         let articleTemplate = `<div class="row">
             <div class="col s12">
