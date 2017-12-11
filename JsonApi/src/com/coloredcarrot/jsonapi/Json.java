@@ -181,4 +181,26 @@ public class Json
         return new JsonString(Character.toString(c));
     }
     
+    public static String escape(String s)
+    {
+        return s.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\b", "\\b")
+                .replace("\f", "\\f")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+    }
+    
+    public static String unescape(String s)
+    {
+        return s.replace("\\\\", "\\")
+                .replace("\\\"", "\"")
+                .replace("\\b", "\b")
+                .replace("\\f", "\f")
+                .replace("\\n", "\n")
+                .replace("\\r", "\r")
+                .replace("\\t", "\t");
+    }
+    
 }

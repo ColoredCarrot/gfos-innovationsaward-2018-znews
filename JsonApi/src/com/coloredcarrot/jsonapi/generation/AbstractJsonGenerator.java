@@ -44,6 +44,9 @@ public abstract class AbstractJsonGenerator implements JsonOutputStream
     
     protected abstract void writeArray(JsonArray array, StringBuilder out);
     
+    /*
+     * Implementations are responsible for escaping the string
+     */
     protected abstract void writeString(JsonString string, StringBuilder out);
     
     protected abstract void writeInteger(JsonInteger integer, StringBuilder out);
