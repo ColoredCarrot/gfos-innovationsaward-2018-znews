@@ -1,0 +1,93 @@
+<html>
+
+<head>
+
+    <title>ZNews</title>
+
+    <link rel="stylesheet" href="css/articles.css">
+    
+    <link rel="stylesheet" href="fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+
+</head>
+
+<body>
+
+<div class="background">
+
+    <div class="container foreground">
+
+        <!-- Main Logo/Title -->
+        <div class="big row">
+            <div class="col s12 center-align">
+                <img src="img/logo.jpg" alt="ZNEWS" />
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- Articles container -->
+            <div class="col s8">
+
+                <!-- Main article container -->
+                <div class="row">
+                    <div class="col s12">
+                        %%__articles__%%
+                        <!--<div class="row">
+                            <div class="col s12">
+                                <h4 class="red-text text-lighten-1 article-headline">Article 1</h4>
+                            </div>
+                            <div class="col s12">
+                                <p class="article-text">My name is this guy.<br>
+                                    I am a genius for doing this really long sentence so I can test the line break stuff n things.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <h4 class="red-text text-lighten-1 article-headline">Article 1</h4>
+                            </div>
+                            <div class="col s12">
+                                <p class="article-text">My name is this guy.<br>
+                                    I am a genius for doing this really long sentence so I can test the line break stuff n things.</p>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscribe action / etc. (boxes) -->
+            <div class="col s4 subscribe-container">
+
+                <div class="row">
+
+                    <div class="col s12 center-align subscribe-header">
+                        <h5>Don't wanna miss a newsletter?</h5>
+                    </div>
+
+                    <div class="col s12">
+                        <form method="post" class="input-field subscribe-field-container" id="subscribe-form">
+                            <input type="email" id="sub-email" class="validate">
+                            <label for="sub-email">E-Mail</label>
+                        </form>
+                        <p class="center-align green-text text-darken-1" id="check-your-email" hidden="hidden">Check your Email!</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="js/sweetalert.min.js"></script>
+<script src="js/subscribe.js"></script>
+
+</body>
+
+</html>
