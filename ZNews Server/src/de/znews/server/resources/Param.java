@@ -16,7 +16,7 @@ public class Param
 		return Boolean.parseBoolean(value);
 	}
 	
-	public int getValueAsInt()
+	public int getValueAsInt(int defaultValue)
 	{
 		try
 		{
@@ -24,7 +24,7 @@ public class Param
 		}
 		catch (NumberFormatException e)
 		{
-			return 0;
+			return defaultValue;
 		}
 	}
 	
