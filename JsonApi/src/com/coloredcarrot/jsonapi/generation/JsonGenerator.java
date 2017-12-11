@@ -1,5 +1,6 @@
 package com.coloredcarrot.jsonapi.generation;
 
+import com.coloredcarrot.jsonapi.Json;
 import com.coloredcarrot.jsonapi.ast.JsonArray;
 import com.coloredcarrot.jsonapi.ast.JsonBoolean;
 import com.coloredcarrot.jsonapi.ast.JsonDecimal;
@@ -71,7 +72,9 @@ public class JsonGenerator extends AbstractJsonGenerator
     @Override
     protected void writeString(JsonString string, StringBuilder out)
     {
-        out.append('"').append(string.getValue()).append('"');
+        out.append('"')
+           .append(Json.escape(string.getValue()))
+           .append('"');
     }
     
     @Override
