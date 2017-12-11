@@ -17,7 +17,7 @@ jQuery(function($)
         ServerComm.doSave({
             /*TODO: nid: newsletterId,*/
             newTitle: $('#ntitle').val(),
-            newText: $('#markdown').val()
+            newText: $('#editor-frame').contents().find('#markdown').val()
         })
     });
 
