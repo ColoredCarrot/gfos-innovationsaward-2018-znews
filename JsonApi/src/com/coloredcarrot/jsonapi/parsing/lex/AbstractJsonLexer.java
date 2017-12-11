@@ -33,9 +33,7 @@ public abstract class AbstractJsonLexer extends JsonTokenInputStream
     {
         try
         {
-            int read;
-            while ((read = in.read()) != -1 && Character.isWhitespace(read));
-            return read;
+            return in.read();
         }
         catch (IOException e)
         {
@@ -61,6 +59,13 @@ public abstract class AbstractJsonLexer extends JsonTokenInputStream
     protected void pushBack()
     {
         lookahead = current;
+    }
+    
+    @Override
+    public void skipWhitespace()
+    {
+        while (Character.isWhitespace(readIn()));
+        pushBack();
     }
     
     protected void requireIn(int c)

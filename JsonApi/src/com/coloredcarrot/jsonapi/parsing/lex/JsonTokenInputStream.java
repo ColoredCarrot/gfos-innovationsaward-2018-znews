@@ -13,16 +13,25 @@ public abstract class JsonTokenInputStream implements Closeable
     
     protected abstract JsonToken read();
     
+    public abstract void skipWhitespace();
+    
     // Since the behaviour for read() after EOF is undefined, we
     // implement a fail-safe to return null after the first EOF token
     protected JsonToken readOrNull()
     {
         if (reachedEOF)
             return null;
-        JsonToken result = read();
+        JsonToken result = readAndSkipWhitespace();
         if (result.getType() == JsonTokenType.EOF)
             reachedEOF = true;
         return result;
+    }
+    
+    protected JsonToken readAndSkipWhitespace()
+    {
+        JsonToken read = read();
+        skipWhitespace();
+        return read;
     }
     
     public JsonToken lookahead()
@@ -45,7 +54,7 @@ public abstract class JsonTokenInputStream implements Closeable
             this.lookahead = null;
             return lookahead;
         }
-        return read();
+        return readAndSkipWhitespace();
     }
     
     public JsonToken current()
