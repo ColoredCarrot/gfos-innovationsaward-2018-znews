@@ -10,29 +10,12 @@ import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.ast.JsonString;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.Map;
 
 public class PrettyJsonGenerator extends AbstractJsonGenerator
 {
-    
-    public static void main(String[] args) throws IOException
-    {
-        
-        OutputStreamWriter osw = new OutputStreamWriter(System.out);
-        JsonOutputStream   jos = new PrettyJsonGenerator(osw, "|   ", true);
-        
-        JsonObject.Builder builder = JsonObject.createBuilder();
-        builder.add("a", 2).add("b", 6);
-        builder.build().add("mixedArray", JsonArray.createBuilder().add(55).add(3).add("fas").build());
-        builder.build().add("simpleArray", JsonArray.createBuilder().add("a").add("b").add("c").build());
-        
-        jos.write(builder.build());
-        jos.close();
-        
-    }
     
     private final Writer  out;
     private final String  tabCharacter;
