@@ -5,6 +5,7 @@
     <title>Edit Newsletter | ZNews</title>
 
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/articles.css">
 
     <link rel="stylesheet" href="/fonts/material_icons/material_icons.css">
     <link rel="stylesheet" href="/css/materialize.min.css">
@@ -80,6 +81,14 @@
 <script src="/js/materialize.min.js"></script>
 <script src="/js/sweetalert.min.js"></script>
 <script src="/js/showdown.min.js"></script>
+
+<script>
+    $(function()
+    {
+        // Maximize page height to browser height
+        $('div.background').css('height', window.innerHeight + 'px')
+    });
+</script>
 
 <script src="/js/subscribe.js"></script>
 <script src="/js/server-comm.js"></script>
