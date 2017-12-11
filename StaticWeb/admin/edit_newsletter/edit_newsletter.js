@@ -12,22 +12,12 @@ jQuery(function($)
 
     ServerComm.loginModal.$loginModal = $('#login-modal');
 
-    String.prototype.escapeForJSON = function()
-    {
-        return this.replace(/\n/g, '\\n')
-                   .replace(/"/g, '\\"')
-                   .replace(/\r/g, '\\r')
-                   .replace(/\t/g, '\\t')
-                   .replace(/\b/g, '\\b')
-                   .replace(/\f/g, '\\f');
-    };
-
     $('#save-btn').click(function()
     {
         ServerComm.doSave({
             /*TODO: nid: newsletterId,*/
             newTitle: $('#ntitle').val(),
-            newText: $('#editor-frame').contents().find('#markdown').val().escapeForJSON()
+            newText: $('#editor-frame').contents().find('#markdown').val()
         })
     });
 

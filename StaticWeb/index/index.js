@@ -1,27 +1,6 @@
 jQuery(function($)
 {
 
-    String.prototype.escapeForJSON = function()
-    {
-        return this.replace(/\\n/g, '\\n')
-                   .replace(/\\"/g, '\\"')
-                   .replace(/\\r/g, '\\r')
-                   .replace(/\\t/g, '\\t')
-                   .replace(/\\b/g, '\\b')
-                   .replace(/\\f/g, '\\f');
-    };
-
-    String.prototype.unescapeFromJSON = function()
-    {
-        return this.replace(/\\n/g, '\n')
-                   .replace(/\\"/g, '"')
-                   .replace(/\\r/g, '\r')
-                   .replace(/\\t/g, '\t')
-                   .replace(/\\b/g, '\b')
-                   .replace(/\\f/g, '\f')
-                   .replace(/\\\\/g, '\\');
-    };
-
     function renderText(text)
     {
 
@@ -37,7 +16,7 @@ jQuery(function($)
 
         // TODO: this is (somewhat) duplicate code, see /editor/editor.js
         // Convert markdown to html (currently using Showdown)
-        let html = mkToHtmlConverter.makeHtml(text.unescapeFromJSON());
+        let html = mkToHtmlConverter.makeHtml(text);
         // Wrap generated html in temporary div
         let $html = $('<div></div>').append($(html));
         // FINDME: Make elements negatively affected by Materialize browser-default
