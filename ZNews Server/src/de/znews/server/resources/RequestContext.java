@@ -49,13 +49,6 @@ public class RequestContext
 	{
 		return cookieParams.getParamStringValue(key);
 	}
-    
-    public int getIntParam(String key, int defaultValue)
-    {
-        return params.getParam(key).getValueAsInt(defaultValue);
-    }
-    
-    // TODO: Add other methods for primitive parameters
 	
 	public boolean hasParam(String key)
 	{

@@ -6,13 +6,12 @@ import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
 import de.znews.server.util.Str;
 
-@Deprecated
-public class IndexResource_OLD extends Resource
+public class IndexResource extends Resource
 {
     
-    public IndexResource_OLD(ZNews znews)
+    public IndexResource(ZNews znews)
     {
-        super(znews, URIFragment.fromURI("index.html_old"));
+        super(znews, URIFragment.fromURI("index.html"));
     }
     
     @Override
@@ -21,8 +20,8 @@ public class IndexResource_OLD extends Resource
     
         Str articleTemplate = new Str(znews.staticWeb.getString("article.html"));
     
-        int artTempTitleStart = articleTemplate.indexOf("%%__headline__%%");
-        int artTempTitleLen = "%%__headline__%%".length();
+        int artTempTitleStart = articleTemplate.indexOf("%%__title__%%");
+        int artTempTitleLen = "%%__title__%%".length();
         
         // TODO: Make amount of displayed newsletters configurable
         Iterable<Newsletter> latestNewsletters = znews.newsletterManager.getLatestNewsletters(5);
@@ -31,9 +30,7 @@ public class IndexResource_OLD extends Resource
     
         for (Newsletter newsletter : latestNewsletters)
         {
-            Str articleStr = articleTemplate.copy()
-                                            .setChars(artTempTitleStart, artTempTitleLen, newsletter.getTitle())
-                                            .replaceOnce("%%__text__%%", newsletter.getText());
+            Str articleStr = articleTemplate.copy().setChars(artTempTitleStart, artTempTitleLen, newsletter.getTitle()).replaceOnce("%%__text__%%", newsletter.getText());
             articles.append(articleStr);
         }
         

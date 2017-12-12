@@ -1,8 +1,7 @@
 package de.znews.server.netty;
 
 import de.znews.server.ZNews;
-import de.znews.server.resources.GetNewslettersResource;
-import de.znews.server.resources.IndexResource_OLD;
+import de.znews.server.resources.IndexResource;
 import de.znews.server.resources.Param;
 import de.znews.server.resources.Params;
 import de.znews.server.resources.RequestContext;
@@ -35,7 +34,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	public ResourceProviderHandler(ZNews znews)
 	{
 		// FINDME: Register resources here
-		resources.addAll(Arrays.asList(new IndexResource_OLD(znews), new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
+		resources.addAll(Arrays.asList(new IndexResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new PublishNewsletterResource(znews), new SaveNewsletterResource(znews)));
 		this.staticWeb = znews.staticWeb;
 	}
 	
