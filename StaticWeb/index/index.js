@@ -1,6 +1,16 @@
 jQuery(function($)
 {
 
+    function stripHtmlTags(stringWithTags)
+    {
+        return $('<div/>').html(stringWithTags).text();
+    }
+
+    function trimString(string, toCharacters = 40)
+    {
+        return string.length > toCharacters ? string.substr(0, toCharacters - 1) + '…' : string;
+    }
+
     function renderText(text)
     {
 
@@ -30,14 +40,36 @@ jQuery(function($)
     {
         // Callback: Articles retrieved
 
-        let articleTemplate = `<div class="row">
+        //<editor-fold desc="/*Old article templates...*/">
+        // Old versions...
+        // First: simple css
+        /*let articleTemplate = `<div class="row">
             <div class="col s12">
                 <h4 class="red-text text-lighten-1 article-headline"></h4>
             </div>
             <div class="col s12">
                 <div class="article-text"></div>
             </div>
-        </div>`;
+        </div>`;*/
+        // Second: Cards
+        /*let articleTemplate = `<div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content red-text">
+                        <span class="card-title"></span>
+                    </div>
+                </div>
+            </div>
+        </div>`;*/
+        //</editor-fold>
+
+        let articleTemplate = `<li>
+            <div class="collapsible-header">
+                <div class="article-headline red-text"></div>
+                <div class="article-preview"></div>
+            </div>
+            <div class="collapsible-body"></div>
+        </li>`;
 
         let $articlesContainer = $('#articles-container');
 
@@ -48,12 +80,33 @@ jQuery(function($)
 
             let $article = $(articleTemplate);
             let $html = renderText(text);
+            let articlePreview = trimString(stripHtmlTags($html.prop('outerHTML')));
 
             $article.find('.article-headline').html(title);
-            $article.find('.article-text').append($html.children());
+            $article.find('.article-preview').append($('<div/>').text(articlePreview).prop('innerHTML'));
+            $article.find('.collapsible-body').append($html.children());
 
             $articlesContainer.append($article);
 
+        });
+
+        // Open first article by default
+        $articlesContainer.children().first().find('.collapsible-header').addClass('active');
+
+        // Initialize Materialize collapsible
+        $('.collapsible').collapsible({
+            onOpen: function(el)
+            {
+                // Called when an article is opened
+                let $this = $(el);
+                $this.find('.article-preview').hide();
+            },
+            onClose: function(el)
+            {
+                // Called when an article is opened
+                let $this = $(el);
+                window.setTimeout(() => $this.find('.article-preview').show(), 120);
+            }
         });
 
     });

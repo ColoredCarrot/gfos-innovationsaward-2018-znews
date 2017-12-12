@@ -1,3 +1,5 @@
+/* TODO: Cleanup */
+
 .subscribe-container
 {
     border: 3px solid black;
@@ -18,6 +20,11 @@
     height: 100%;
     padding-left: 25px;
     padding-right: 25px;
+}
+
+.article-preview
+{
+    margin-top: -10px;
 }
 
 .article-headline
