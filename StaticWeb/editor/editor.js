@@ -18,7 +18,7 @@ $(function()
         simplifiedAutoLink: true,
         excludeTrailingPunctuationFromURLs: true,
         tables: true,
-        headerLevelStart: 3,
+        headerLevelStart: 5,
         openLinksInNewWindow: true
     });
 

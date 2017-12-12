@@ -11,7 +11,7 @@ jQuery(function($)
             simplifiedAutoLink: true,
             excludeTrailingPunctuationFromURLs: true,
             tables: true,
-            headerLevelStart: 3
+            headerLevelStart: 5
         });
 
         // TODO: this is (somewhat) duplicate code, see /editor/editor.js

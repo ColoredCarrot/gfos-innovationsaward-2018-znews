@@ -45,8 +45,6 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 		try
 		{
 			
-			//System.out.println("Access " + request.getUri());
-			
 			for (Resource resource : resources)
 				if (resource.appliesTo(request.getUri()))
 				{
