@@ -62,7 +62,7 @@ var ServerComm = (function()
         let updateProgress = function(percentComplete)
         {
             if (sc.onUpdateProgress)
-                sc.onUpdateProgress(percentComplete);
+                sc.onUpdateProgress();
             if (!percentComplete)
                 actSaving = false;
         };
@@ -91,10 +91,6 @@ var ServerComm = (function()
         let data = {};
         if (nid)
             data.nid = nid;
-        if (newTitle)
-            data.title = newTitle;
-        if (newText)
-            data.text = newText;
 
         // Send XMLHttpRequest
         $.ajax('/admin/api/newsletter/save', {
@@ -164,7 +160,7 @@ var ServerComm = (function()
             if (!loadedUrl.endsWith('admin/login'))
             {
                 hideLoginIFrame();
-                window.setTimeout(() => sc.doSave(doSaveParameters), 50);
+                sc.doSave(doSaveParameters);
             }
         });
         sc.loginModal.open(function()

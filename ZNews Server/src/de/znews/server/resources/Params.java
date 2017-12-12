@@ -2,20 +2,15 @@ package de.znews.server.resources;
 
 import io.netty.handler.codec.http.cookie.Cookie;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
 
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.StringJoiner;
-import java.util.function.Consumer;
 
-public class Params implements Iterable<Param>
+public class Params
 {
 	
 	public static Params fromCookies(Set<Cookie> cookies)
@@ -84,24 +79,4 @@ public class Params implements Iterable<Param>
 		return new Params(params);
 	}
 	
-	@NotNull
-	@Override
-	public Iterator<Param> iterator()
-	{
-        return Spliterators.iterator(Arrays.spliterator(indexedParams));
-    }
-    
-    @Override
-    public void forEach(Consumer<? super Param> action)
-    {
-        for (Param indexedParam : indexedParams)
-            action.accept(indexedParam);
-    }
-    
-    @Override
-    public Spliterator<Param> spliterator()
-    {
-        return Arrays.spliterator(indexedParams);
-    }
-    
 }

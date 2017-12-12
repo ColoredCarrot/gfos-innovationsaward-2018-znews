@@ -7,7 +7,7 @@ $(function()
     showdown.setOption('simplifiedAutoLink', true);
     showdown.setOption('excludeTrailingPunctuationFromURLs', true);
     showdown.setOption('tables', true);
-    showdown.setOption('headerLevelStart', 3);
+    showdown.setOption('headerLevelStart', 2);
     // This option should be turned off when generating html for display, not in the preview
     showdown.setOption('openLinksInNewWindow', true);
 
@@ -18,7 +18,7 @@ $(function()
         simplifiedAutoLink: true,
         excludeTrailingPunctuationFromURLs: true,
         tables: true,
-        headerLevelStart: 3,
+        headerLevelStart: 2,
         openLinksInNewWindow: true
     });
 
@@ -34,15 +34,27 @@ $(function()
         // Convert markdown to html (currently using Showdown)
         let html = mkToHtmlConverter.makeHtml(mk);
 
-        // Wrap generated html in temporary div
+        // Wrap generated html in div for later recursive iteration
         let $html = $('<div></div>').append($(html));
 
-        // FINDME: Make elements negatively affected by Materialize browser-default
-        $html.find('ul').addClass('browser-default');
+        // Recursively walk generated html, adding .browser-default to all
+        function walker($e)
+        {
+            $e.children().each(function()
+            {
+                let $this = $(this);
+                $this.addClass('browser-default');
+                walker($this);
+            });
+        }
+        walker($html);
 
         // Clear old preview and add markdown-generated html
         $preview.html('');
-        $preview.append($html.children());
+        $html.children().each(function(idx, $e)
+        {
+            $preview.append($e);
+        });
 
     }
 
