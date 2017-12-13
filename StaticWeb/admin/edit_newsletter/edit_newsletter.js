@@ -8,6 +8,10 @@ jQuery(function($)
         Materialize.toast(message, duration)
     };
 
+    // Change tab focus order. Must be done after iframe has loaded
+    let $editorFrame = $('#editor-frame');
+    $editorFrame.on('load', () => $editorFrame.contents().find('#markdown').attr('tabindex', '2'));
+
     // TODO: We could provide a progress bar using ServerComm.useProgressBar($progressBar)
 
     ServerComm.loginModal.$loginModal = $('#login-modal');
@@ -17,7 +21,7 @@ jQuery(function($)
         ServerComm.doSave({
             /*TODO: nid: newsletterId,*/
             newTitle: $('#ntitle').val(),
-            newText: $('#editor-frame').contents().find('#markdown').val()
+            newText: $editorFrame.contents().find('#markdown').val()
         })
     });
 
