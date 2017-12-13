@@ -58,7 +58,7 @@ function doSubscribe(email)
             return;
         }
 
-        var err = data.error;
+        let err = data.error;
 
         // TODO: remove error code from message. Currently there for debugging reasons
         swal('Error', err.message + ' (' + err.code + ')', 'error')
