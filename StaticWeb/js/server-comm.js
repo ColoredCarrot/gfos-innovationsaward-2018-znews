@@ -48,7 +48,7 @@ var ServerComm = (function()
 
     sc.doSave = function(parameters)
     {
-        let { nid, newTitle, newText } = parameters;
+        let { nid, newTitle, newText, nidConsumer } = parameters;
 
         if (actSaving)
             return false;
@@ -74,6 +74,9 @@ var ServerComm = (function()
             // Save successful
             if (data.success)
             {
+                // Save returned newsletter ID
+                if (nidConsumer)
+                    nidConsumer(data.data.nid);
                 window.setTimeout(() => updateProgress(0), 100);
                 toast('Saved Newsletter');
             }

@@ -44,6 +44,7 @@ public class SaveNewsletterResource extends JSONResource
             // Create new newsletter
             Newsletter n = new Newsletter(newTitle, newText);
             znews.newsletterManager.addNewsletter(n);
+            newsletterId = n.getId();
         }
         else
         {

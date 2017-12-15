@@ -18,11 +18,36 @@ jQuery(function($)
 
     $('#save-btn').click(function()
     {
-        ServerComm.doSave({
-            /*TODO: nid: newsletterId,*/
+
+        // Get newsletter ID
+        let nid = $('#-data-nid-container').attr('data-nid');
+        nid = typeof nid !== typeof undefined && nid !== false ? nid : null;
+
+        let saveData = {
             newTitle: $('#ntitle').val(),
             newText: $editorFrame.contents().find('#markdown').val()
-        })
+        };
+
+        if (nid)
+        {
+            saveData.nid = nid;
+            saveData.nidConsumer = function(assignedNid)
+            {
+                if (assignedNid !== nid)
+                {
+                    swal('Internal Error', 'Returned assigned newsletter ID does not match stored ID', 'error')
+                        .then(() => { throw new Error('INTERNAL ERROR: Returned assigned newsletter ID does not match stored ID') });
+                }
+            }
+        }
+        else
+            saveData.nidConsumer = function(assignedNid)
+            {
+                $('#-data-nid-container').attr('data-nid', assignedNid);
+            };
+
+        ServerComm.doSave(saveData);
+
     });
 
     // TODO: Register other action buttons here
