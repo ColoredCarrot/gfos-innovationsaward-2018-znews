@@ -78,7 +78,7 @@ public class FileDataAccess extends DataAccess
     
     private void storeJsonSerializable(JsonSerializable serializable, File file) throws IOException
     {
-        try (JsonOutput out = new JsonOutput(Json.getOutputStream(new BufferedOutputStream(new FileOutputStream(file)))))
+        try (JsonOutput out = new JsonOutput(Json.getOutputStream(new BufferedOutputStream(new FileOutputStream(file)), getZNews().config.getEnableJSONPrettyPrinting())))
         {
             out.write(serializable);
         }
