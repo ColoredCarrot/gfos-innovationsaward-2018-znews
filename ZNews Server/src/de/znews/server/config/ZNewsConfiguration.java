@@ -52,6 +52,11 @@ public class ZNewsConfiguration
 	{
 		return getInt("port");
 	}
+    
+    public boolean getEnableJSONPrettyPrinting()
+    {
+        return getBoolean("pretty-print-json");
+    }
 	
 	private int getInt(String key)
 	{
