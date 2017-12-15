@@ -26,7 +26,7 @@ public class PrettyJsonGenerator extends AbstractJsonGenerator
     
     public PrettyJsonGenerator(Writer out)
     {
-        this(out, "\t", true);
+        this(out, "  ", true);
     }
     
     public PrettyJsonGenerator(Writer out, String tabCharacter, boolean keepSimpleArraysOnOneLine)
