@@ -73,9 +73,19 @@ public class Json
         return getOutputStream(target, DEFAULT_CHARSET);
     }
     
+    public static JsonOutputStream getOutputStream(OutputStream target, boolean enablePrettyPrinting)
+    {
+        return getOutputStream(target, DEFAULT_CHARSET, enablePrettyPrinting);
+    }
+    
     public static JsonOutputStream getOutputStream(OutputStream target, Charset cs)
     {
         return getOutputStream(new OutputStreamWriter(target, cs));
+    }
+    
+    public static JsonOutputStream getOutputStream(OutputStream target, Charset cs, boolean enablePrettyPrinting)
+    {
+        return getOutputStream(new OutputStreamWriter(target, cs), enablePrettyPrinting);
     }
     
     public static JsonOutputStream getOutputStream(Writer target)
