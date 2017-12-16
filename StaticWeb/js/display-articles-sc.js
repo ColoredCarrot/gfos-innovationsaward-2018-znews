@@ -5,7 +5,7 @@
 ServerComm = (function(sc)
 {
 
-    sc.doGetArticles = function(callback, amount = 5)
+    sc.doGetArticles = function(callback, amount = 5, getNids = false)
     {
 
         let $ = sc.$,
@@ -37,12 +37,16 @@ ServerComm = (function(sc)
 
         updateProgress(1);
 
+        let requestData = {
+            amount: amount
+        };
+        if (getNids)
+            requestData.includenid = 'true';
+
         // Send XMLHttpRequest
-        $.ajax('/api/get', {
+        return $.ajax('/admin/api/get', {
             cache: false,
-            data: {
-                amount: amount
-            },
+            data: requestData,
             success: function(data, textStatus, jqXHR)
             {
                 updateProgress(100);

@@ -58,7 +58,7 @@ public class StaticWeb
         path = normalizePath(path);
         
         File file = getFile(path);
-        if (file.isDirectory())
+        if (file.isDirectory() && !getFile(path + ".html").isFile())
         {
             file = new File(file, "index.html");
             path += "/index.html";

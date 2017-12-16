@@ -17,7 +17,7 @@ public class GetNewslettersResource extends JSONResource
     
     public GetNewslettersResource(ZNews znews)
     {
-        super(znews, "api/get");
+        super(znews, "admin/api/get");
     }
     
     @Override
