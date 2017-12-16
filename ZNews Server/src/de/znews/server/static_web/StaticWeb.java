@@ -58,9 +58,13 @@ public class StaticWeb
         path = normalizePath(path);
         
         File file = getFile(path);
-        
-        // FINDME here is the default extension
-        if (!file.isFile())
+        if (file.isDirectory())
+        {
+            file = new File(file, "index.html");
+            path += "/index.html";
+        }
+        else if (!file.isFile())
+            // FINDME here is the default extension
             file = getFile(path += ".html");
         
         if (file.isFile())
