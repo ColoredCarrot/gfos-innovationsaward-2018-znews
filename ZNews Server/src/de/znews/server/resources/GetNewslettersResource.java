@@ -35,11 +35,12 @@ public class GetNewslettersResource extends JSONResource
         
         int amount = ctx.getIntParam("amount", 5);
         
-        Stream<Newsletter> newsletterStream = znews.newsletterManager.getLatestNewsletters()
-                                                                     .limit(amount);
+        Stream<Newsletter> newsletterStream = znews.newsletterManager.getLatestNewsletters();
         
         if (!includeNonPublished)
             newsletterStream = newsletterStream.filter(Newsletter::isPublished);
+    
+        newsletterStream = newsletterStream.limit(amount);
         
         Stream<JsonObject.Builder> stream = includenid ? newsletterStream.map(n -> JsonObject.createBuilder()
                                                                                              .add("title", n.getTitle())
