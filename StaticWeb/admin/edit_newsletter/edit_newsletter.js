@@ -1,6 +1,19 @@
 jQuery(function($)
 {
-    if (!ServerComm)
+
+    function getQueryParamByName(name, url = windowKref)
+    {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+              results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    if (typeof ServerComm === typeof undefined || !ServerComm)
         throw new Error('ServerComm not defined! Please include `server-comm.js` before `edit_newsletter.js`');
 
     ServerComm.toast = function(message, duration = 2000)
@@ -15,6 +28,36 @@ jQuery(function($)
     // TODO: We could provide a progress bar using ServerComm.useProgressBar($progressBar)
 
     ServerComm.loginModal.$loginModal = $('#login-modal');
+
+    ((nidParam) =>
+    {
+        // If a 'nid' query param exists, load the newsletter
+        if (!nidParam)
+            return;
+        $.ajax('/admin/api/by_nid', {
+            async: true,  // TODO: disable functions until loaded/show preloader
+            cache: false,
+            data: {
+                nid: nidParam
+            },
+            success: function(data, textStatus, jqXHR)
+            {
+                // Store retrieved data
+                data = JSON.parse(data);
+                if (!data.success)
+                {
+                    // TODO: Display actual error message
+                    window.location.replace('/404');
+                    return;
+                }
+                data = data.data;
+                $('#-data-nid-container').attr('data-nid', nidParam);
+                $('#editor-frame').contents().find('#markdown').val(data.text);
+                $('#ntitle').val(data.title);
+                Materialize.updateTextFields();
+            }
+        });
+    })(getQueryParamByName('nid'));
 
     $('#save-btn').click(function()
     {
