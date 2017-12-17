@@ -33,6 +33,16 @@ public class Authenticator implements Serializable, JsonSerializable
 		adminData.put(username, password);
 	}
     
+    /**
+     * Throws an {@link Http403ForbiddenException} if
+     * <ol>
+     *     <li>there is no cookie <code>'znews_auth'</code> in <code>ctx</code> or</li>
+     *     <li>the cookie value is not a valid session token.</li>
+     * </ol>
+     *
+     * @param ctx The RequestContext which is to contain a valid <code>znews_auth</code>-cookie
+     * @throws HttpException (see above)
+     */
     public void requireAuthentication(RequestContext ctx) throws HttpException
     {
         if (!ctx.hasCookieParam("znews_auth"))
