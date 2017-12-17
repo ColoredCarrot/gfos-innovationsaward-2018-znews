@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class NewsletterManager implements Serializable, JsonSerializable
 {
@@ -28,10 +29,10 @@ public class NewsletterManager implements Serializable, JsonSerializable
     {
         return nidToNewsletter.computeIfAbsent(nid, _nid -> newsletters.stream().filter(n -> n.getId().equals(nid)).findAny().orElseThrow(() -> new IllegalArgumentException("Newsletter is non-existent")));
     }
-	
-    public Iterable<Newsletter> getLatestNewsletters(int amount)
+    
+    public Stream<Newsletter> getLatestNewsletters()
     {
-        return amount >= newsletters.size() ? newsletters : newsletters.subList(0, amount);
+        return newsletters.stream();
     }
     
     @JsonDeserializer

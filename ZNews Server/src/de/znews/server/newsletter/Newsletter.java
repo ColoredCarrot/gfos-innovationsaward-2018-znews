@@ -22,6 +22,7 @@ public class Newsletter implements Serializable, JsonSerializable
 	private String id;
 	private String title;
 	private String text;
+	private boolean published = false;
     
     public Newsletter(String title, String text)
     {
