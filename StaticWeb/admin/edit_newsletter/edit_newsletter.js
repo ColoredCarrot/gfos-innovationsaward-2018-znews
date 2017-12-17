@@ -1,7 +1,7 @@
 jQuery(function($)
 {
 
-    function getQueryParamByName(name, url = windowKref)
+    function getQueryParamByName(name, url = window.location.href)
     {
         name = name.replace(/[\[\]]/g, "\\$&");
         const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
