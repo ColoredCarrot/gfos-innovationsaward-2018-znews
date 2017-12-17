@@ -5,9 +5,11 @@ jQuery(function($)
 
     function ajaxGetArticles(amount = 16)
     {
-        return ServerComm.doGetArticles(data =>
-        {
-        }, amount, true);
+        return ServerComm.doGetArticles(data => {}, {
+            amount: amount,
+            includenid: true,
+            includeNonPublished: true
+        });
     }
 
     function ajaxRowTemplate()
@@ -45,7 +47,13 @@ jQuery(function($)
              let $card = $cardTemplate.clone();
 
              $card.find('.card-content').text(article.title);
-             $card.find('.article-card').attr('data-nid', article.nid);
+             $card.find('.article-card')
+                  .attr('data-nid', article.nid)
+                  .attr('data-published', article.published);
+
+             // If article is published, remove 'publish' button
+             if (article.published)
+                 $card.find('.publish-btn').remove();
 
              $card.appendTo($currentRow);
 

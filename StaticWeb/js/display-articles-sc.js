@@ -5,8 +5,9 @@
 ServerComm = (function(sc)
 {
 
-    sc.doGetArticles = function(callback, amount = 5, getNids = false)
+    sc.doGetArticles = function(callback, options = {})
     {
+        let { amount = 5, includenid = false, includeNonPublished = false } = options;
 
         let $ = sc.$,
             swal = sc.swal;
@@ -40,8 +41,10 @@ ServerComm = (function(sc)
         let requestData = {
             amount: amount
         };
-        if (getNids)
+        if (includenid)
             requestData.includenid = 'true';
+        if (includeNonPublished)
+            requestData['include-non-published'] = 'true';
 
         // Send XMLHttpRequest
         return $.ajax('/admin/api/get', {
