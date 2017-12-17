@@ -59,6 +59,8 @@ jQuery(function($)
 
          });
 
+         initButtons();
+
      })
      .fail(function(jqXHR, b, description)
      {
@@ -73,5 +75,16 @@ jQuery(function($)
              swal("Internal Error", `An unexpected error occured (${b}, ${description}). Please try again later.`);
          }
      });
+
+    function initButtons()
+    {
+        $('.edit-btn').click(function()
+        {
+            let $this = $(this);
+            // Edit article
+            let nid = $this.parents('.article-card').attr('data-nid');
+            window.location.href = '/admin/edit_newsletter?nid=' + nid;
+        });
+    }
 
 });
