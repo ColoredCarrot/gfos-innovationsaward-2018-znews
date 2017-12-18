@@ -109,6 +109,21 @@ jQuery(function($)
             }
         });
 
+        /*
+        TODO: On click of newsletter body, redirect to /view
+        To do this, the NIDs need be stored as well,
+        so the GetNewslettersResource must not require
+        authentication to get NIDs.
+         */
+        /*$('.collapsible-body').click(function()
+        {
+            let $this = $(this);
+            if ($this.parent().hasClass('active'))
+            {
+                window.location.href = '/view?nid=' + ;
+            }
+        });*/
+
     });
 
 });
