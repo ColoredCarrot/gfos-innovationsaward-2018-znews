@@ -66,7 +66,8 @@ jQuery(function($)
              $card.find('.article-card')
                   .attr('data-nid', article.nid)
                   .attr('data-title', article.title)
-                  .attr('data-published', article.published);
+                  .attr('data-published', article.published)
+                  .attr('data-hash', (article.title + article.text).hashCode());
 
              // If article is published, remove 'publish' button
              if (article.published)
@@ -123,7 +124,7 @@ jQuery(function($)
                 {
                     return $.Deferred().reject('Cancelled');
                 }
-                return ajaxDelete(nid, title);
+                return ajaxDelete(nid, $card.attr('data-hash'));
             })
             .catch(reason =>
             {
@@ -151,20 +152,97 @@ jQuery(function($)
             //.then(ajaxResult => ajaxResult.json())
             .then(data =>
             {
-                console.log(data);
+                if (typeof data === typeof undefined)
+                    return;
                 data = JSON.parse(data);
-                console.log(data);
-                swal('Result:', JSON.stringify(data));
+
+                function handleSuccess()
+                {
+                    // Article was deleted successfully
+                    return swal("Success", "Successfully deleted \"" + title + "\"", 'success')
+                        .then(() =>
+                        {
+                            // Refresh page
+                            $card.remove();
+                        });
+                }
+
+                function handleNotDeleted()
+                {
+                    return swal("Warning", "The article you are about to delete has been modified since this page was loaded. Do you wish to continue?", 'warning', {
+                        buttons: [true, { closeModal: false }],
+                        dangerMode: true
+                    })
+                        .then(doForceDelete =>
+                        {
+                            if (!doForceDelete)
+                                return $.Deferred().reject('Cancelled');
+                            return ajaxDelete(nid, null, true);
+                        })
+                        .then(data =>
+                        {
+                            if (typeof data === typeof undefined)
+                                return;
+                            data = JSON.parse(data);
+
+                            if (!data.success)
+                            {
+                                console.log("Internal Error", data.error);
+                                return swal("Internal Error", "An unexpected error occurred. Please try again later.", 'error');
+                            }
+
+                            return handleSuccess();
+
+                        })
+                        .catch(reason =>
+                        {
+                            if (reason === 'Cancelled')
+                                return;
+
+                            // Handle error (e.g. not logged in)
+                            // TODO: Duplicate code (see above). => Extract to function
+
+                            function handle403Forbidden()
+                            {
+                                swal("Error", "You are not logged in.", 'error')
+                                    .then(() => window.location.href = '/admin/login');
+                            }
+
+                            switch (reason.status)
+                            {
+                                case 403:
+                                    return handle403Forbidden();
+                                default:
+                                    console.log("Internal Error (" + reason.status + ")", reason);
+                                    swal("Internal Error", "An unexpected error occurred. Please try again later.", 'error');
+                            }
+                        });
+                }
+
+                if (!data.success)
+                {
+                    switch (data.error.code)
+                    {
+                        // Common.RS_ERR_NOT_DELETED
+                        case 'NOT_DELETED':
+                            return handleNotDeleted();
+                        default:
+                            console.log("Internal Error", data.error);
+                            return swal("Internal Error", "An unexpected error occurred. Please try again later.", 'error');
+                    }
+                }
+
+                handleSuccess();
+
             });
 
-        function ajaxDelete(nid, title, force = false)
+        function ajaxDelete(nid, hash, force = false)
         {
-            let data = {
-                nid: nid
-            };
-            data['title-hash'] = title.hashCode();
+            let data = { nid: nid };
+            if (hash)
+                data['hash'] = hash;
             if (force)
-                data.force = force;
+                data['force'] = force;
             return $.ajax('/admin/api/delete', {
                 data: data,
                 cache: false

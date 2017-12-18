@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 
 public class NewsletterManager implements Serializable, JsonSerializable
 {
+    
+    // TODO: Make Thread-Safe
 	
 	private static final long serialVersionUID = 592773864822928724L;
 	
@@ -20,19 +22,32 @@ public class NewsletterManager implements Serializable, JsonSerializable
 	private List<Newsletter> newsletters = new ArrayList<>();
     private transient Map<String, Newsletter> nidToNewsletter = new HashMap<>();
 	
-	public void addNewsletter(Newsletter newsletter)
+	public synchronized void addNewsletter(Newsletter newsletter)
 	{
 		newsletters.add(0, newsletter);
 	}
     
-    public Newsletter getNewsletter(String nid) throws IllegalArgumentException
+    public synchronized Newsletter getNewsletter(String nid) throws IllegalArgumentException
     {
         return nidToNewsletter.computeIfAbsent(nid, _nid -> newsletters.stream().filter(n -> n.getId().equals(nid)).findAny().orElseThrow(() -> new IllegalArgumentException("Newsletter is non-existent")));
     }
     
-    public Stream<Newsletter> getLatestNewsletters()
+    public synchronized Stream<Newsletter> getLatestNewsletters()
     {
         return newsletters.stream();
+    }
+    
+    public synchronized void doDeleteNewsletter(String nid)
+    {
+        nidToNewsletter.remove(nid);
+        ArrayList<Newsletter> newslettersCopy = new ArrayList<>(this.newsletters);
+        for (int i = 0; i < newslettersCopy.size(); i++)
+            if (newslettersCopy.get(i).getId().equals(nid))
+            {
+                newsletters.remove(i);
+                return;
+            }
+        throw new IllegalArgumentException("Newsletter is non-existent");
     }
     
     @JsonDeserializer

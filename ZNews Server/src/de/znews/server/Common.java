@@ -9,5 +9,6 @@ public class Common
     public static final String RS_ERR_SAVE_MISSING_TEXT      = "MISSING_TEXT";
     public static final String RS_ERR_SAVE_INVALID_NID       = "INVALID_NID";
     public static final String RS_ERR_NID_INVALID            = "INVALID_NID";
+    public static final String RS_ERR_NOT_DELETED            = "NOT_DELETED";
     
 }
