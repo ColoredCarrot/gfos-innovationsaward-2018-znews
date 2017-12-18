@@ -1,3 +1,19 @@
+String.prototype.hashCode = String.prototype.hashCode || function()
+{
+    if (this.length === 0)
+        return 0;
+    let hash = 0,
+        i,
+        chr;
+    for (i = 0; i < this.length; i++)
+    {
+        chr = this.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+
 jQuery(function($)
 {
 
@@ -49,6 +65,7 @@ jQuery(function($)
              $card.find('.card-content').text(article.title);
              $card.find('.article-card')
                   .attr('data-nid', article.nid)
+                  .attr('data-title', article.title)
                   .attr('data-published', article.published);
 
              // If article is published, remove 'publish' button
@@ -85,6 +102,74 @@ jQuery(function($)
             let nid = $this.parents('.article-card').attr('data-nid');
             window.location.href = '/admin/edit_newsletter?nid=' + nid;
         });
+        $('.delete-btn').click(function()
+        {
+            let $this = $(this);
+            // Delete article
+            actDeleteArticle($this.parents('.article-card'));
+        });
+    }
+
+    function actDeleteArticle($card, nid = $card.attr('data-nid'), title = $card.attr('data-title'))
+    {
+        // Display confirm dialog
+        swal("Warning", "You are about to delete \"" + title + "\". Do you wish to proceed?", 'warning', {
+            buttons: [true, { closeModal: false }],
+            dangerMode: true
+        })
+            .then((doDelete) =>
+            {
+                if (!doDelete)
+                {
+                    return $.Deferred().reject('Cancelled');
+                }
+                return ajaxDelete(nid, title);
+            })
+            .catch(reason =>
+            {
+                if (reason === 'Cancelled')
+                    return;
+
+                // Handle error (e.g. not logged in)
+
+                function handle403Forbidden()
+                {
+                    swal("Error", "You are not logged in.", 'error')
+                        .then(() => window.location.href = '/admin/login');
+                }
+
+                switch (reason.status)
+                {
+                    case 403:
+                        return handle403Forbidden();
+                    default:
+                        console.log("Internal Error (" + reason.status + ")", reason);
+                        swal("Internal Error", "An unexpected error occurred. Please try again later.", 'error');
+                }
+
+            })
+            //.then(ajaxResult => ajaxResult.json())
+            .then(data =>
+            {
+                console.log(data);
+                data = JSON.parse(data);
+                console.log(data);
+                swal('Result:', JSON.stringify(data));
+            });
+
+        function ajaxDelete(nid, title, force = false)
+        {
+            let data = {
+                nid: nid
+            };
+            data['title-hash'] = title.hashCode();
+            if (force)
+                data.force = force;
+            return $.ajax('/admin/api/delete', {
+                data: data,
+                cache: false
+            });
+        }
     }
 
 });
