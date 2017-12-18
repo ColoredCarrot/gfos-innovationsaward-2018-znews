@@ -52,7 +52,8 @@ jQuery(function($)
                 }
                 data = data.data;
                 $('#-data-nid-container').attr('data-nid', nidParam);
-                $('#editor-frame').contents().find('#markdown').val(data.text);
+                // As soon as editor frame is loaded, init text area
+                $('#editor-frame').on('load', () => $('#editor-frame').contents().find('#markdown').val(data.text));
                 $('#ntitle').val(data.title);
                 Materialize.updateTextFields();
             }
