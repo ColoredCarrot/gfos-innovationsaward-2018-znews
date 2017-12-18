@@ -50,6 +50,22 @@ public class NewsletterManager implements Serializable, JsonSerializable
         throw new IllegalArgumentException("Newsletter is non-existent");
     }
     
+    public synchronized void doPublishNewsletter(String nid)
+    {
+        int index = getIndexOfNewsletter(nid);
+        Newsletter n = newsletters.remove(index);
+        n.setPublished(true);
+        newsletters.add(0, n);
+    }
+    
+    private int getIndexOfNewsletter(String nid)
+    {
+        for (int i = 0; i < newsletters.size(); i++)
+            if (newsletters.get(i).getId().equals(nid))
+                return i;
+        throw new IllegalArgumentException("Newsletter is non-existent");
+    }
+    
     @JsonDeserializer
     public static NewsletterManager deserializeJson(JsonObject json)
     {

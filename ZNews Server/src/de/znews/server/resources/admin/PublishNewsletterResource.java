@@ -1,17 +1,13 @@
 package de.znews.server.resources.admin;
 
 import de.znews.server.ZNews;
-import de.znews.server.newsletter.Newsletter;
 import de.znews.server.resources.RequestContext;
 import de.znews.server.resources.RequestResponse;
 import de.znews.server.resources.Resource;
-import de.znews.server.resources.exception.Http400BadRequestException;
-import de.znews.server.resources.exception.Http403ForbiddenException;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
 
-import java.nio.charset.StandardCharsets;
-
+@Deprecated
 public class PublishNewsletterResource extends Resource
 {
 	
@@ -23,6 +19,7 @@ public class PublishNewsletterResource extends Resource
 	@Override
 	public RequestResponse handleRequest(RequestContext ctx) throws HttpException
 	{
+		throw new UnsupportedOperationException();/*
 		// Make sure the user is authorized
 		if (!ctx.hasCookieParam("stoken") || !znews.sessionManager.isAuthenticated(ctx.getStringCookieParam("stoken")))
 			throw new Http403ForbiddenException();
@@ -34,7 +31,7 @@ public class PublishNewsletterResource extends Resource
 		
 		znews.newsletterManager.addNewsletter(newsletter);
 		
-		return new RequestResponse("Success".getBytes(StandardCharsets.UTF_8));
+		return new RequestResponse("Success".getBytes(StandardCharsets.UTF_8));*/
 		
 	}
 	
