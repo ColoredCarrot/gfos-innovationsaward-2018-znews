@@ -33,7 +33,10 @@ jQuery(function($)
     {
         // If a 'nid' query param exists, load the newsletter
         if (!nidParam)
+        {
+            $('#edit-article-headline').text('Create Article');
             return;
+        }
         $.ajax('/admin/api/by_nid', {
             async: true,  // TODO: disable functions until loaded/show preloader
             cache: false,
