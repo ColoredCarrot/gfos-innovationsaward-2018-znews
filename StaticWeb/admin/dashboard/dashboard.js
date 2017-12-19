@@ -111,10 +111,8 @@ jQuery(function($)
         });
         $('.publish-btn').click(function()
         {
-            let $this = $(this);
             // Publish article
-            //actPublishArticle($this.parents('.article-card'));
-            let $card = $this.parents('.article-card');
+            let $card = $(this).parents('.article-card');
             act.cfg.useAttrs($card);
             act.onBtnPublish({ callback: () =>
                 {

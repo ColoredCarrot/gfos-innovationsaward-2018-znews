@@ -32,10 +32,7 @@ var act = (function(act)
             buttons: true,
             dangerMode: true
         })
-            .then(doPublish =>
-            {
-                return doPublish ? ajaxPublish(nid) : $.Deferred().reject('Cancelled');
-            })
+            .then(doPublish => doPublish ? ajaxPublish(nid) : $.Deferred().reject('Cancelled'))
             .then(data =>
             {
                 swal("Success", `You have published "${title}".`, 'success', {
