@@ -11,6 +11,12 @@ var act = (function(act)
             act.cfg.nid   = $e.attr('data-nid');
             act.cfg.title = $e.attr('data-title');
             act.cfg.hash  = $e.attr('data-hash');
+        },
+        clear: function()
+        {
+            act.cfg.nid   = undefined;
+            act.cfg.title = undefined;
+            act.cfg.hash  = undefined;
         }
     };
 
