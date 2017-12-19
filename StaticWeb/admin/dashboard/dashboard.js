@@ -98,10 +98,10 @@ jQuery(function($)
     {
         $('.edit-btn').click(function()
         {
-            let $this = $(this);
-            // Edit article
-            let nid = $this.parents('.article-card').attr('data-nid');
-            window.location.href = '/admin/edit_newsletter?nid=' + nid;
+            // Edit article (using /admin/edit_newsletter)
+            let $card = $(this).parents('.article-card');
+            act.cfg.useAttrs($card);
+            act.onBtnEdit();
         });
         $('.delete-btn').click(function()
         {
