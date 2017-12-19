@@ -73,6 +73,13 @@ jQuery(function($)
         let nid = $('#-data-nid-container').attr('data-nid');
         nid = typeof nid !== typeof undefined && nid !== false ? nid : null;
 
+        if (!$('#ntitle').val().trim())
+        {
+            swal("Error", "You must specify a title in order to save this newsletter.", 'error')
+                .then(() => $('#ntitle').focus());
+            return;
+        }
+
         let saveData = {
             newTitle: $('#ntitle').val(),
             newText: $editorFrame.contents().find('#markdown').val()
@@ -120,6 +127,29 @@ jQuery(function($)
                 $('#publish-btn').remove();
             }});
 
+    });
+
+    $('#delete-btn').click(function()
+    {
+        let nid = $('#-data-nid-container').attr('data-nid');
+
+        // Abort if article is not saved
+        if (typeof nid === typeof undefined || !nid)
+        {
+            swal("Error", "This article is not saved and can therefore not be deleted.", 'error');
+            return;
+        }
+
+        act.cfg.clear();
+        act.cfg.nid = nid;
+        act.cfg.title = $('#ntitle').val();
+
+        act.onBtnDelete({
+            callback: () =>
+            {
+                window.location.href = '/admin/dashboard';
+            }
+        });
     });
 
     // TODO: Register other action buttons here
