@@ -107,7 +107,15 @@ jQuery(function($)
         {
             let $this = $(this);
             // Delete article
-            actDeleteArticle($this.parents('.article-card'));
+            let $card = $(this).parents('.article-card');
+            act.cfg.useAttrs($card);
+            act.onBtnDelete({
+                callback: () =>
+                {
+                    $card.remove();
+                }
+            });
+            //actDeleteArticle($this.parents('.article-card'));
         });
         $('.publish-btn').click(function()
         {
