@@ -58,6 +58,9 @@ jQuery(function($)
                 // As soon as editor frame is loaded, init text area
                 $('#editor-frame').on('load', () => $('#editor-frame').contents().find('#markdown').val(data.text));
                 $('#ntitle').val(data.title);
+                // If article is published, remove "Publish" button
+                if (data.published)
+                    $('#publish-btn').remove();
                 Materialize.updateTextFields();
             }
         });
@@ -94,6 +97,28 @@ jQuery(function($)
             };
 
         ServerComm.doSave(saveData);
+
+    });
+
+    $('#publish-btn').click(function()
+    {
+        let nid = $('#-data-nid-container').attr('data-nid');
+
+        // Abort if article is not saved
+        if (typeof nid === typeof undefined || !nid)
+        {
+            console.log("WARNING: #publish-btn clicked but no data-nid known");
+            return;
+        }
+
+        act.cfg.clear();
+        act.cfg.nid = nid;
+        act.cfg.title = $('#ntitle').val();
+
+        act.onBtnPublish({ callback: () =>
+            {
+                $('#publish-btn').remove();
+            }});
 
     });
 

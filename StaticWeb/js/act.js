@@ -54,11 +54,6 @@ var act = (function(act)
                         action === 'view'
                             ? window.location.href = '/view?nid=' + nid
                             : callback();
-                        /*if (action === 'view')
-                            window.location.href = '/view?nid=' + nid;
-                        else
-                            callback();*/
-                            //$card.find('.publish-btn').remove();
                     });
             }, errReason =>
             {
@@ -124,13 +119,8 @@ var act = (function(act)
                 function handleSuccess()
                 {
                     // Article was deleted successfully
-                    return swal("Success", "Successfully deleted \"" + title + "\"", 'success')
-                        .then(() =>
-                        {
-                            // Refresh page
-                            callback();
-                            //$card.remove();
-                        });
+                    return swal("Success", `Successfully deleted "${title}"`, 'success')
+                        .then(() => callback());
                 }
 
                 function handleNotDeleted()
