@@ -19,3 +19,8 @@ div.big.row
     padding-top: 40px;
     padding-bottom: 40px;
 }
+
+img[src="/img/logo.jpg"]
+{
+    cursor: pointer;
+}
