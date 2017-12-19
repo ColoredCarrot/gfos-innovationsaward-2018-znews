@@ -113,52 +113,14 @@ jQuery(function($)
         {
             let $this = $(this);
             // Publish article
-            actPublishArticle($this.parents('.article-card'));
+            //actPublishArticle($this.parents('.article-card'));
+            let $card = $this.parents('.article-card');
+            act.cfg.useAttrs($card);
+            act.onBtnPublish({ callback: () =>
+                {
+                    $card.find('.publish-btn').remove();
+                }});
         });
-    }
-
-    function actPublishArticle($card, nid = $card.attr('data-nid'))
-    {
-        swal("Confirm Publication", "You are about to publish \"" + $card.attr('data-title') + "\". It will be available for everyone to view! Do you wish to continue?", 'warning', {
-            buttons: true
-        })
-            .then(doPublish =>
-            {
-                return doPublish ? ajaxPublish(nid) : $.Deferred().reject('Cancelled');
-            })
-            .then(data =>
-            {
-                swal("Success", "You have published \"" + $card.attr('data-title') + "\".", 'success', {
-                    buttons: {
-                        cancel: "Close",
-                        view: {
-                            text: "View",
-                            value: 'view'
-                        }
-                    }
-                })
-                    .then(action =>
-                    {
-                        if (action === 'view')
-                            window.location.href = '/view?nid=' + nid;
-                        else
-                            $card.find('.publish-btn').remove();
-                    });
-            }, errReason =>
-            {
-                if (errReason === 'Cancelled')
-                    return;
-                console.log("Internal Error", errReason);
-                swal("Internal Error", "An unexpected error occurred. Please try again later.", 'error');
-            });
-
-        function ajaxPublish(nid)
-        {
-            return $.ajax('/admin/api/publish', {
-                data: { nid: nid },
-                cache: false
-            });
-        }
     }
 
     function actDeleteArticle($card, nid = $card.attr('data-nid'), title = $card.attr('data-title'))
