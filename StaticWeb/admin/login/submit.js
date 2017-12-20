@@ -1,6 +1,8 @@
 $(function()
 {
 
+    window.setTimeout(() => $('#usr').focus(), 50);
+
     $('#main-form').submit(function(e)
     {
         e.preventDefault();
