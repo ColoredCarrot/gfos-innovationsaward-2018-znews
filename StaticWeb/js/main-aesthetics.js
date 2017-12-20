@@ -5,4 +5,7 @@ jQuery(function($)
     onResize();
 
     $('img[src="/img/logo.jpg"]').click(() => window.location.href = '/');
+
+    if (!$('main').length)
+        $('body').children().appendTo($('<main></main>').appendTo($('body')));
 });

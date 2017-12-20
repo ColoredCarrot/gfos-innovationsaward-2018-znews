@@ -24,3 +24,19 @@ img[src="/img/logo.jpg"]
 {
     cursor: pointer;
 }
+/* Push footer down */
+body
+{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main
+{
+    flex: 1 0 auto;
+}
+
+.page-footer
+{
+    background-color: #b5b5b5;
+}
