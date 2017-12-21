@@ -2,6 +2,7 @@ package de.znews.server;
 
 import de.znews.server.auth.Authenticator;
 import de.znews.server.config.ZNewsConfiguration;
+import de.znews.server.emai_reg.EmailSender;
 import de.znews.server.netty.ZNewsNettyServer;
 import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
@@ -25,6 +26,7 @@ public class ZNews
     public final SessionManager     sessionManager;
     public final NewsletterManager  newsletterManager;
     public final StaticWeb          staticWeb;
+    public final EmailSender        emailSender;
     
     public ZNewsNettyServer server;
     
@@ -57,6 +59,8 @@ public class ZNews
         sessionManager = new SessionManager(authenticator);
         
         staticWeb = new StaticWeb(new File("static_web"), config.getStaticWebConfig());
+    
+        emailSender = new EmailSender(this);
         
     }
     

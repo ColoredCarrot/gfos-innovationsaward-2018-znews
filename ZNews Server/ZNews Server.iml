@@ -25,5 +25,7 @@
     <orderEntry type="module" module-name="JsonApi" />
     <orderEntry type="library" name="commons-validator:commons-validator:1.6" level="project" />
     <orderEntry type="library" name="com.sendgrid:sendgrid-java:4.0.1" level="project" />
+    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
+    <orderEntry type="library" name="javax.mail:javax.mail-api:1.6.0" level="project" />
   </component>
 </module>
