@@ -13,7 +13,12 @@ public class DoubleOptInEmail extends Email
     @Setter
     private String registeredEmail;
     
-    protected DoubleOptInEmail(ZNews znews, EmailTemplate template)
+    public DoubleOptInEmail(ZNews znews)
+    {
+        this(znews, null/*FIXME: Add DoubleOptInEmailTemplate*/);
+    }
+    
+    public DoubleOptInEmail(ZNews znews, EmailTemplate template)
     {
         super(znews);
         this.template = template;

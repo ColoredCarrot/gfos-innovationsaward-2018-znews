@@ -4,8 +4,11 @@ import com.coloredcarrot.jsonapi.ast.JsonNode;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import de.znews.server.Common;
 import de.znews.server.ZNews;
+import de.znews.server.emai_reg.DoubleOptInEmail;
 import de.znews.server.resources.exception.HttpException;
 import org.apache.commons.validator.routines.EmailValidator;
+
+import javax.mail.MessagingException;
 
 public class SubscribeResource extends JSONResource
 {
@@ -22,7 +25,7 @@ public class SubscribeResource extends JSONResource
     {
         
         String email = ctx.getStringParam("email");
-    
+        
         if (!EmailValidator.getInstance().isValid(email))
         {
             return JsonObject.createBuilder()
@@ -32,7 +35,7 @@ public class SubscribeResource extends JSONResource
                                                      .add("message", "Invalid email address").build())
                              .build();
         }
-    
+        
         if (znews.registrationList.isRegistered(email))
         {
             return JsonObject.createBuilder()
@@ -43,7 +46,26 @@ public class SubscribeResource extends JSONResource
                              .build();
         }
         
-        znews.registrationList.registerNewEmail(email);
+        //znews.registrationList.registerNewEmail(email);
+        DoubleOptInEmail doubleOptInEmail = new DoubleOptInEmail(znews);
+        doubleOptInEmail.setRegisteredEmail(email);
+        
+        try
+        {
+            doubleOptInEmail.send(email);
+        }
+        catch (MessagingException e)
+        {
+            // Failed to send email
+            e.printStackTrace();
+            return JsonObject.createBuilder()
+                             .add("success", false)
+                             .add("error", JsonObject.createBuilder()
+                                                     .add("code", "FAILED_TO_SEND_EMAIL" /*FIXME: Create Common.-entry*/)
+                                                     .add("message", "Failed to send double opt-in email")
+                                                     .build())
+                             .build();
+        }
         
         return JsonObject.createBuilder().add("success", true).build();
         
