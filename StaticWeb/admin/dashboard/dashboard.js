@@ -63,6 +63,7 @@ jQuery(function($)
              let $card = $cardTemplate.clone();
 
              $card.find('.card-content').text(article.title);
+             $card.find('.view-btn').attr('href', '/view?nid=' + article.nid);
              $card.find('.article-card')
                   .attr('data-nid', article.nid)
                   .attr('data-title', article.title)
@@ -94,7 +95,7 @@ jQuery(function($)
          }
      });
 
-    function initButtons()
+    function initButtons(nid)
     {
         $('.edit-btn').click(function()
         {
