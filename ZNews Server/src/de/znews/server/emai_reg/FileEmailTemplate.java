@@ -16,7 +16,8 @@ public class FileEmailTemplate extends EmailTemplate
     private final String plaintextPathInJar, htmlPathInJar;
     private final File   file;
     private final String subject;
-    private       String plaintext, html;
+    
+    private volatile String plaintext, html;
     
     public FileEmailTemplate(ZNews znews, String plaintextPathInJar, String htmlPathInJar, File file, String subject)
     {
@@ -27,17 +28,17 @@ public class FileEmailTemplate extends EmailTemplate
         this.subject = subject;
     }
     
-    private void loadIfNecessary()
+    private synchronized void loadIfNecessary()
     {
         if (plaintext == null && html == null)
-            loadSilently();
+            _loadSilently();
     }
     
-    private void loadSilently()
+    private void _loadSilently()
     {
         try
         {
-            load();
+            _load();
         }
         catch (IOException e)
         {
@@ -45,27 +46,27 @@ public class FileEmailTemplate extends EmailTemplate
         }
     }
     
-    private synchronized void load() throws IOException
+    private void _load() throws IOException
     {
         File file = this.file;
         if (file.exists())
-            loadFromFile(file);
+            _loadFromFile(file);
         else
-            loadFromJar(file);
+            _loadFromJar(file);
     }
     
-    private void loadFromFile(File file) throws IOException
+    private void _loadFromFile(File file) throws IOException
     {
         file = file.getAbsoluteFile();
         if (file.isFile())
-            loadSingleFromDocument(file);
+            _loadSingleFromDocument(file);
         else if (file.isDirectory())
         {
             File[] children = file.listFiles();
             assert children != null;
             for (File child : children)
                 if (child.isFile())
-                    loadSingleFromDocument(child);
+                    _loadSingleFromDocument(child);
                 else
                     System.err.println("WARNING: Child of email template directory is not a file");
             if (plaintext == null && html == null)
@@ -75,7 +76,7 @@ public class FileEmailTemplate extends EmailTemplate
             throw new IOException("File is neither file nor directory");
     }
     
-    private void loadSingleFromDocument(File file) throws IOException
+    private void _loadSingleFromDocument(File file) throws IOException
     {
         if (file.getName().endsWith("html"))
         {
@@ -87,7 +88,7 @@ public class FileEmailTemplate extends EmailTemplate
         }
     }
     
-    private void loadFromJar(File file) throws IOException
+    private void _loadFromJar(File file) throws IOException
     {
         
         if (plaintextPathInJar != null && htmlPathInJar != null)
@@ -119,25 +120,25 @@ public class FileEmailTemplate extends EmailTemplate
             }
         }
         
-        loadFromFile(file);
+        _loadFromFile(file);
         
     }
     
     @Override
-    public synchronized String getSubject()
+    public String getSubject()
     {
         return subject;
     }
     
     @Override
-    public synchronized String getPlaintext()
+    public String getPlaintext()
     {
         loadIfNecessary();
         return plaintext;
     }
     
     @Override
-    public synchronized String getHtml()
+    public String getHtml()
     {
         loadIfNecessary();
         return html;
