@@ -50,9 +50,9 @@ function doSubscribe(email)
         if (data.success)
         {
             // Display "Check your Email!"-animation
-            $('#subscribe-form').animateCss('fadeOut', '.4s', function()
+            $('#loading-img-div').animateCss('fadeOut', '.4s', function()
             {
-                $('#subscribe-form').css({ 'display': 'none' });
+                $('#loading-img-div').css({ 'display': 'none' });
                 $('#check-your-email').show().animateCss('rotateIn');
             });
             return;
@@ -69,6 +69,13 @@ function doSubscribe(email)
             });
 
     }
+
+    // Display loading icon
+    $('#subscribe-form').animateCss('fadeOut', '.4s', function()
+    {
+        $('#subscribe-form').css({ 'display': 'none' });
+        $('#loading-img-div').show().animateCss('fadeIn', '.4s');
+    });
 
     // Send data
     // FINDME: JS Access subscribe API here

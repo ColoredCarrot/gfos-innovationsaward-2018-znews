@@ -1,0 +1,6 @@
+img.blue-img
+{
+    /* This is a suuuper bad bodge to change the black to blue. ...But it works */
+    -webkit-filter: sepia(1) saturate(10000%) hue-rotate(200deg) opacity(.8);
+    filter: sepia(1) saturate(10000%) hue-rotate(200deg) opacity(.8);
+}
