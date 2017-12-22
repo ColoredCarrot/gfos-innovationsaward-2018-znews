@@ -15,7 +15,7 @@ public class DoubleOptInEmail extends Email
     
     public DoubleOptInEmail(ZNews znews)
     {
-        this(znews, null/*FIXME: Add DoubleOptInEmailTemplate*/);
+        this(znews, znews.emailTemplates.DOUBLE_OPT_IN);
     }
     
     public DoubleOptInEmail(ZNews znews, EmailTemplate template)
@@ -33,13 +33,13 @@ public class DoubleOptInEmail extends Email
     @Override
     public String getPlaintext()
     {
-        return template.getPlaintext("{{registered_email}}", registeredEmail);
+        return template.getPlaintext("{{registered_email}}", registeredEmail, "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')));
     }
     
     @Override
     public String getHtml()
     {
-        return template.getHtml("{{registered_email}}", registeredEmail);
+        return template.getHtml("{{registered_email}}", registeredEmail, "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')));
     }
     
 }

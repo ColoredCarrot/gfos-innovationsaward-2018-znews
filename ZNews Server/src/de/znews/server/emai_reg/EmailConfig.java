@@ -24,6 +24,8 @@ public class EmailConfig
     private Protocol protocol;
     private boolean  debug;
     
+    private String templatePathDoubleOptIn;
+    
     public Properties toJavaxMailProps(Consumer<? super Authenticator> authenticatorConsumer)
     {
         Properties p = new Properties();
@@ -47,6 +49,7 @@ public class EmailConfig
             authenticatorConsumer.accept(new Authenticator()
             {
                 private PasswordAuthentication pa = new PasswordAuthentication(authUsr, authPw);
+                
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication()
                 {

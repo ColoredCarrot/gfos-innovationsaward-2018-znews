@@ -105,7 +105,7 @@ public class StaticWeb
     private byte[] loadFromFile(String path) throws ExecutionException, InterruptedException
     {
         
-        File file = new File(root, path);
+        File file = getFile(path);
         
         byte[] finalResult = loadingFiles.computeIfAbsent(file, f ->
         {
@@ -135,7 +135,7 @@ public class StaticWeb
         
     }
     
-    private File getFile(String path)
+    public File getFile(String path)
     {
         return new File(root, path);
     }
@@ -146,8 +146,8 @@ public class StaticWeb
     @AllArgsConstructor
     public static class Config
     {
-        private boolean enableCaching = true;
         private String  err404Path    = "error/404notfound.html";
+        private boolean enableCaching = true;
         private int     cacheSize     = 32;
     }
     

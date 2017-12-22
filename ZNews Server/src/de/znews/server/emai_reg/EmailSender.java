@@ -3,6 +3,7 @@ package de.znews.server.emai_reg;
 import com.google.common.net.MediaType;
 import de.znews.server.ZNews;
 import de.znews.server.lib.Wrapper;
+import org.jetbrains.annotations.Nullable;
 
 import javax.mail.Authenticator;
 import javax.mail.BodyPart;
@@ -40,7 +41,7 @@ public class EmailSender
         
         Session session = Session.getInstance(props, authenticatorWrapper.get());
         session.setDebug(znews.config.getEmailConfig().isDebug());
-    
+        
         Message msg = null;
         try
         {
@@ -52,7 +53,7 @@ public class EmailSender
                 throw (MessagingException) e.getCause();
             throw e;
         }
-    
+        
         if (msg.getSentDate() == null)
             msg.setSentDate(new Date());
         
@@ -88,13 +89,14 @@ public class EmailSender
             try
             {
                 Multipart m = new MimeMultipart();
-        
+                
                 for (Map.Entry<MediaType, Object> alternative : alternatives.entrySet())
                 {
                     BodyPart bodyPart = new MimeBodyPart();
                     bodyPart.setContent(alternative.getValue(), alternative.getKey().toString());
+                    m.addBodyPart(bodyPart);
                 }
-        
+                
                 return m;
             }
             catch (MessagingException e)
@@ -104,11 +106,12 @@ public class EmailSender
         });
     }
     
-    public void sendPlaintextAndHtml(String to, String subject, String plaintext, String html) throws MessagingException
+    public void sendPlaintextAndHtml(String to, String subject, String plaintext, @Nullable String html) throws MessagingException
     {
         Map<MediaType, Object> alternatives = new HashMap<>();
         alternatives.put(MediaType.PLAIN_TEXT_UTF_8, plaintext);
-        alternatives.put(MediaType.HTML_UTF_8, html);
+        if (html != null)
+            alternatives.put(MediaType.HTML_UTF_8, html);
         send(to, subject, alternatives);
     }
     

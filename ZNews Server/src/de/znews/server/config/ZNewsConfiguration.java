@@ -59,6 +59,8 @@ public class ZNewsConfiguration
         emailConfig.setProtocol(EmailConfig.Protocol.valueOf(props.getProperty("email.protocol").toUpperCase(Locale.ENGLISH)));
         emailConfig.setDebug(getBoolean("email.debug"));
         
+        emailConfig.setTemplatePathDoubleOptIn(props.getProperty("email.templates.double-opt-in"));
+        
     }
     
     public int getPort()
