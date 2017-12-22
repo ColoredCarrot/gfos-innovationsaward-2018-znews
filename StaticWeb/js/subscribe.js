@@ -40,7 +40,7 @@ function doSubscribe(email)
 
     function handleSubscribeError(err)
     {
-        swal('Error', 'An unexpected error occured. Please try again later', 'error');
+        swal("Error", "An unexpected error occurred. Please try again later", 'error');
     }
 
     function handleSubscribeResponse(data)
@@ -79,13 +79,13 @@ function doSubscribe(email)
         cache: false,
         error: function(jqXHR, textStatus, errorThrown)
         {
-            console.log('Subscription error: ' + textStatus + ' =>');
+            console.log(`Subscription error: ${textStatus} =>`);
             console.log(errorThrown);
             handleSubscribeError(errorThrown);
         },
         success: function(data, textStatus, jqXHR)
         {
-            console.log('Subscription success: ' + textStatus + ' =>');
+            console.log(`Subscription success: ${textStatus} =>`);
             console.log(data);
             handleSubscribeResponse(data);
         }
