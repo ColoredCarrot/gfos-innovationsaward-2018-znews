@@ -28,7 +28,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	public ResourceProviderHandler(ZNews znews)
 	{
 		// FINDME: Register resources here
-		resources.addAll(Arrays.asList(new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
+		resources.addAll(Arrays.asList(new ConfirmSubscriptionResource(znews), new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
 		this.staticWeb = znews.staticWeb;
 	}
 	
