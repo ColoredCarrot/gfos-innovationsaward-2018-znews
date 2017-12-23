@@ -60,7 +60,13 @@ jQuery(function($)
 
                 $('#-data-nid-container').attr('data-nid', nidParam);
                 // As soon as editor frame is loaded, init text area
-                $('#editor-frame').on('load', () => $('#editor-frame').contents().find('#markdown').val(data.text));
+
+                $('#editor-frame').on('load', () =>
+                {
+                    $('#editor-frame').contents().find('#markdown').val(data.text);
+                    dirty_hash.recompute();
+                });
+
                 $('#ntitle').val(data.title);
                 // If article is published, remove "Publish" button
                 if (data.published)
@@ -99,6 +105,11 @@ jQuery(function($)
                 {
                     swal("Internal Error", "Returned assigned newsletter ID does not match stored ID", 'error')
                         .then(() => { throw new Error("INTERNAL ERROR: Returned assigned newsletter ID does not match stored ID") });
+                }
+                else
+                {
+                    // Success
+                    dirty_hash.recompute();
                 }
             }
         }
