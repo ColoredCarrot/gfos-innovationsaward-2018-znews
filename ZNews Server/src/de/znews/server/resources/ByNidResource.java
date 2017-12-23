@@ -19,7 +19,7 @@ public class ByNidResource extends JSONResource
     @Override
     protected JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
-        znews.authenticator.requireAuthentication(ctx);
+        znews.authenticator.requireHttpAuthentication(ctx);
         
         String nid = ctx.getStringParam("nid");
         

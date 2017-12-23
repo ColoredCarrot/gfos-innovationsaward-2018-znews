@@ -1,55 +1,84 @@
 package de.znews.server.auth;
 
+import com.coloredcarrot.jsonapi.Json;
+import com.coloredcarrot.jsonapi.ast.JsonArray;
+import com.coloredcarrot.jsonapi.ast.JsonNode;
+import com.coloredcarrot.jsonapi.reflect.JsonDeserializer;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import com.coloredcarrot.jsonapi.reflect.JsonSerializer;
 import de.znews.server.ZNews;
 import de.znews.server.resources.RequestContext;
 import de.znews.server.resources.exception.Http403ForbiddenException;
 import de.znews.server.resources.exception.HttpException;
+import de.znews.server.sessions.Session;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class Authenticator implements Serializable, JsonSerializable
+public class Authenticator implements JsonSerializable
 {
-	
-    public transient ZNews znews;
     
-	// <username, email>
-	private Map<String, String> adminData = new HashMap<>();
+    private transient ZNews znews;
+    private Map<UUID, Admin> admins = new HashMap<>();
     
-    public Authenticator(ZNews znews)
+    public void setZNewsInstance(ZNews instance)
     {
-        this.znews = znews;
+        this.znews = instance;
     }
     
-    public boolean isAdmin(String username, String password)
-	{
-		return password.equals(adminData.get(username));
-	}
-	
-	public void addAdmin(String username, String password)
-	{
-		adminData.put(username, password);
-	}
-    
-    /**
-     * Throws an {@link Http403ForbiddenException} if
-     * <ol>
-     *     <li>there is no cookie <code>'znews_auth'</code> in <code>ctx</code> or</li>
-     *     <li>the cookie value is not a valid session token.</li>
-     * </ol>
-     *
-     * @param ctx The RequestContext which is to contain a valid <code>znews_auth</code>-cookie
-     * @throws HttpException (see above)
-     */
-    public void requireAuthentication(RequestContext ctx) throws HttpException
+    private Optional<Admin> getPossibleAdmin(String email)
     {
-        if (!ctx.hasCookieParam("znews_auth"))
+        return admins.values().stream().filter(a -> a.getEmail().equalsIgnoreCase(email)).findFirst();
+    }
+    
+    public Admin addAdmin(String email, String name, String password)
+    {
+        getPossibleAdmin(email).ifPresent(admin -> { throw new IllegalArgumentException("An admin with that email already exists"); });
+        Admin admin = Admin.create(email, name, password);
+        admins.put(admin.getUniqueId(), admin);
+        return admin;
+    }
+    
+    public Optional<Admin> authenticate(String email, String password)
+    {
+        return getPossibleAdmin(email).filter(admin -> admin.checkPassword(password));
+    }
+    
+    public Session requireHttpAuthentication(RequestContext ctx) throws HttpException
+    {
+        return Optional.ofNullable(ctx.getStringCookieParam("znews_auth"))
+                       .flatMap(znews.sessionManager::isAuthenticated)
+                       .orElseThrow(() -> new Http403ForbiddenException("Failed to authenticate"));
+        
+        /*if (!ctx.hasCookieParam("znews_auth"))
             throw new Http403ForbiddenException("Authentication cookie missing");
         String auth = ctx.getStringCookieParam("znews_auth");
         if (!znews.sessionManager.isAuthenticated(auth))
-            throw new Http403ForbiddenException("Authentication cookie invalid");
+            throw new Http403ForbiddenException("Authentication cookie invalid");*/
+        
+    }
+    
+    @JsonSerializer
+    private JsonNode serialize()
+    {
+        JsonArray.Builder json = JsonArray.createBuilder();
+        for (Admin admin : admins.values())
+            json.add(admin);
+        return json.build();
+    }
+    
+    @JsonDeserializer
+    private static Authenticator deserialize(JsonArray json)
+    {
+        Authenticator authenticator = new Authenticator();
+        authenticator.admins = json.getContents().stream()
+                                   .map(adminJson -> Json.deserialize(adminJson, Admin.class))
+                                   .collect(Collectors.toMap(Admin::getUniqueId, Function.identity()));
+        return authenticator;
     }
     
 }

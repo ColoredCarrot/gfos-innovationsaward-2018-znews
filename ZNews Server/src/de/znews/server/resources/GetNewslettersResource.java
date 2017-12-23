@@ -31,7 +31,7 @@ public class GetNewslettersResource extends JSONResource
         boolean includeNonPublished = ctx.hasParam("include-non-published") && TRUE_STRINGS.contains(ctx.getStringParam("include-non-published").toLowerCase(Locale.ENGLISH));
         
         if (includenid || includeNonPublished)
-            znews.authenticator.requireAuthentication(ctx);
+            znews.authenticator.requireHttpAuthentication(ctx);
         
         int amount = ctx.getIntParam("amount", 5);
         

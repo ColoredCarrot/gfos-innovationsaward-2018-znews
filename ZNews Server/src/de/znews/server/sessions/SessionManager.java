@@ -4,6 +4,7 @@ import de.znews.server.auth.Authenticator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class SessionManager
 {
@@ -16,20 +17,26 @@ public class SessionManager
 		this.authenticator = authenticator;
 	}
 	
-	public String authenticate(String username, String password)
+	public Optional<Session> authenticate(String email, String password)
 	{
 		// Invalid credentials?
-		if (!authenticator.isAdmin(username, password))
-			return null;
         
-        return sessionMap.computeIfAbsent(username, usr -> Session.newSession(username, password)).getToken();
+        return authenticator.authenticate(email, password)
+                            .map(admin -> sessionMap.computeIfAbsent(email, usr -> Session.newSession(admin)));
+		
+        /*if (!authenticator.authenticate(email, password).isPresent())
+            return null;
+        
+        return sessionMap.computeIfAbsent(email, usr -> Session.newSession(email, password)).getToken();*/
 		
 	}
 	
-	public boolean isAuthenticated(String token)
+	public Optional<Session> isAuthenticated(String token)
 	{
-		//return sessionMap.containsKey(token);
-        return sessionMap.values().stream().anyMatch(s -> s.getToken().equals(token));
+		///return sessionMap.containsKey(token);
+        return sessionMap.values().stream()
+                         .filter(s -> s.getToken().equals(token))
+                         .findFirst();
 	}
 	
 }

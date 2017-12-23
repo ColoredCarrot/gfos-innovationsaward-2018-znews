@@ -57,10 +57,10 @@ public class FileDataAccess extends DataAccess
 	@Override
 	public Authenticator queryAuthenticator() throws IOException
 	{
-		Authenticator r = queryJsonSerializable(authFile, () -> new Authenticator(getZNews()), Authenticator.class);
+		Authenticator r = queryJsonSerializable(authFile, Authenticator::new, Authenticator.class);
 		// this needs to be here because, when read from JSON,
-        // the znews attribute is null (for some reason D;)
-        r.znews = getZNews();
+        // the znews attribute is null
+		r.setZNewsInstance(getZNews());
 		return r;
 	}
 	

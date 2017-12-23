@@ -8,6 +8,7 @@ import de.znews.server.newsletter.Newsletter;
 import de.znews.server.resources.JSONResource;
 import de.znews.server.resources.RequestContext;
 import de.znews.server.resources.exception.HttpException;
+import de.znews.server.sessions.Session;
 
 public class SaveNewsletterResource extends JSONResource
 {
@@ -21,9 +22,9 @@ public class SaveNewsletterResource extends JSONResource
     @Override
     public JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
-        
-        znews.authenticator.requireAuthentication(ctx);
-        
+    
+        Session authSession = znews.authenticator.requireHttpAuthentication(ctx);
+    
         String newTitle = ctx.getStringParam("title");
         String newText  = ctx.getStringParam("text");
         
@@ -42,7 +43,7 @@ public class SaveNewsletterResource extends JSONResource
         if (newsletterId == null)
         {
             // Create new newsletter
-            Newsletter n = new Newsletter(newTitle, newText);
+            Newsletter n = new Newsletter(newTitle, newText, authSession.getOwner());
             znews.newsletterManager.addNewsletter(n);
             newsletterId = n.getId();
         }

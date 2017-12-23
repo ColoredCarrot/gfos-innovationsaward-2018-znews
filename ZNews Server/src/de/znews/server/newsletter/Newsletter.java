@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -15,20 +16,24 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Newsletter implements Serializable, JsonSerializable
 {
-	
-	private static final long serialVersionUID = -9142303673191329331L;
-	
-	@Setter(AccessLevel.NONE)
-	private String id;
-	private String title;
-	private String text;
-	private boolean published = false;
     
-    public Newsletter(String title, String text)
+    private static final long serialVersionUID = -9142303673191329331L;
+    
+    @Setter(AccessLevel.NONE)
+    private String  id;
+    private String  title;
+    private String  text;
+    private boolean published;
+    private Date    datePublished;
+    private UUID    publisher;
+    
+    public Newsletter(String title, String text, UUID publisher)
     {
         this.title = title;
         this.text = text;
+        this.publisher = publisher;
         this.id = UUID.randomUUID().toString();
+        this.datePublished = new Date();
     }
     
 }
