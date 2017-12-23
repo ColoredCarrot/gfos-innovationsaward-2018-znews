@@ -40,3 +40,13 @@ main
 {
     background-color: #b5b5b5;
 }
+
+i.nav-link-bullet
+{
+    margin-right: 0;
+}
+
+i.nav-link-bullet:not(.nav-link-bullet-indent)
+{
+    margin-left: -24px;
+}
