@@ -14,7 +14,7 @@ jQuery(function($)
     }
 
     if (typeof ServerComm === typeof undefined || !ServerComm)
-        throw new Error('ServerComm not defined! Please include `server-comm.js` before `edit_newsletter.js`');
+        throw new Error("ServerComm not defined! Please include `server-comm.js` before `edit_newsletter.js`");
 
     ServerComm.toast = function(message, duration = 2000)
     {
@@ -34,7 +34,7 @@ jQuery(function($)
         // If a 'nid' query param exists, load the newsletter
         if (!nidParam)
         {
-            $('#edit-article-headline').text('Create Article');
+            $('#edit-article-headline').text("Create Article");
             return;
         }
         $.ajax('/admin/api/by_nid', {
@@ -46,14 +46,18 @@ jQuery(function($)
             success: function(data, textStatus, jqXHR)
             {
                 // Store retrieved data
+
                 data = JSON.parse(data);
+
                 if (!data.success)
                 {
                     // TODO: Display actual error message
                     window.location.replace('/404');
                     return;
                 }
+
                 data = data.data;
+
                 $('#-data-nid-container').attr('data-nid', nidParam);
                 // As soon as editor frame is loaded, init text area
                 $('#editor-frame').on('load', () => $('#editor-frame').contents().find('#markdown').val(data.text));
@@ -62,6 +66,7 @@ jQuery(function($)
                 if (data.published)
                     $('#publish-btn').remove();
                 Materialize.updateTextFields();
+
             }
         });
     })(getQueryParamByName('nid'));
@@ -92,8 +97,8 @@ jQuery(function($)
             {
                 if (assignedNid !== nid)
                 {
-                    swal('Internal Error', 'Returned assigned newsletter ID does not match stored ID', 'error')
-                        .then(() => { throw new Error('INTERNAL ERROR: Returned assigned newsletter ID does not match stored ID') });
+                    swal("Internal Error", "Returned assigned newsletter ID does not match stored ID", 'error')
+                        .then(() => { throw new Error("INTERNAL ERROR: Returned assigned newsletter ID does not match stored ID") });
                 }
             }
         }
@@ -122,10 +127,9 @@ jQuery(function($)
         act.cfg.nid = nid;
         act.cfg.title = $('#ntitle').val();
 
-        act.onBtnPublish({ callback: () =>
-            {
-                $('#publish-btn').remove();
-            }});
+        act.onBtnPublish({
+            callback: () => $('#publish-btn').remove()
+        });
 
     });
 
@@ -145,10 +149,7 @@ jQuery(function($)
         act.cfg.title = $('#ntitle').val();
 
         act.onBtnDelete({
-            callback: () =>
-            {
-                window.location.href = '/admin/dashboard';
-            }
+            callback: () => window.location.href = '/admin/dashboard'
         });
     });
 
