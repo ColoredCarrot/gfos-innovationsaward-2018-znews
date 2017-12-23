@@ -9,8 +9,8 @@ $(function()
         e.stopPropagation();
 
         var data = {
-            usr: $('#usr').val(),
-            pw: $('#pw').val()
+            email: $('#usr').val(),
+            password: $('#pw').val()
         };
 
         $.ajax('/admin/api/get_token', {
@@ -21,8 +21,8 @@ $(function()
             {
                 // Authentication successful
                 swal({
-                    title: 'Login Successful',
-                    text: 'Click \'OK\' to proceed',
+                    title: "Login Successful",
+                    text: "Click 'OK' to proceed",
                     icon: 'success'
                 }).then(function()
                 {
@@ -34,7 +34,7 @@ $(function()
                 403: function()
                 {
                     // Authentication unsuccessful
-                    swal('Login Unsuccessful', 'Invalid Username or Password', 'error')
+                    swal("Login Unsuccessful", "Invalid E-Mail or Password", 'error')
                         .then(function()
                         {
                             // Clear and focus password field
