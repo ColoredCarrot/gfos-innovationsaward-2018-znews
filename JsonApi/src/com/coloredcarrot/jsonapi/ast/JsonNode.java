@@ -7,6 +7,8 @@ public interface JsonNode
     
     int intValue();
     
+    long longValue();
+    
     double doubleValue();
     
     boolean booleanValue();

@@ -13,15 +13,7 @@ import com.coloredcarrot.jsonapi.parsing.JsonException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -68,6 +60,7 @@ public class ReflectJsonDeserializer
         }
     }
     
+    @SuppressWarnings("unchecked")
     protected <T> T deserialize0(Class<T> clazz, JsonNode json) throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
     {
         
@@ -85,6 +78,10 @@ public class ReflectJsonDeserializer
             return deserializeCollection(clazz, json);
         if (Map.class.isAssignableFrom(clazz))
             return deserializeMap(clazz, json);
+        if (clazz == Date.class)
+            return (T) deserializeDate(json);
+        if (clazz == UUID.class && !(json instanceof JsonObject))
+            return (T) deserializeUUID(json);
     
         return deserializeFields(clazz, json);
         
@@ -157,6 +154,16 @@ public class ReflectJsonDeserializer
     {
         method.setAccessible(true);
         return (T) method.invoke(null, json);
+    }
+    
+    protected Date deserializeDate(JsonNode json)
+    {
+        return new Date(json.longValue());
+    }
+    
+    protected UUID deserializeUUID(JsonNode json)
+    {
+        return UUID.fromString(json.stringValue());
     }
     
     public Object freelyDeserialize(JsonNode json)

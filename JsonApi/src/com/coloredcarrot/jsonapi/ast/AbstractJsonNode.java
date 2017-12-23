@@ -3,6 +3,8 @@ package com.coloredcarrot.jsonapi.ast;
 public abstract class AbstractJsonNode extends Number implements JsonNode
 {
     
+    private static final long serialVersionUID = 7763150096192888413L;
+    
     @Override
     public boolean booleanValue()
     {
@@ -12,6 +14,9 @@ public abstract class AbstractJsonNode extends Number implements JsonNode
         case "yes":
         case "ok":
         case "accept":
+        case "go":
+        case "forward":
+        case "1":
             return true;
         default:
             return doubleValue() >= 1.0D;

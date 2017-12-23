@@ -3,6 +3,8 @@ package com.coloredcarrot.jsonapi.ast;
 public class JsonDecimal extends JsonNumber
 {
     
+    private static final long serialVersionUID = -5926416609006074371L;
+    
     private double value;
     
     public JsonDecimal(double value)

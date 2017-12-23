@@ -14,11 +14,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ReflectJsonSerializer
 {
+    
+    /*
+    TODO: We need a system to be able to bind specific types to specific (de)serializers
+    without specifying a @Json(Des/S)erializer in that type, for types like Date
+     */
     
     public JsonNode serialize(Object toSerialize)
     {
@@ -39,6 +46,10 @@ public class ReflectJsonSerializer
             return serializeCollection((Collection<?>) toSerialize);
         if (toSerialize instanceof Map<?, ?>)
             return serializeMap((Map<?, ?>) toSerialize);
+        if (toSerialize instanceof Date)
+            return serializeDate((Date) toSerialize);
+        if (toSerialize instanceof UUID)
+            return serializeUUID((UUID) toSerialize);
         
         try
         {
@@ -148,6 +159,16 @@ public class ReflectJsonSerializer
         JsonArray json = new JsonArray();
         map.forEach((key, value) -> json.add(new JsonArray().add(serialize(key)).add(serialize(value))));
         return json;
+    }
+    
+    protected JsonNode serializeDate(Date date)
+    {
+        return new JsonInteger(date.getTime());
+    }
+    
+    protected JsonNode serializeUUID(UUID uuid)
+    {
+        return new JsonString(uuid.toString());
     }
     
 }
