@@ -25,7 +25,7 @@ public class DeleteResource extends JSONResource
     @Override
     protected JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
-        znews.authenticator.requireHttpAuthentication(ctx);
+        znews.sessionManager.requireHttpAuthentication(ctx);
         
         String  nid   = ctx.getStringParam("nid");
         Integer hash  = ctx.hasParam("hash") ? ctx.getIntParam("hash", Integer.MIN_VALUE) : null;

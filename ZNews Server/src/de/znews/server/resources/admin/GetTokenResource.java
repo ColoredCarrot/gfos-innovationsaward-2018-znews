@@ -33,7 +33,7 @@ public class GetTokenResource extends Resource
         if (!ctx.hasPostParam("email") || !ctx.hasPostParam("password"))
             throw new Http400BadRequestException();
         
-        String token = znews.sessionManager.authenticate(ctx.getStringPostParam("email"), ctx.getStringPostParam("password"))
+        String token = znews.sessionManager.addSession(ctx.getStringPostParam("email"), ctx.getStringPostParam("password"))
                                            .map(Session::getToken)
                                            .orElseThrow(() -> new Http403ForbiddenException("Invalid Credentials"));
         

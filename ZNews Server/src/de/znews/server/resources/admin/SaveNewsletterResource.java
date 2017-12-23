@@ -23,7 +23,7 @@ public class SaveNewsletterResource extends JSONResource
     public JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
     
-        Session authSession = znews.authenticator.requireHttpAuthentication(ctx);
+        Session authSession = znews.sessionManager.requireHttpAuthentication(ctx);
     
         String newTitle = ctx.getStringParam("title");
         String newText  = ctx.getStringParam("text");

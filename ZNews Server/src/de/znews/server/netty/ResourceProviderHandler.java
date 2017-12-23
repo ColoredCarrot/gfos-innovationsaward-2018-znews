@@ -3,6 +3,7 @@ package de.znews.server.netty;
 import de.znews.server.ZNews;
 import de.znews.server.resources.*;
 import de.znews.server.resources.admin.GetTokenResource;
+import de.znews.server.resources.admin.LogoutResource;
 import de.znews.server.resources.admin.SaveNewsletterResource;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.static_web.StaticWeb;
@@ -28,7 +29,8 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
 	public ResourceProviderHandler(ZNews znews)
 	{
 		// FINDME: Register resources here
-		resources.addAll(Arrays.asList(new ConfirmSubscriptionResource(znews), new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
+		// TODO: Friggin make this dynamic...
+		resources.addAll(Arrays.asList(new LogoutResource(znews), new ConfirmSubscriptionResource(znews), new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
 		this.staticWeb = znews.staticWeb;
 	}
 	

@@ -49,7 +49,7 @@ public class Authenticator_OLD implements Serializable, JsonSerializable
         /*if (!ctx.hasCookieParam("znews_auth"))
             throw new Http403ForbiddenException("Authentication cookie missing");
         String auth = ctx.getStringCookieParam("znews_auth");
-        if (!znews.sessionManager.isAuthenticated(auth))
+        if (!znews.sessionManager.authenticate(auth))
             throw new Http403ForbiddenException("Authentication cookie invalid");*/
     }
     

@@ -100,7 +100,7 @@ public class Main
         System.out.println(" - Password: " + password);
         
         Admin admin = znews.authenticator.addAdmin(email, name, password);
-    
+        
         System.out.println("Done! Generated unique ID: " + admin.getUniqueId());
         
     }

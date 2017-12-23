@@ -18,7 +18,7 @@ public class PublishResource extends JSONResource
     @Override
     protected JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
-        znews.authenticator.requireHttpAuthentication(ctx);
+        znews.sessionManager.requireHttpAuthentication(ctx);
         
         String nid = ctx.getStringParam("nid");
         

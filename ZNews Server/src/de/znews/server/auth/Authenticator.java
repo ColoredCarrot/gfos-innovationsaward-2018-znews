@@ -7,10 +7,6 @@ import com.coloredcarrot.jsonapi.reflect.JsonDeserializer;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializer;
 import de.znews.server.ZNews;
-import de.znews.server.resources.RequestContext;
-import de.znews.server.resources.exception.Http403ForbiddenException;
-import de.znews.server.resources.exception.HttpException;
-import de.znews.server.sessions.Session;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,19 +44,24 @@ public class Authenticator implements JsonSerializable
         return getPossibleAdmin(email).filter(admin -> admin.checkPassword(password));
     }
     
-    public Session requireHttpAuthentication(RequestContext ctx) throws HttpException
+    public Optional<Admin> getAdmin(UUID uniqueId)
+    {
+        return Optional.ofNullable(admins.get(uniqueId));
+    }
+    
+    /*public Session requireHttpAuthentication(RequestContext ctx) throws HttpException
     {
         return Optional.ofNullable(ctx.getStringCookieParam("znews_auth"))
-                       .flatMap(znews.sessionManager::isAuthenticated)
+                       .flatMap(znews.sessionManager::authenticate)
                        .orElseThrow(() -> new Http403ForbiddenException("Failed to authenticate"));
         
         /*if (!ctx.hasCookieParam("znews_auth"))
             throw new Http403ForbiddenException("Authentication cookie missing");
         String auth = ctx.getStringCookieParam("znews_auth");
-        if (!znews.sessionManager.isAuthenticated(auth))
-            throw new Http403ForbiddenException("Authentication cookie invalid");*/
+        if (!znews.sessionManager.authenticate(auth))
+            throw new Http403ForbiddenException("Authentication cookie invalid");* /
         
-    }
+    }*/
     
     @JsonSerializer
     private JsonNode serialize()

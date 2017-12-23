@@ -58,7 +58,7 @@ public class ZNews
         // Load authenticator (list of admins)
         authenticator = config.getDataAccessConfig().access().queryAuthenticator();
         
-        sessionManager = new SessionManager(authenticator);
+        sessionManager = new SessionManager(this, authenticator);
         
         staticWeb = new StaticWeb(new File("static_web"), config.getStaticWebConfig());
         
