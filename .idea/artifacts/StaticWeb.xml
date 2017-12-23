@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="StaticWeb">
+    <output-path>$PROJECT_DIR$/../../../ZNews/static_web</output-path>
+    <root id="root">
+      <element id="dir-copy" path="$PROJECT_DIR$/StaticWeb" />
+    </root>
+  </artifact>
+</component>
