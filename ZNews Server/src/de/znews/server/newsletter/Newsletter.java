@@ -1,6 +1,8 @@
 package de.znews.server.newsletter;
 
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import de.znews.server.ZNews;
+import de.znews.server.auth.Admin;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,6 +36,15 @@ public class Newsletter implements Serializable, JsonSerializable
         this.publisher = publisher;
         this.id = UUID.randomUUID().toString();
         this.datePublished = new Date();
+    }
+    
+    public String getPublisherName(ZNews znewsInstance)
+    {
+        return publisher == null
+               ? "anonymous" :
+               znewsInstance.authenticator.getAdmin(publisher)
+                                          .map(Admin::getName)
+                                          .orElse(publisher.toString());
     }
     
 }

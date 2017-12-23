@@ -28,16 +28,22 @@ public class ViewResource extends JSONResource
         {
             Newsletter n = znews.newsletterManager.getNewsletter(nid);
             
-            // If not published, treat as if the newsletter didn't exist
-            if (!n.isPublished())
+            // If not published, treat as if the newsletter didn't exist IF user is not logged in
+            if (!n.isPublished() && !znews.sessionManager.authenticate(ctx.getStringCookieParam("znews_auth")).isPresent())
                 throw new Http400BadRequestException("Invalid Newsletter ID");
+            
+            
+            JsonObject.Builder dataJson = JsonObject.createBuilder();
+            dataJson.add("title", n.getTitle())
+                    .add("text", n.getText())
+                    .add("datePublished", n.getDatePublished().getTime())
+                    .add("publisher", n.getPublisherName(znews));
+            if (!n.isPublished())
+                dataJson.add("published", false);
             
             return JsonObject.createBuilder()
                              .add("success", true)
-                             .add("data", JsonObject.createBuilder()
-                                                    .add("title", n.getTitle())
-                                                    .add("text", n.getText())
-                                                    .build())
+                             .add("data", dataJson.build())
                              .build();
         }
         catch (IllegalArgumentException e)
