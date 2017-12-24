@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Change Password | ZNews</title>
+
+    <link rel="stylesheet" href="/fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+</head>
+<body>
+
+<div class="background">
+    <div class="container foreground">
+
+        <!-- Main Logo/Title -->
+        <div class="big row">
+            <div class="col s12 center-align">
+                <img src="/img/logo.jpg" alt="ZNEWS"/>
+            </div>
+        </div>
+
+        <div class="row">
+
+
+            <div class="col s12">
+
+                <div class="row">
+                    <div class="col s12">
+                        <h4 class="red-text text-lighten-1 article-headline">Change Password</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <form class="col s12" id="main-form">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="password" id="oldpw" autofocus="autofocus">
+                                <label for="oldpw">Old Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="password" id="newpw" class="validate">
+                                <label for="newpw">New Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="password" id="confirmnewpw" class="validate">
+                                <label for="confirmnewpw">Confirm Password</label>
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light" type="submit">Submit</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script src="/js/sweetalert.min.js"></script>
+
+<script src="/js/main-aesthetics.js"></script>
+<script src="/admin/change_password/change_password.js"></script>
+
+</body>
+</html>
