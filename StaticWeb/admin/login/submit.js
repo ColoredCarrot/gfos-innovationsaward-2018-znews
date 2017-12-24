@@ -8,7 +8,7 @@ $(function()
         e.preventDefault();
         e.stopPropagation();
 
-        var data = {
+        let data = {
             email: $('#usr').val(),
             password: $('#pw').val()
         };
