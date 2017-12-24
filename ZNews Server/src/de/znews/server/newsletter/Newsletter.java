@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class Newsletter implements Serializable, JsonSerializable
     private String  title;
     private String  text;
     private boolean published;
+    @Nullable
     private Date    datePublished;
     private UUID    publisher;
     
@@ -35,7 +37,6 @@ public class Newsletter implements Serializable, JsonSerializable
         this.text = text;
         this.publisher = publisher;
         this.id = UUID.randomUUID().toString();
-        this.datePublished = new Date();
     }
     
     public String getPublisherName(ZNews znewsInstance)

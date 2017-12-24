@@ -6,9 +6,11 @@ import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class NewsletterManager implements Serializable, JsonSerializable
@@ -50,11 +52,13 @@ public class NewsletterManager implements Serializable, JsonSerializable
         throw new IllegalArgumentException("Newsletter is non-existent");
     }
     
-    public synchronized void doPublishNewsletter(String nid)
+    public synchronized void doPublishNewsletter(String nid, UUID publisher)
     {
         int index = getIndexOfNewsletter(nid);
         Newsletter n = newsletters.remove(index);
         n.setPublished(true);
+        n.setDatePublished(new Date());
+        n.setPublisher(publisher);
         newsletters.add(0, n);
     }
     

@@ -7,6 +7,8 @@ import de.znews.server.newsletter.Newsletter;
 import de.znews.server.resources.exception.Http400BadRequestException;
 import de.znews.server.resources.exception.HttpException;
 
+import java.util.Objects;
+
 public class ViewResource extends JSONResource
 {
     
@@ -35,12 +37,13 @@ public class ViewResource extends JSONResource
             
             JsonObject.Builder dataJson = JsonObject.createBuilder();
             dataJson.add("title", n.getTitle())
-                    .add("text", n.getText())
-                    .add("datePublished", n.getDatePublished().getTime())
-                    .add("publisher", n.getPublisherName(znews));
-            if (!n.isPublished())
+                    .add("text", n.getText());
+            if (n.isPublished())
+                dataJson.add("datePublished", Objects.requireNonNull(n.getDatePublished()).getTime())
+                        .add("publisher", n.getPublisherName(znews));
+            else
                 dataJson.add("published", false);
-            
+    
             return JsonObject.createBuilder()
                              .add("success", true)
                              .add("data", dataJson.build())

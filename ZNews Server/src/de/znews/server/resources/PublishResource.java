@@ -6,6 +6,7 @@ import de.znews.server.Common;
 import de.znews.server.ZNews;
 import de.znews.server.resources.exception.Http400BadRequestException;
 import de.znews.server.resources.exception.HttpException;
+import de.znews.server.sessions.Session;
 
 public class PublishResource extends JSONResource
 {
@@ -18,7 +19,7 @@ public class PublishResource extends JSONResource
     @Override
     protected JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
-        znews.sessionManager.requireHttpAuthentication(ctx);
+        Session session = znews.sessionManager.requireHttpAuthentication(ctx);
         
         String nid = ctx.getStringParam("nid");
         
@@ -29,7 +30,7 @@ public class PublishResource extends JSONResource
         {
             synchronized (znews.newsletterManager)
             {
-                znews.newsletterManager.doPublishNewsletter(nid);
+                znews.newsletterManager.doPublishNewsletter(nid, session.getOwner());
                 
                 return JsonObject.createBuilder()
                                  .add("success", true)

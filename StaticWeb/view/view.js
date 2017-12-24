@@ -59,12 +59,23 @@ jQuery(function($)
          data = JSON.parse(data);
 
          let article = data.data;
-         article.datePublished = new Date(article.datePublished);
+
+         if (article.datePublished)
+            article.datePublished = new Date(article.datePublished);
 
          $('#main-article-headline').text(article.title);
          $('#title').text(article.title + ' | ZNews');
          $('#main-container').append(renderText(article.text));
-         $('#description').text(`Published by ${article.publisher} on ${formatDate(article.datePublished)}`);
+
+         if (article.publisher)
+             $('#description').text(`Published by ${article.publisher} on ${formatDate(article.datePublished)}`);
+         else
+         {
+             $('#description').text(`This article has not yet been published. You are viewing a draft version.`)
+                              .parent()
+                              .removeClass('grey')
+                              .addClass('yellow');
+         }
 
      }, error =>
      {
