@@ -59,12 +59,12 @@ jQuery(function($)
          data = JSON.parse(data);
 
          let article = data.data;
+         article.datePublished = new Date(article.datePublished);
 
          $('#main-article-headline').text(article.title);
          $('#title').text(article.title + ' | ZNews');
          $('#main-container').append(renderText(article.text));
-
-         $('#description').text(`Published by ${article.publisher} on ${formatDate(new Date(article.datePublished))}`);
+         $('#description').text(`Published by ${article.publisher} on ${formatDate(article.datePublished)}`);
 
      }, error =>
      {
@@ -89,7 +89,7 @@ jQuery(function($)
 
     function formatDate(date)
     {
-        let monthNames = [
+        const monthNames = [
             "January", "February", "March",
             "April", "May", "June", "July",
             "August", "September", "October",
