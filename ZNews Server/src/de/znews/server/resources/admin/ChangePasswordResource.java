@@ -45,6 +45,8 @@ public class ChangePasswordResource extends JSONResource
                              .build();
         }
     
+        // Cannot inline because one could turn off asserts, thus not executing #changePasswortTo at all
+        // I spent like twenty minutes trying to figure that out...
         boolean b = admin.changePasswordTo(newpw, oldpw);
         assert b;
     
