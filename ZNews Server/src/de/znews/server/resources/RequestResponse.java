@@ -11,8 +11,8 @@ import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.util.HttpHeaderNames;
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;

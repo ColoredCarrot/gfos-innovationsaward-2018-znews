@@ -1,8 +1,8 @@
 package de.znews.server.dao;
 
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 public abstract class DataAccessConfiguration

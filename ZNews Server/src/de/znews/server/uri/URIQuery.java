@@ -3,13 +3,11 @@ package de.znews.server.uri;
 import de.znews.server.resources.Params;
 import lombok.Getter;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
-@Immutable
 public class URIQuery
 {
     

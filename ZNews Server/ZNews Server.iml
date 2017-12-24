@@ -8,8 +8,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="javax.json.processing-1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.0.M22" level="application_server_libraries" />
     <orderEntry type="library" name="io.netty:netty-all:4.0.48.Final" level="project" />
     <orderEntry type="library" name="org.projectlombok:lombok-maven-plugin:1.16.16.0" level="project" />
     <orderEntry type="library" name="org.reflections:reflections:0.9.11" level="project" />
@@ -24,10 +22,8 @@
     </orderEntry>
     <orderEntry type="module" module-name="JsonApi" />
     <orderEntry type="library" name="commons-validator:commons-validator:1.6" level="project" />
-    <orderEntry type="library" name="com.sendgrid:sendgrid-java:4.0.1" level="project" />
-    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="library" exported="" name="javax.mail:javax.mail-api:1.6.0" level="project" />
-    <orderEntry type="library" name="com.sun.mail:javax.mail:1.6.0" level="project" />
+    <orderEntry type="library" exported="" name="com.sun.mail:javax.mail:1.6.0" level="project" />
     <orderEntry type="library" exported="" name="jBCrypt-0.4" level="project" />
   </component>
 </module>
