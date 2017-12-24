@@ -10,5 +10,6 @@ public class Common
     public static final String RS_ERR_SAVE_INVALID_NID       = "INVALID_NID";
     public static final String RS_ERR_NID_INVALID            = "INVALID_NID";
     public static final String RS_ERR_NOT_DELETED            = "NOT_DELETED";
+    public static final String RS_ERR_INVALID_OLD_PW         = "INVALID_OLD_PASSWORD";
     
 }
