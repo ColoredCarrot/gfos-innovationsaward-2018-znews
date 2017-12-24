@@ -21,7 +21,7 @@ var dirty_hash = {
         return hash;
     },
 
-    hash: '0',
+    hash: '00',
 
     recompute: function()
     {
