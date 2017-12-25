@@ -7,7 +7,7 @@ ServerComm = (function(sc)
 
     sc.doGetArticles = function(callback, options = {})
     {
-        let { amount = 5, includenid = false, includeNonPublished = false } = options;
+        let { amount = 5, includeNonPublished = false } = options;
 
         let $ = sc.$,
             swal = sc.swal;
@@ -41,8 +41,6 @@ ServerComm = (function(sc)
         let requestData = {
             amount: amount
         };
-        if (includenid)
-            requestData.includenid = 'true';
         if (includeNonPublished)
             requestData['include-non-published'] = 'true';
 

@@ -23,7 +23,6 @@ jQuery(function($)
     {
         return ServerComm.doGetArticles(data => {}, {
             amount: amount,
-            includenid: true,
             includeNonPublished: true
         });
     }

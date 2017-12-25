@@ -3,12 +3,15 @@
     <properties>
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/login/submit.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/logout/logout.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/OLD_editor.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/act.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/js/display-articles-sc.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/subscribe.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
@@ -17,12 +20,15 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/login/test.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/login/submit.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/logout/logout.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/OLD_editor.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/act.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/js/display-articles-sc.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/subscribe.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />

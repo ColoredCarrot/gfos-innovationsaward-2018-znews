@@ -27,10 +27,9 @@ public class GetNewslettersResource extends JSONResource
     protected JsonNode handleJsonRequest(RequestContext ctx) throws HttpException
     {
         
-        boolean includenid          = ctx.hasParam("includenid") && TRUE_STRINGS.contains(ctx.getStringParam("includenid").toLowerCase(Locale.ENGLISH));
         boolean includeNonPublished = ctx.hasParam("include-non-published") && TRUE_STRINGS.contains(ctx.getStringParam("include-non-published").toLowerCase(Locale.ENGLISH));
         
-        if (includenid || includeNonPublished)
+        if (includeNonPublished)
             znews.sessionManager.requireHttpAuthentication(ctx);
         
         int amount = ctx.getIntParam("amount", 5);
@@ -39,18 +38,14 @@ public class GetNewslettersResource extends JSONResource
         
         if (!includeNonPublished)
             newsletterStream = newsletterStream.filter(Newsletter::isPublished);
-    
+        
         newsletterStream = newsletterStream.limit(amount);
         
-        Stream<JsonObject.Builder> stream = includenid ? newsletterStream.map(n -> JsonObject.createBuilder()
-                                                                                             .add("title", n.getTitle())
-                                                                                             .add("text", n.getText())
-                                                                                             .add("published", n.isPublished())
-                                                                                             .add("nid", n.getId()))
-                                                       : newsletterStream.map(n -> JsonObject.createBuilder()
-                                                                                             .add("title", n.getTitle())
-                                                                                             .add("text", n.getText())
-                                                                                             .add("published", n.isPublished()));
+        Stream<JsonObject.Builder> stream = newsletterStream.map(n -> JsonObject.createBuilder()
+                                                                                .add("title", n.getTitle())
+                                                                                .add("text", n.getText())
+                                                                                .add("published", n.isPublished())
+                                                                                .add("nid", n.getId()));
         
         if (!includeNonPublished)
             stream = stream.map(n -> n.remove("published"));
