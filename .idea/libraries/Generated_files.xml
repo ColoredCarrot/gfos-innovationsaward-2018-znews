@@ -11,6 +11,7 @@
         <item url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/OLD_editor.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/act.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/js/auto-add-main-tag.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/display-articles-sc.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/subscribe.min.js" />
@@ -28,6 +29,7 @@
       <root url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/OLD_editor.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/act.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/js/auto-add-main-tag.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/display-articles-sc.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/subscribe.min.js" />
