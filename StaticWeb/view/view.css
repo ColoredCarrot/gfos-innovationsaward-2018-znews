@@ -9,3 +9,8 @@
     margin-top: 0;
     margin-bottom: 1rem;
 }
+
+a.go-back-link
+{
+    margin-left: 10px;
+}
