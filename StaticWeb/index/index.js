@@ -64,19 +64,21 @@ jQuery(function($)
         //</editor-fold>
 
         let articleTemplate = `<li>
-            <div class="collapsible-header">
-                <div class="article-headline red-text"></div>
-                <div class="article-preview"></div>
-            </div>
-            <div class="collapsible-body"></div>
-        </li>`;
+    <div class="collapsible-header">
+        <div class="article-headline red-text"></div>
+        <div class="article-preview"></div>
+    </div>
+    <div class="collapsible-body">
+        <a class="right btn view-article-btn">View</a>
+    </div>
+</li>`;
 
         let $articlesContainer = $('#articles-container');
 
         // For each article...
         $.each(data, function(idx, n)
         {
-            let { title, text } = n;
+            let { title, text, nid } = n;
 
             let $article = $(articleTemplate);
             let $html = renderText(text);
@@ -84,6 +86,7 @@ jQuery(function($)
 
             $article.find('.article-headline').html(title);
             $article.find('.article-preview').append($('<div/>').text(articlePreview).prop('innerHTML'));
+            $article.find('a.view-article-btn').attr('href', '/view?nid=' + nid);
             $article.find('.collapsible-body').append($html.children());
 
             $articlesContainer.append($article);
