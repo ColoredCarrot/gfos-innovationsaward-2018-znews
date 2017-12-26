@@ -3,9 +3,19 @@ package de.znews.server.newsletter;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.reflect.JsonDeserializer;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.options.MutableDataSet;
+import de.znews.server.Main;
+import de.znews.server.emai_reg.NewNewsletterEmail;
 
+import javax.mail.MessagingException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,17 +27,17 @@ public class NewsletterManager implements Serializable, JsonSerializable
 {
     
     // TODO: Make Thread-Safe
-	
-	private static final long serialVersionUID = 592773864822928724L;
-	
-	// Ordered latest newsletter first
-	private List<Newsletter> newsletters = new ArrayList<>();
+    
+    private static final long serialVersionUID = 592773864822928724L;
+    
+    // Ordered latest newsletter first
+    private           List<Newsletter>        newsletters     = new ArrayList<>();
     private transient Map<String, Newsletter> nidToNewsletter = new HashMap<>();
-	
-	public synchronized void addNewsletter(Newsletter newsletter)
-	{
-		newsletters.add(0, newsletter);
-	}
+    
+    public synchronized void addNewsletter(Newsletter newsletter)
+    {
+        newsletters.add(0, newsletter);
+    }
     
     public synchronized Newsletter getNewsletter(String nid) throws IllegalArgumentException
     {
@@ -54,12 +64,40 @@ public class NewsletterManager implements Serializable, JsonSerializable
     
     public synchronized void doPublishNewsletter(String nid, UUID publisher)
     {
-        int index = getIndexOfNewsletter(nid);
-        Newsletter n = newsletters.remove(index);
+        int        index = getIndexOfNewsletter(nid);
+        Newsletter n     = newsletters.remove(index);
         n.setPublished(true);
         n.setDatePublished(new Date());
         n.setPublisher(publisher);
         newsletters.add(0, n);
+        
+        // Asynchronously send email to all registered subscribers
+        // TODO: Use a thread pool
+        new Thread(() ->
+        {
+            MutableDataSet mkToHtmlOpts = new MutableDataSet();
+            mkToHtmlOpts.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), AutolinkExtension.create(), StrikethroughExtension.create()));
+            String html = HtmlRenderer.builder(mkToHtmlOpts).build()
+                                      .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));
+            
+            Main.getZnews().registrationList.forEach(reg ->
+            {
+                NewNewsletterEmail email = new NewNewsletterEmail(Main.getZnews());
+                email.setTitle(n.getTitle());
+                email.setWithHtml(html);
+                email.setWithoutHtml(n.getText());
+                email.setRegisteredEmail(reg.getEmail());
+                email.setNid(n.getId());
+                try
+                {
+                    email.send(reg.getEmail());
+                }
+                catch (MessagingException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            });
+        }).start();
     }
     
     private int getIndexOfNewsletter(String nid)
