@@ -88,7 +88,7 @@ public class EmailSender
         {
             try
             {
-                Multipart m = new MimeMultipart();
+                Multipart m = new MimeMultipart("alternative");
                 
                 for (Map.Entry<MediaType, Object> alternative : alternatives.entrySet())
                 {
