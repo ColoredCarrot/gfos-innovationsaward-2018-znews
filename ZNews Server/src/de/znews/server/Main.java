@@ -1,7 +1,6 @@
 package de.znews.server;
 
 import de.znews.server.auth.Admin;
-import lombok.Getter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.io.UncheckedIOException;
 public class Main
 {
     
-    @Getter
     private static ZNews znews;
     
     public static void main(String[] args) throws IOException
@@ -103,6 +101,12 @@ public class Main
         
         System.out.println("Done! Generated unique ID: " + admin.getUniqueId());
         
+    }
+    
+    @Deprecated
+    public static ZNews getZnews()
+    {
+        return Main.znews;
     }
     
 }

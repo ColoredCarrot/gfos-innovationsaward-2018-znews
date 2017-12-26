@@ -25,6 +25,7 @@ public class EmailConfig
     private boolean  debug;
     
     private String templatePathDoubleOptIn;
+    private String templatePathNewNewsletter;
     
     public Properties toJavaxMailProps(Consumer<? super Authenticator> authenticatorConsumer)
     {

@@ -60,6 +60,7 @@ public class ZNewsConfiguration
         emailConfig.setDebug(getBoolean("email.debug"));
         
         emailConfig.setTemplatePathDoubleOptIn(props.getProperty("email.templates.double-opt-in"));
+        emailConfig.setTemplatePathNewNewsletter(props.getProperty("email.templates.new-newsletter"));
         
     }
     
