@@ -72,7 +72,7 @@ public class NewsletterManager implements Serializable, JsonSerializable
         newsletters.add(0, n);
         
         // Asynchronously send email to all registered subscribers
-        // TODO: Use a thread pool
+        // TODO: FIXME: Use a thread pool
         new Thread(() ->
         {
             MutableDataSet mkToHtmlOpts = new MutableDataSet();
