@@ -72,14 +72,14 @@ public class NewsletterManager implements Serializable, JsonSerializable
         newsletters.add(0, n);
         
         // Asynchronously send email to all registered subscribers
-        // TODO: FIXME: Use a thread pool
-        new Thread(() ->
+        Main.getZnews().server.getWorkerGroup().execute(() ->
         {
+            
             MutableDataSet mkToHtmlOpts = new MutableDataSet();
             mkToHtmlOpts.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), AutolinkExtension.create(), StrikethroughExtension.create()));
             String html = HtmlRenderer.builder(mkToHtmlOpts).build()
                                       .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));
-            
+    
             Main.getZnews().registrationList.forEach(reg ->
             {
                 NewNewsletterEmail email = new NewNewsletterEmail(Main.getZnews());
@@ -88,16 +88,20 @@ public class NewsletterManager implements Serializable, JsonSerializable
                 email.setWithoutHtml(n.getText());
                 email.setRegisteredEmail(reg.getEmail());
                 email.setNid(n.getId());
-                try
+                Main.getZnews().server.getWorkerGroup().execute(() ->
                 {
-                    email.send(reg.getEmail());
-                }
-                catch (MessagingException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                    try
+                    {
+                        email.send(reg.getEmail());
+                    }
+                    catch (MessagingException e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+                });
             });
-        }).start();
+            
+        });
     }
     
     private int getIndexOfNewsletter(String nid)
