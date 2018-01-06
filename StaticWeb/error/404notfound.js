@@ -1,6 +1,9 @@
 jQuery(function($)
 {
 
+    // Init "go back" link
+    $('#go-back').css('cursor', 'pointer').click(() => window.history.back());
+
     let
         GRAVITY = 2000,
         STARS_REQUIRED_FOR_RANDOM_ARTICLE = 3;

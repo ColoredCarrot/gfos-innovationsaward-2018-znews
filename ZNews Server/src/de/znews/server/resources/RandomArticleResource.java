@@ -28,6 +28,9 @@ public class RandomArticleResource extends Resource
         
         String randomNid = znews.newsletterManager.getRandomNewsletterId();
         
+        // This is REALLY BAD
+        // We need redesign RequestResponse to allow for custom headers
+        // right now, we override #respond to insert the "location" header
         return new RequestResponse(HttpResponseStatus.TEMPORARY_REDIRECT, ("/view?nid=" + randomNid).getBytes(StandardCharsets.UTF_8))
         {
             @Override
