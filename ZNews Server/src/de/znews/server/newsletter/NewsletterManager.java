@@ -37,7 +37,10 @@ public class NewsletterManager implements Serializable, JsonSerializable
     
     public synchronized String getRandomNewsletterId()
     {
-        String[] keyArray = nidToNewsletter.keySet().toArray(new String[0]);
+        String[] keyArray = nidToNewsletter.values().stream()
+                                           .filter(Newsletter::isPublished)
+                                           .map(Newsletter::getId)
+                                           .toArray(String[]::new);
         return keyArray[ThreadLocalRandom.current().nextInt(keyArray.length)];
     }
     
