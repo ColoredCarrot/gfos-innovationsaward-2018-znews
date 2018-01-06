@@ -33,12 +33,14 @@ public class ZNewsNettyServer extends Thread
 	
 	private Channel channel;
 	
+	private EventLoopGroup workerGroup;
+	
 	@Override
 	public void run()
 	{
 		
 		EventLoopGroup bossGroup   = new NioEventLoopGroup();
-		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		workerGroup = new NioEventLoopGroup();
 		
 		try
 		{
@@ -110,5 +112,10 @@ public class ZNewsNettyServer extends Thread
 					callback.run();
 			});
 	}
-	
+    
+    public EventLoopGroup getWorkerGroup()
+    {
+        return workerGroup;
+    }
+    
 }
