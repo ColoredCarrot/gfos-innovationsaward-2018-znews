@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 public class NewsletterManager implements Serializable, JsonSerializable
@@ -33,6 +34,12 @@ public class NewsletterManager implements Serializable, JsonSerializable
     // Ordered latest newsletter first
     private           List<Newsletter>        newsletters     = new ArrayList<>();
     private transient Map<String, Newsletter> nidToNewsletter = new HashMap<>();
+    
+    public synchronized String getRandomNewsletterId()
+    {
+        String[] keyArray = nidToNewsletter.keySet().toArray(new String[0]);
+        return keyArray[ThreadLocalRandom.current().nextInt(keyArray.length)];
+    }
     
     public synchronized void addNewsletter(Newsletter newsletter)
     {
