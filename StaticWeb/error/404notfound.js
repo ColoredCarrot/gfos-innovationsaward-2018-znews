@@ -4,6 +4,8 @@ jQuery(function($)
     // Init "go back" link
     $('#go-back').css('cursor', 'pointer').click(() => window.history.back());
 
+    // Constants
+    // TODO: fine-tune values, extract more constants
     let
         GRAVITY = 2000,
         STARS_REQUIRED_FOR_RANDOM_ARTICLE = 3;
@@ -27,7 +29,30 @@ jQuery(function($)
         game.load.image('404', '404sprite.png');
     }
 
-    let player, obstacles, stars, cursors, starsCollectedText, redOverlayGraphics;
+    let
+        /*
+        The player sprite
+        - player.x/y/width/height
+        - player.body.velocity.x/y
+         */
+        player,
+        /*
+        A group containing all obstacles (right now only spikes).
+        Colliding with a sprite in this group will count as "loosing"
+        - obstacles.forEach(obstacle => obstacle.x/y/width/height/body.velocity.x/y)
+         */
+        obstacles,
+        /* A group containing all stars
+         * overlapping a sprite in this group will add 1 to collectedStars */
+        stars,
+        /* cursors.up/down/left/right.isDown corresponds to the arrow keys' status */
+        cursors,
+        /* starsCollectedText.text === "Stars: " + starsCollected
+         * The setter will updated the actually displayed value */
+        starsCollectedText,
+        /* The Graphics object that is used to draw non-opaque red overlays
+         * when colliding with an obstacle */
+        redOverlayGraphics;
 
     function create()
     {
@@ -45,25 +70,34 @@ jQuery(function($)
         stars = game.add.group();
         stars.enableBody = true;
 
+        // Add the player sprite, offset 10 x and 35 y, with the image '404'
         player = game.add.sprite(10, 35, '404');
 
+        // Enable physics on player (so they are affected by gravity)
         game.physics.arcade.enable(player);
 
+        // Player cannot be pushed around by objects
         player.body.immovable = true;
+        // Player is accelerated towards bottom (positive y)
         player.body.gravity.y = GRAVITY;
+        // Player collides with the world bounds, i.e. cannot fall through the ground
         player.body.collideWorldBounds = true;
 
+        // Spawn a few obstacles (spikes) to get started
         for (let i = 3; i <= 6; i++)
         {
             spawnSpike(i * 180);
         }
 
+        // Init redOverlayGraphics
         redOverlayGraphics = game.add.graphics(0, 0);
         redOverlayGraphics.beginFill(0xff0013, 0);
         redOverlayGraphics.drawRect(0, 0, game.world.width, game.world.height);
 
     }
 
+    /* 0 <= redOverlayTimer <= 1
+     * used as the value for the opaque-ness of the red overlay (see redOverlayGraphics) */
     let redOverlayTimer = 0;
 
     function update()
@@ -73,14 +107,18 @@ jQuery(function($)
         redOverlayGraphics.beginFill(0xff0013, redOverlayTimer);
         redOverlayGraphics.drawRect(0, 0, game.world.width, game.world.height);
 
+        // Decrement redOverlayTimer in every frame
         if (redOverlayTimer > 0)
             redOverlayTimer = Math.max(0, redOverlayTimer - 0.1);
 
         // Handle collisions
+        // Stars can't pass through obstacles
         game.physics.arcade.collide(stars, obstacles);
+        // Player hit any obstacle
         let hitObstacle = game.physics.arcade.collide(player, obstacles, (player, obstacle) =>
         {
             // Collision callback
+
             if (player.y <= obstacle.y && obstacle.___dir)
             {
                 // Above downward-facing spike, can walk
@@ -154,19 +192,30 @@ jQuery(function($)
 
     }
 
+    /* Spawns a spike at the specified x-offset, randomly facing up or down */
     function spawnSpike(xOffset = 0)
     {
 
+        // The spike must be part of the obstacles group
+        // The sprite is 'spike'
         let spike = obstacles.create(xOffset, game.world.height - 40, 'spike');
         spike.body.immovable = true;
 
+        // Randomly face up or down
+        // A positive value indicates facing toward the ground
         let direction = Math.random() < 0.5;
         if (direction)
         {
             spike.___dir = true;
+            // Flip image
             spike.anchor.setTo(0.5, 0.5);
             spike.scale.y *= -1;
+            // Move up by a slightly random amount (needs tweaking, see to-do notice above)
             spike.y -= player.height + 15 + (Math.random() - 0.3) * 100;
+        }
+        else
+        {
+            spike.___dir = false;
         }
 
     }
