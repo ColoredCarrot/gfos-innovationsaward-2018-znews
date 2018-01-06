@@ -94,7 +94,9 @@ jQuery(function($)
             redOverlayTimer = 1;
         });
 
-        //
+        // Loop through every obstacle (spike)
+        // if the player is walking on one (with a threshhold),
+        // set their y-velocity to 0 so they can walk on it and jump
         obstacles.forEach(obstacle =>
         {
             function inRange(x, a, b)
@@ -111,6 +113,8 @@ jQuery(function($)
             }
         });
 
+        // Check if player overlaps any star (any sprite in the stars group)
+        // if so, run collectStar
         game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
         let vy = player.body.velocity.y;
@@ -142,7 +146,7 @@ jQuery(function($)
 
         // Spawn stars quite rarely
         // A very low chance must be used because this is invoked EVERY FRAME
-        if (Math.random() <= 0.003)
+        if (Math.random() <= 0.01)
             spawnStar();
 
     }
@@ -177,9 +181,9 @@ jQuery(function($)
         star.destroy();
         ++starsCollected;
         updateStarsCollected();
-        if (starsCollected >= STARS_REQUIRED_FOR_RANDOM_ARTICLE)
+        if (starsCollected === STARS_REQUIRED_FOR_RANDOM_ARTICLE)
         {
-            window.location.href = '/random-article';
+            window.location.href = '/random_article';
         }
     }
 
