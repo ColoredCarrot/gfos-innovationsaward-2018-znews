@@ -1,60 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Page Not Found</title>
+    <title>Page Not Found | ZNews</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
 
-        * {
-            line-height: 1.2;
-            margin: 0;
-        }
+    <link rel="stylesheet" href="/fonts/material_icons/material_icons.css">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
 
-        html {
-            color: #888;
-            display: table;
-            font-family: sans-serif;
-            height: 100%;
-            text-align: center;
-            width: 100%;
-        }
-
-        body {
-            display: table-cell;
-            vertical-align: middle;
-            margin: 2em auto;
-        }
-
-        h1 {
-            color: #555;
-            font-size: 2em;
-            font-weight: 400;
-        }
-
-        p {
-            margin: 0 auto;
-            width: 280px;
-        }
-
-        @media only screen and (max-width: 280px) {
-
-            body, p {
-                width: 95%;
-            }
-
-            h1 {
-                font-size: 1.5em;
-                margin: 0 0 0.3em;
-            }
-
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <h1>Page Not Found</h1>
-    <p>Sorry, but the page you were trying to view does not exist.</p>
+
+<div class="background">
+    <div class="container foreground">
+
+        <!-- Main Logo/Title -->
+        <div class="big row">
+            <div class="col s12 center-align">
+                <a href="/"><img src="/img/logo.jpg" alt="ZNEWS"/></a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col s12">
+
+                <div class="row">
+                    <div class="col s12">
+                        <h4 class="red-text text-lighten-1">Not Found</h4>
+                    </div>
+                </div>
+
+                <div class="row descr-row">
+                    <div class="col s12">
+                        <div class="card-panel grey lighten-3" id="easter-egg-container">
+                            <!--<canvas width="300px" height="150px" id="easter-egg">
+                                &lt;canvas&gt; not supported
+                            </canvas>-->
+                            <div class="red" style="width: 100%; height: 100%; display: none" id="easter-egg-flash"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 flow-text">
+                        Sorry, but the page you are trying to view
+                        does not exist.<br />
+                        You can <a>go back</a> or <a href="/">go home</a>
+                        or <b>collect 3 stars</b> in the above game to go to a random article.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+<script src="/js/phaser.min.js"></script>
+
+<script src="/js/main-aesthetics.min.js"></script>
+<script src="/error/404notfound.min.js"></script>
+
 </body>
 </html>
-<!-- IE needs 512+ bytes: http://blogs.msdn.com/b/ieinternals/archive/2010/08/19/http-error-pages-in-internet-explorer.aspx -->
