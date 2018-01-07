@@ -21,6 +21,11 @@
         <value />
       </option>
     </inspection_tool>
+    <inspection_tool class="ConstantConditions" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="SUGGEST_NULLABLE_ANNOTATIONS" value="false" />
+      <option name="DONT_REPORT_TRUE_ASSERT_STATEMENTS" value="false" />
+      <option name="IGNORE_ASSERT_STATEMENTS" value="true" />
+    </inspection_tool>
     <inspection_tool class="DiamondCanBeReplacedWithExplicitTypeArguments" enabled="false" level="INFORMATION" enabled_by_default="false" />
     <inspection_tool class="IgnoreResultOfCall" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="m_reportAllNonLibraryCalls" value="false" />
@@ -39,6 +44,7 @@
       <option name="superClassString" value="" />
     </inspection_tool>
     <inspection_tool class="SqlNoDataSourceInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ThrowableNotThrown" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="UnnecessaryFullyQualifiedName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="m_ignoreJavadoc" value="false" />
       <option name="ignoreInModuleStatements" value="true" />
