@@ -182,7 +182,11 @@ jQuery(function($)
 
         stars.forEach(star =>
         {
-            star.body.velocity.x = -280;
+            // Destroy star if off-screen
+            if (star.x < -star.width)
+                star.destroy();
+            else
+                star.body.velocity.x = -280;
         });
 
         // Spawn stars quite rarely
@@ -224,7 +228,6 @@ jQuery(function($)
     {
 
         let star = stars.create(xOffset, game.world.height - 100, 'star');
-        star.body.collideWorldBounds = true;
 
     }
 
