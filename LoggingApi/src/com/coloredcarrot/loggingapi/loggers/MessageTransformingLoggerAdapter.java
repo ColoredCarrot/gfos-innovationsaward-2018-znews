@@ -1,5 +1,7 @@
 package com.coloredcarrot.loggingapi.loggers;
 
+import com.coloredcarrot.loggingapi.LogRecord;
+
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -8,29 +10,29 @@ import java.util.stream.StreamSupport;
 public class MessageTransformingLoggerAdapter extends MessageTransformingLogger
 {
     
-    private final Function<String, String> messageTransformer;
+    private final Function<Object, ?> messageTransformer;
     
-    public MessageTransformingLoggerAdapter(Logger target, Iterable<? extends Function<? super String, ?>> transformers)
+    public MessageTransformingLoggerAdapter(Logger target, Iterable<? extends Function<Object, ?>> transformers)
     {
         this(target, StreamSupport.stream(transformers.spliterator(), false));
     }
     
     @SafeVarargs
-    public MessageTransformingLoggerAdapter(Logger target, Function<? super String, ?>... transformers)
+    public MessageTransformingLoggerAdapter(Logger target, Function<Object, ?>... transformers)
     {
         this(target, Arrays.stream(transformers));
     }
     
-    public MessageTransformingLoggerAdapter(Logger target, Stream<? extends Function<? super String, ?>> transformersStream)
+    public MessageTransformingLoggerAdapter(Logger target, Stream<? extends Function<Object, ?>> transformersStream)
     {
         super(target);
-        this.messageTransformer = transformersStream.map(f -> (Function<String, String>) s -> String.valueOf(f.apply(s)))
+        this.messageTransformer = transformersStream.map(f -> (Function<Object, Object>) f)
                                                     .reduce(Function::andThen)
-                                                    .orElse(Function.identity());
+                                                    .orElse(x -> x);
     }
     
     @Override
-    protected String processMessage(String m)
+    public Object processMessage(Object m, LogRecord theRecord)
     {
         return messageTransformer.apply(m);
     }

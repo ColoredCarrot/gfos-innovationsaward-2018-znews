@@ -2,30 +2,29 @@ package com.coloredcarrot.loggingapi;
 
 import java.lang.ref.SoftReference;
 import java.util.Date;
-import java.util.logging.Level;
 
 public final class LogRecord
 {
     
     private final LogRecordOrigin origin;
-    private final String          message;
+    private final Object          message;
     private final long            millis;
-    private final Type            type;
+    private final Level           level;
     private final Throwable       associatedThrowable;
     
     private transient SoftReference<Date> dateCreated;
     
-    public LogRecord(LogRecordOrigin origin, String message, Type type, Throwable associatedThrowable)
+    public LogRecord(LogRecordOrigin origin, Object message, Level level, Throwable associatedThrowable)
     {
-        this(origin, message, System.currentTimeMillis(), type, associatedThrowable);
+        this(origin, message, System.currentTimeMillis(), level, associatedThrowable);
     }
     
-    public LogRecord(LogRecordOrigin origin, String message, long millis, Type type, Throwable associatedThrowable)
+    public LogRecord(LogRecordOrigin origin, Object message, long millis, Level level, Throwable associatedThrowable)
     {
         this.origin = origin;
         this.message = message;
         this.millis = millis;
-        this.type = type;
+        this.level = level;
         this.associatedThrowable = associatedThrowable;
     }
     
@@ -34,7 +33,7 @@ public final class LogRecord
         return origin;
     }
     
-    public String getMessage()
+    public Object getMessage()
     {
         return message;
     }
@@ -44,9 +43,9 @@ public final class LogRecord
         return millis;
     }
     
-    public Type getType()
+    public Level getLevel()
     {
-        return type;
+        return level;
     }
     
     public Throwable getAssociatedThrowable()
@@ -64,7 +63,7 @@ public final class LogRecord
         return result;
     }
     
-    public enum Type
+    public enum Level
     {
         DEV,
         DEBUG,
@@ -72,23 +71,28 @@ public final class LogRecord
         WARN,
         ERR,
         FATAL;
+    
+        public boolean shouldLog(Level level)
+        {
+            return level.ordinal() >= ordinal();
+        }
         
-        Level getLevel()
+        java.util.logging.Level getLevel()
         {
             switch (this)
             {
             case DEV:
-                return Level.FINEST;
+                return java.util.logging.Level.FINEST;
             case DEBUG:
-                return Level.FINER;
+                return java.util.logging.Level.FINER;
             case OUT:
-                return Level.INFO;
+                return java.util.logging.Level.INFO;
             case WARN:
-                return Level.WARNING;
+                return java.util.logging.Level.WARNING;
             case ERR:
-                return Level.SEVERE;
+                return java.util.logging.Level.SEVERE;
             case FATAL:
-                return Level.SEVERE;
+                return java.util.logging.Level.SEVERE;
             default:
                 throw new AssertionError();
             }

@@ -10,12 +10,12 @@ public abstract class MessageTransformingLogger extends DelegatingLogger
         super(target);
     }
     
-    protected abstract String processMessage(String m);
+    protected abstract Object processMessage(Object m, LogRecord theRecord);
     
     @Override
     public LogRecord process(LogRecord record)
     {
-        return new LogRecord(record.getOrigin(), processMessage(record.getMessage()), record.getCreated(), record.getType(), record.getAssociatedThrowable());
+        return new LogRecord(record.getOrigin(), processMessage(record.getMessage(), record), record.getCreated(), record.getLevel(), record.getAssociatedThrowable());
     }
     
 }

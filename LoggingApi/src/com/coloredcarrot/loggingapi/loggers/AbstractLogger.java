@@ -3,14 +3,12 @@ package com.coloredcarrot.loggingapi.loggers;
 import com.coloredcarrot.loggingapi.LogRecord;
 import com.coloredcarrot.loggingapi.LogRecordOrigin;
 
-import java.util.function.Function;
-
 public abstract class AbstractLogger implements Logger
 {
     
-    protected LogRecord createRecord(String m, Throwable ex, LogRecord.Type type)
+    protected LogRecord createRecord(String m, Throwable ex, LogRecord.Level level)
     {
-        return new LogRecord(new LogRecordOrigin(getOriginStackTraceElement(), Thread.currentThread().getName(), Thread.currentThread().getId()), m, type, ex);
+        return new LogRecord(new LogRecordOrigin(getOriginStackTraceElement(), Thread.currentThread().getName(), Thread.currentThread().getId()), m, level, ex);
     }
     
     protected StackTraceElement getOriginStackTraceElement()
@@ -36,81 +34,69 @@ public abstract class AbstractLogger implements Logger
     }
     
     @Override
-    public void log(String m, LogRecord.Type type)
+    public void log(String m, LogRecord.Level level)
     {
-        log(m, null, type);
+        log(m, null, level);
     }
     
     @Override
-    public void log(String m, Throwable ex, LogRecord.Type type)
+    public void log(String m, Throwable ex, LogRecord.Level level)
     {
-        log(createRecord(m, ex, type));
+        log(createRecord(m, ex, level));
     }
     
     @Override
     public void dev(String m)
     {
-        log(m, LogRecord.Type.DEV);
+        log(m, LogRecord.Level.DEV);
     }
     
     @Override
     public void debug(String m)
     {
-        log(m, LogRecord.Type.DEBUG);
+        log(m, LogRecord.Level.DEBUG);
     }
     
     @Override
     public void out(String m)
     {
-        log(m, LogRecord.Type.OUT);
+        log(m, LogRecord.Level.OUT);
     }
     
     @Override
     public void warn(String m)
     {
-        log(m, LogRecord.Type.WARN);
+        log(m, LogRecord.Level.WARN);
     }
     
     @Override
     public void warn(String m, Throwable ex)
     {
-        log(m, ex, LogRecord.Type.WARN);
+        log(m, ex, LogRecord.Level.WARN);
     }
     
     @Override
     public void err(String m)
     {
-        log(m, LogRecord.Type.ERR);
+        log(m, LogRecord.Level.ERR);
     }
     
     @Override
     public void err(String m, Throwable ex)
     {
-        log(m, ex, LogRecord.Type.ERR);
+        log(m, ex, LogRecord.Level.ERR);
     }
     
     @Override
     public void fatal(String m)
     {
-        log(m, LogRecord.Type.FATAL);
+        log(m, LogRecord.Level.FATAL);
     }
     
     @Override
     public void fatal(String m, Throwable ex)
     {
-        log(m, ex, LogRecord.Type.FATAL);
-    }
-    
-    @Override
-    public Logger withInterceptMessages(Function<? super String, ?> messageProcessor)
-    {
-        return Loggers.interceptMessages(this, messageProcessor);
-    }
-    
-    @Override
-    public Logger withCopyInto(Logger other)
-    {
-        return Loggers.combine(this, other);
+        log(m, ex, LogRecord.Level.FATAL);
     }
     
 }

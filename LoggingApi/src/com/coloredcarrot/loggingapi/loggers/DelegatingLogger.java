@@ -5,7 +5,7 @@ import com.coloredcarrot.loggingapi.LogRecord;
 public abstract class DelegatingLogger extends AbstractLogger
 {
     
-    protected final Logger target;
+    protected Logger target;
     
     public DelegatingLogger(Logger target)
     {
@@ -20,7 +20,18 @@ public abstract class DelegatingLogger extends AbstractLogger
     @Override
     public void log(LogRecord record)
     {
-        target.log(process(record));
+        if (target != null)
+            target.log(process(record));
+    }
+    
+    public Logger getTarget()
+    {
+        return target;
+    }
+    
+    public void setTarget(Logger target)
+    {
+        this.target = target;
     }
     
 }

@@ -27,9 +27,24 @@ public class WriterLogger extends ToLinesLogger
         this(new OutputStreamWriter(outputStream, cs));
     }
     
+    public WriterLogger(OutputStream outputStream, boolean autoFlush)
+    {
+        this(new OutputStreamWriter(outputStream), autoFlush);
+    }
+    
+    public WriterLogger(OutputStream outputStream, Charset cs, boolean autoFlush)
+    {
+        this(new OutputStreamWriter(outputStream, cs), autoFlush);
+    }
+    
     public WriterLogger(Writer writer)
     {
-        this(writer, false, DEFAULT_EX_HANDLER);
+        this(writer, false);
+    }
+    
+    public WriterLogger(Writer writer, boolean autoFlush)
+    {
+        this(writer, autoFlush, DEFAULT_EX_HANDLER);
     }
     
     public WriterLogger(Writer writer, boolean autoFlush, Consumer<? super IOException> exHandler)

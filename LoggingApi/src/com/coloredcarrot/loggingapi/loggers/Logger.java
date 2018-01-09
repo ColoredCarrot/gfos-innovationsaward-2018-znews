@@ -2,16 +2,14 @@ package com.coloredcarrot.loggingapi.loggers;
 
 import com.coloredcarrot.loggingapi.LogRecord;
 
-import java.util.function.Function;
-
 public interface Logger
 {
     
     void log(LogRecord record);
     
-    void log(String m, LogRecord.Type type);
+    void log(String m, LogRecord.Level level);
     
-    void log(String m, Throwable ex, LogRecord.Type type);
+    void log(String m, Throwable ex, LogRecord.Level level);
     
     void dev(String m);
     
@@ -31,8 +29,9 @@ public interface Logger
     
     void fatal(String m, Throwable ex);
     
-    Logger withInterceptMessages(Function<? super String, ?> messageProcessor);
-    
-    Logger withCopyInto(Logger other);
+    static LoggerBuilder builder()
+    {
+        return Loggers.builder();
+    }
 
 }
