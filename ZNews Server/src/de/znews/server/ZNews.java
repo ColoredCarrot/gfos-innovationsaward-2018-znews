@@ -1,5 +1,6 @@
 package de.znews.server;
 
+import com.coloredcarrot.loggingapi.loggers.Loggers;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.config.ZNewsConfiguration;
 import de.znews.server.emai_reg.EmailSender;
@@ -48,6 +49,9 @@ public class ZNews
             }
         }
         config = new ZNewsConfiguration(this, cfgFile);
+        
+        // Initialize Logger
+        Log.setLogger(Loggers.build(config.props(), System.out));
         
         // Load registrationList
         registrationList = config.getDataAccessConfig().access().queryRegistrationList();

@@ -84,4 +84,9 @@ public class ZNewsConfiguration
         return Boolean.parseBoolean(props.getProperty(key));
     }
     
+    public Properties props()
+    {
+        return props;
+    }
+    
 }
