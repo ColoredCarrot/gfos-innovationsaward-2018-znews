@@ -66,10 +66,21 @@ public class LoggerBuilder extends AbstractLogger
         return this;
     }
     
+    public LoggerBuilder delegateToOtherThreads()
+    {
+        newPhase(new NewThreadLogger(null));
+        return this;
+    }
+    
     public LoggerBuilder copyInto(Logger dump)
     {
         newPhase(new CopyLogger(null, dump));
         return this;
+    }
+    
+    public LoggerBuilder copyInto(PrintStream printStream)
+    {
+        return copyInto(new WriterLogger(new PrintWriter(printStream), true));
     }
     
     public Logger saveInto(File file, Charset cs) throws FileNotFoundException
