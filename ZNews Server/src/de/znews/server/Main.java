@@ -14,8 +14,10 @@ public class Main
     
     public static void main(String[] args) throws IOException
     {
+    
+        System.out.println("(Begin)");
         
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("Shutdown complete! Have a nice day ;-)")));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("(End)")));
         
         znews = new ZNews();
         

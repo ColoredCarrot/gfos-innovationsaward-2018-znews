@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.util.concurrent.CountDownLatch;
 
 public class ZNews
 {
@@ -32,6 +33,8 @@ public class ZNews
     public final EmailTemplates     emailTemplates;
     
     public ZNewsNettyServer server;
+    
+    public CountDownLatch shutdownLatch;
     
     public ZNews() throws IOException
     {
@@ -92,16 +95,30 @@ public class ZNews
     
     public void stopServer(Runnable callback)
     {
+        // FINDME: Here is defined the number znews.shutdownLatch.countDown() needs to be called
+        shutdownLatch = new CountDownLatch(3);
         if (server != null)
         {
             server.shutdownGracefully(() ->
             {
                 server = null;
-                if (callback != null)
-                    callback.run();
+                shutdownLatch.countDown();
             });
         }
         saveAll();
+        new Thread(() ->
+        {
+            try
+            {
+                shutdownLatch.await();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            Log.out("Shutdown complete! Have a nice day ;-)");
+            callback.run();
+        }).start();
     }
     
     public void saveAll()
@@ -127,6 +144,10 @@ public class ZNews
                 catch (IOException e)
                 {
                     throw new UncheckedIOException(e);
+                }
+                finally
+                {
+                    shutdownLatch.countDown();
                 }
             }
         }).start();

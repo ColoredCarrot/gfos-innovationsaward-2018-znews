@@ -91,6 +91,8 @@ public class ZNewsNettyServer extends Thread
 			GenericFutureListener<? extends Future<Object>> f = a ->
 			{
 				Log.debug("Closing IO-Threads (" + shutdownCount.incrementAndGet() + "/2)");
+				if (shutdownCount.get() == 2)
+                    znews.shutdownLatch.countDown();
 			};
 			
 			workerGroup.shutdownGracefully().addListener(f);
