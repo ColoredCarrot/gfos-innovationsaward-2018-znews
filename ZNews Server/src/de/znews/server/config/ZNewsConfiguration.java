@@ -1,5 +1,6 @@
 package de.znews.server.config;
 
+import de.znews.server.Log;
 import de.znews.server.ZNews;
 import de.znews.server.dao.DataAccessConfiguration;
 import de.znews.server.dao.file.FileDataAccessConfiguration;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.StringJoiner;
 
 @Getter
 public class ZNewsConfiguration
@@ -87,6 +89,26 @@ public class ZNewsConfiguration
     public Properties props()
     {
         return props;
+    }
+    
+    public void printDebug()
+    {
+        Log.debug(() ->
+        {
+            StringJoiner lines = new StringJoiner("\n", "==========================\n", "\n==========================");
+            lines.add("Port: " + getPort());
+            lines.add("Enable JSON pretty-printing: " + getEnableJSONPrettyPrinting());
+            lines.add("Enable StaticWeb caching: " + getStaticWebConfig().isEnableCaching());
+            if (getStaticWebConfig().isEnableCaching())
+                lines.add("StaticWeb cache size: " + getStaticWebConfig().getCacheSize());
+            lines.add("Email host: " + getEmailConfig().getHost());
+            lines.add("Email port: " + getEmailConfig().getPort());
+            lines.add("Email auth user: " + getEmailConfig().getAuthUsr());
+            if (getEmailConfig().getAuthPw() != null)
+                lines.add("Email auth password: ***");
+            lines.add("Email protocol: " + getEmailConfig().getProtocol());
+            return "Configuration:\n" + lines;
+        });
     }
     
 }

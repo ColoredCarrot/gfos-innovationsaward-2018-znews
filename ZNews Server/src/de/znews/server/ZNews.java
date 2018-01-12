@@ -51,10 +51,12 @@ public class ZNews
                     out.write(read);
             }
         }
+        // Initialize Logger
         config = new ZNewsConfiguration(this, cfgFile);
         
-        // Initialize Logger
         Log.setLogger(Loggers.build(config.props(), System.out));
+    
+        config.printDebug();
         
         // Load registrationList
         registrationList = config.getDataAccessConfig().access().queryRegistrationList();

@@ -14,6 +14,7 @@ public final class LogRecord
     private final Throwable       associatedThrowable;
     
     private transient SoftReference<Date> dateCreated;
+    private transient Object              resolved;
     
     public LogRecord(LogRecordOrigin origin, Object message, Level level, Throwable associatedThrowable)
     {
@@ -41,7 +42,7 @@ public final class LogRecord
     
     public Object resolveMessage()
     {
-        return message instanceof Supplier ? ((Supplier<?>) message).get() : message;
+        return resolved != null ? resolved : (resolved = message instanceof Supplier ? ((Supplier<?>) message).get() : message);
     }
     
     public long getCreated()
@@ -77,7 +78,7 @@ public final class LogRecord
         WARN,
         ERR,
         FATAL;
-    
+        
         public boolean shouldLog(Level level)
         {
             return level.ordinal() >= ordinal();

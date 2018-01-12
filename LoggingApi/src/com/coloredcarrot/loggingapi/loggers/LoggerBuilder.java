@@ -61,7 +61,7 @@ public class LoggerBuilder extends AbstractLogger
     
     public LoggerBuilder processMessage(Function<Object, ?> messageProcessor)
     {
-        process(record -> new LogRecord(record.getOrigin(), String.valueOf(messageProcessor.apply(record.getMessage())), record.getCreated(), record.getLevel(), record.getAssociatedThrowable()));
+        process(record -> new LogRecord(record.getOrigin(), messageProcessor.apply(record.getMessage()), record.getCreated(), record.getLevel(), record.getAssociatedThrowable()));
         //newPhase(new MessageTransformingLoggerAdapter(null, messageProcessor));
         return this;
     }

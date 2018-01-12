@@ -19,7 +19,8 @@ public abstract class AbstractLogger implements Logger
         String p = Logger.class.getPackage().getName();
         for (int i = 1; i < stackTrace.length; i++)
         {
-            if (stackTrace[i].getClassName().startsWith(p))
+            // Skip stack trace element if internal class or the class ends with "Log", in which case we assume a delegating logger
+            if (stackTrace[i].getClassName().startsWith(p) || stackTrace[i].getClassName().endsWith("Log"))
                 continue;
             try
             {

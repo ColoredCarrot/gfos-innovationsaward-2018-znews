@@ -26,7 +26,7 @@ public abstract class ToLinesLogger extends AbstractLogger
     protected String toString(LogRecord record)
     {
         StringJoiner lines = new StringJoiner(lineDelimiter);
-        lines.add(String.valueOf(record.getMessage()));
+        lines.add(String.valueOf(record.resolveMessage()));
         if (record.getAssociatedThrowable() != null)
         {
             Throwable    ex = record.getAssociatedThrowable();

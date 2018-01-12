@@ -65,11 +65,11 @@ public class StringFormatLogger extends MessageTransformingLogger
                 .replace("{fileName}", o.getFileName())
                 .replace("{methodName}", o.getMethodName())
                 .replace("{line}", String.valueOf(o.getLineNumber()))
-                .replace("{exMsg}", r.getAssociatedThrowable() == null ? "" : r.getAssociatedThrowable().getMessage())
+                .replace("{exMsg}", r.getAssociatedThrowable() == null || r.getAssociatedThrowable().getMessage() == null ? "" : r.getAssociatedThrowable().getMessage())
                 .replace("{date}", df.format(r.getDateCreated()))
                 .replace("{millis}", String.valueOf(r.getCreated()))
                 .replace("{level}", r.getLevel().name())
-                .replace("{msg}", String.valueOf(r.getMessage()));
+                .replace("{msg}", String.valueOf(r.resolveMessage()));
     }
     
 }

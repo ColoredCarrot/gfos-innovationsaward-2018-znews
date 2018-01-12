@@ -1,5 +1,6 @@
 package de.znews.server.static_web;
 
+import de.znews.server.Log;
 import de.znews.server.resources.RequestResponse;
 import de.znews.server.util.Cache;
 import de.znews.server.util.SoftLRUCache;
@@ -66,6 +67,8 @@ public class StaticWeb
         else if (!file.isFile())
             // FINDME here is the default extension
             file = getFile(path += ".html");
+    
+        Log.dev("Response for file: " + path);
         
         if (file.isFile())
             // TODO: This is baaad. There MUST be another way
@@ -73,7 +76,10 @@ public class StaticWeb
         else if (getFile(config.err404Path).isFile())
             return new RequestResponse(HttpResponseStatus.NOT_FOUND, get(config.err404Path));
         else
+        {
+            Log.warn("404 Error document not found: " + getFile(config.err404Path));
             return new RequestResponse(HttpResponseStatus.NOT_FOUND, "404 Not Found".getBytes(StandardCharsets.UTF_8));
+        }
         
     }
     
@@ -104,6 +110,8 @@ public class StaticWeb
     
     private byte[] loadFromFile(String path) throws ExecutionException, InterruptedException
     {
+        
+        Log.dev("Loading " + path + " into memory");
         
         File file = getFile(path);
         
