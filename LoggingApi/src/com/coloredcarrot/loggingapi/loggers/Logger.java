@@ -7,27 +7,27 @@ public interface Logger
     
     void log(LogRecord record);
     
-    void log(String m, LogRecord.Level level);
+    void log(Object m, LogRecord.Level level);
     
-    void log(String m, Throwable ex, LogRecord.Level level);
+    void log(Object m, Throwable ex, LogRecord.Level level);
     
-    void dev(String m);
+    void dev(Object m);
     
-    void debug(String m);
+    void debug(Object m);
     
-    void out(String m);
+    void out(Object m);
     
-    void warn(String m);
+    void warn(Object m);
     
-    void warn(String m, Throwable ex);
+    void warn(Object m, Throwable ex);
     
-    void err(String m);
+    void err(Object m);
     
-    void err(String m, Throwable ex);
+    void err(Object m, Throwable ex);
     
-    void fatal(String m);
+    void fatal(Object m);
     
-    void fatal(String m, Throwable ex);
+    void fatal(Object m, Throwable ex);
     
     void shutdown();
     

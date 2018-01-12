@@ -2,6 +2,7 @@ package com.coloredcarrot.loggingapi;
 
 import java.lang.ref.SoftReference;
 import java.util.Date;
+import java.util.function.Supplier;
 
 public final class LogRecord
 {
@@ -36,6 +37,11 @@ public final class LogRecord
     public Object getMessage()
     {
         return message;
+    }
+    
+    public Object resolveMessage()
+    {
+        return message instanceof Supplier ? ((Supplier<?>) message).get() : message;
     }
     
     public long getCreated()

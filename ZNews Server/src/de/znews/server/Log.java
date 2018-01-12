@@ -23,57 +23,57 @@ public class Log
         logger.log(record);
     }
     
-    public static void log(String m, LogRecord.Level level)
+    public static void log(Object m, LogRecord.Level level)
     {
         logger.log(m, level);
     }
     
-    public static void log(String m, Throwable ex, LogRecord.Level level)
+    public static void log(Object m, Throwable ex, LogRecord.Level level)
     {
         logger.log(m, ex, level);
     }
     
-    public static void dev(String m)
+    public static void dev(Object m)
     {
         logger.dev(m);
     }
     
-    public static void debug(String m)
+    public static void debug(Object m)
     {
         logger.debug(m);
     }
     
-    public static void out(String m)
+    public static void out(Object m)
     {
         logger.out(m);
     }
     
-    public static void warn(String m)
+    public static void warn(Object m)
     {
         logger.warn(m);
     }
     
-    public static void warn(String m, Throwable ex)
+    public static void warn(Object m, Throwable ex)
     {
         logger.warn(m, ex);
     }
     
-    public static void err(String m)
+    public static void err(Object m)
     {
         logger.err(m);
     }
     
-    public static void err(String m, Throwable ex)
+    public static void err(Object m, Throwable ex)
     {
         logger.err(m, ex);
     }
     
-    public static void fatal(String m)
+    public static void fatal(Object m)
     {
         logger.fatal(m);
     }
     
-    public static void fatal(String m, Throwable ex)
+    public static void fatal(Object m, Throwable ex)
     {
         logger.fatal(m, ex);
     }

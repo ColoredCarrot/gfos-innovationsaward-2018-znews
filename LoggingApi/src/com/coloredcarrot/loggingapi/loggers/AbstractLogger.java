@@ -34,67 +34,67 @@ public abstract class AbstractLogger implements Logger
     }
     
     @Override
-    public void log(String m, LogRecord.Level level)
+    public void log(Object m, LogRecord.Level level)
     {
         log(m, null, level);
     }
     
     @Override
-    public void log(String m, Throwable ex, LogRecord.Level level)
+    public void log(Object m, Throwable ex, LogRecord.Level level)
     {
         log(createRecord(m, ex, level));
     }
     
     @Override
-    public void dev(String m)
+    public void dev(Object m)
     {
         log(m, LogRecord.Level.DEV);
     }
     
     @Override
-    public void debug(String m)
+    public void debug(Object m)
     {
         log(m, LogRecord.Level.DEBUG);
     }
     
     @Override
-    public void out(String m)
+    public void out(Object m)
     {
         log(m, LogRecord.Level.OUT);
     }
     
     @Override
-    public void warn(String m)
+    public void warn(Object m)
     {
         log(m, LogRecord.Level.WARN);
     }
     
     @Override
-    public void warn(String m, Throwable ex)
+    public void warn(Object m, Throwable ex)
     {
         log(m, ex, LogRecord.Level.WARN);
     }
     
     @Override
-    public void err(String m)
+    public void err(Object m)
     {
         log(m, LogRecord.Level.ERR);
     }
     
     @Override
-    public void err(String m, Throwable ex)
+    public void err(Object m, Throwable ex)
     {
         log(m, ex, LogRecord.Level.ERR);
     }
     
     @Override
-    public void fatal(String m)
+    public void fatal(Object m)
     {
         log(m, LogRecord.Level.FATAL);
     }
     
     @Override
-    public void fatal(String m, Throwable ex)
+    public void fatal(Object m, Throwable ex)
     {
         log(m, ex, LogRecord.Level.FATAL);
     }
