@@ -35,7 +35,7 @@ public class NewThreadLogger extends DelegatingLogger
     }
     
     @Override
-    public void shutdown()
+    public synchronized void shutdown()
     {
         if (!threadPool.isShutdown())
             threadPool.shutdown();

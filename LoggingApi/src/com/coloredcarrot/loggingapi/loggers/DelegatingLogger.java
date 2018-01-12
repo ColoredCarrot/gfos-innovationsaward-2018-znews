@@ -34,4 +34,11 @@ public abstract class DelegatingLogger extends AbstractLogger
         this.target = target;
     }
     
+    @Override
+    public void shutdown()
+    {
+        if (target != null)
+            target.shutdown();
+    }
+    
 }

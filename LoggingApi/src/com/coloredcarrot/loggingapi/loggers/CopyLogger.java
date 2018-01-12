@@ -25,4 +25,12 @@ public class CopyLogger extends DelegatingLogger
             otherTarget.log(processedRecord);
     }
     
+    @Override
+    public void shutdown()
+    {
+        super.shutdown();
+        for (Logger otherTarget : otherTargets)
+            otherTarget.shutdown();
+    }
+    
 }

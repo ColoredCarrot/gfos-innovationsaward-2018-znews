@@ -1,5 +1,6 @@
 package de.znews.server.netty;
 
+import de.znews.server.Log;
 import de.znews.server.ZNews;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -67,10 +68,8 @@ public class ZNewsNettyServer extends Thread
 			
 			channel = server.bind(port).sync().channel();
 			
-			System.out.println("Server started, end with \"end\" (without quotation marks)");
-			
-			//Log.info("Server started, end with \"end\" (without quotation marks)");
-			//Log.de bug("Waiting for connections...");
+			Log.out("Server started, end with \"end\" (without quotation marks)");
+			Log.debug("Listening for connections...");
 			
 			try
 			{
@@ -91,7 +90,7 @@ public class ZNewsNettyServer extends Thread
 			AtomicInteger shutdownCount = new AtomicInteger(0);
 			GenericFutureListener<? extends Future<Object>> f = a ->
 			{
-				//Log.debu g("Closing IO-Threads (" + shutdownCount.incrementAndGet() + "/2)");
+				Log.debug("Closing IO-Threads (" + shutdownCount.incrementAndGet() + "/2)");
 			};
 			
 			workerGroup.shutdownGracefully().addListener(f);
