@@ -26,7 +26,7 @@ public class NewThreadLogger extends DelegatingLogger
     @Override
     public void log(LogRecord record)
     {
-        if (target != null)
+        if (target != null && !threadPool.isShutdown())
             threadPool.execute(() ->
             {
                 if (target != null)
@@ -37,8 +37,15 @@ public class NewThreadLogger extends DelegatingLogger
     @Override
     public synchronized void shutdown()
     {
-        if (!threadPool.isShutdown())
-            threadPool.shutdown();
+        try
+        {
+            if (!threadPool.isShutdown())
+                threadPool.shutdown();
+        }
+        finally
+        {
+            super.shutdown();
+        }
     }
     
 }

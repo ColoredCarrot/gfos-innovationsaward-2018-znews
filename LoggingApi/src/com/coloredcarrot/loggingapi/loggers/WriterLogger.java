@@ -77,4 +77,21 @@ public class WriterLogger extends ToLinesLogger
         }
     }
     
+    @Override
+    public void shutdown()
+    {
+        try
+        {
+            writer.flush();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            super.shutdown();
+        }
+    }
+    
 }
