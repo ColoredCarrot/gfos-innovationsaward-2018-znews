@@ -9,6 +9,14 @@ public class NewThreadLogger extends DelegatingLogger
 {
     
     public static ExecutorService DEFAULT_THREAD_POOL = Executors.newSingleThreadExecutor();
+    static
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
+        {
+            if (DEFAULT_THREAD_POOL != null)
+                DEFAULT_THREAD_POOL.shutdown();
+        }));
+    }
     
     private final ExecutorService threadPool;
     

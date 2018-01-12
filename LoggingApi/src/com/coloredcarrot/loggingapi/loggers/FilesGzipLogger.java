@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -36,6 +37,10 @@ public class FilesGzipLogger extends ToLinesLogger
         this.autoFlush = autoFlush;
     }
     
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::closeWriter));
+    }
+    
     @Override
     protected synchronized void write(String s)
     {
@@ -53,7 +58,7 @@ public class FilesGzipLogger extends ToLinesLogger
         }
     }
     
-    private synchronized void closeWriter()
+    private void closeWriter()
     {
         try
         {
@@ -85,17 +90,21 @@ public class FilesGzipLogger extends ToLinesLogger
         File latest = new File(dir, "latest.log");
         if (!latest.exists())
             return;
-        try
+        try (OutputStream out = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(new File(dir, getNewFileName())))))
         {
-            Files.copy(latest.toPath(), new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(new File(dir, getNewFileName())))));
+            Files.copy(latest.toPath(), out);
         }
         catch (IOException e)
         {
             throw new UncheckedIOException(e);
         }
+        finally
+        {
+            latest.delete();
+        }
     }
     
-    private synchronized void openWriter()
+    private void openWriter()
     {
         if (writer == null)
         {
@@ -111,15 +120,15 @@ public class FilesGzipLogger extends ToLinesLogger
         }
     }
     
-    private synchronized String getNewFileName()
+    private String getNewFileName()
     {
         dir.mkdirs();
         
         String   fileName      = fileNameDateFormat.format(new Date());
-        String[] existingNames = dir.list((dir, name) -> name.endsWith(".log.gzip") && name.startsWith(fileName));
+        String[] existingNames = dir.list((dir, name) -> name.endsWith(".log.gz") && name.startsWith(fileName));
         int      appendNumber  = existingNames != null ? existingNames.length : 0;
         
-        return appendNumber != 0 ? fileName + appendNumber : fileName;
+        return (appendNumber != 0 ? fileName + "_" + appendNumber : fileName) + ".log.gz";
     }
     
 }
