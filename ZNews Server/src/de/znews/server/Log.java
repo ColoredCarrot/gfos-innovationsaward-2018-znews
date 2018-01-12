@@ -78,4 +78,9 @@ public class Log
         logger.fatal(m, ex);
     }
     
+    public static void shutdown()
+    {
+        logger.shutdown();
+    }
+    
 }

@@ -35,13 +35,13 @@ public class Main
         {
             if (command.equalsIgnoreCase("end"))
             {
-                System.out.println("Shutting down...");
-                znews.stopServer();
+                Log.out("Shutting down...");
+                znews.stopServer(znews::shutdownLogSystem);
                 break;
             }
             if (command.equalsIgnoreCase("restart"))
             {
-                System.out.println("Restarting...");
+                Log.out("Restarting...");
                 znews.stopServer(() ->
                 {
                     new Thread(() ->
@@ -50,7 +50,7 @@ public class Main
                         {
                             for (int i = 5; i > 0; i--)
                             {
-                                System.out.println("Starting in " + i + " second(s)");
+                                Log.out("Starting in " + i + " second" + (i != 1 ? "s" : ""));
                                 Thread.sleep(1000);
                             }
                         }
@@ -75,7 +75,7 @@ public class Main
             if (command.equalsIgnoreCase("reset caches") || command.equalsIgnoreCase("rs"))
             {
                 znews.staticWeb.purgeCache();
-                System.out.println("Caches reset");
+                Log.out("[Command] Caches reset");
             }
             else if (command.startsWith("addadmin "))
                 cmdAddAdmin(command);
@@ -91,15 +91,15 @@ public class Main
         String   email    = args[1];
         String   name     = args[2];
         String   password = args[3];
-    
-        System.out.println("Add admin...");
-        System.out.println(" - Email: " + email);
-        System.out.println(" - Name: " + name);
-        System.out.println(" - Password: " + password);
+        
+        Log.out("[Command] Add admin...");
+        Log.out("[Command]  - Email: " + email);
+        Log.out("[Command]  - Name: " + name);
+        Log.out("[Command]  - Password: " + password);
         
         Admin admin = znews.authenticator.addAdmin(email, name, password);
         
-        System.out.println("Done! Generated unique ID: " + admin.getUniqueId());
+        Log.out("[Command] Done! Generated unique ID: " + admin.getUniqueId());
         
     }
     

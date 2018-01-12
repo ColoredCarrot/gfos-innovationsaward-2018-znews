@@ -79,7 +79,7 @@ public class ZNews
         
         server = new ZNewsNettyServer(this, config.getPort());
         
-        System.out.println("Starting server on port " + config.getPort() + "...");
+        Log.out("Starting server on port " + config.getPort() + "...");
         
         server.start();
         
@@ -130,6 +130,11 @@ public class ZNews
                 }
             }
         }).start();
+    }
+    
+    public void shutdownLogSystem()
+    {
+        new Thread(Log::shutdown).start();
     }
     
 }

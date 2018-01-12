@@ -99,4 +99,9 @@ public abstract class AbstractLogger implements Logger
         log(m, ex, LogRecord.Level.FATAL);
     }
     
+    @Override
+    public void shutdown()
+    {
+    }
+    
 }

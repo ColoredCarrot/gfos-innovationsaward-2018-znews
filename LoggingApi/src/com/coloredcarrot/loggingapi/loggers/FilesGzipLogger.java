@@ -37,10 +37,6 @@ public class FilesGzipLogger extends ToLinesLogger
         this.autoFlush = autoFlush;
     }
     
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::closeWriter));
-    }
-    
     @Override
     protected synchronized void write(String s)
     {
@@ -56,6 +52,12 @@ public class FilesGzipLogger extends ToLinesLogger
             closeWriter();
             throw new UncheckedIOException(e);
         }
+    }
+    
+    @Override
+    public void shutdown()
+    {
+        closeWriter();
     }
     
     private void closeWriter()

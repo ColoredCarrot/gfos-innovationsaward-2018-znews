@@ -8,21 +8,13 @@ import java.util.concurrent.Executors;
 public class NewThreadLogger extends DelegatingLogger
 {
     
-    public static ExecutorService DEFAULT_THREAD_POOL = Executors.newSingleThreadExecutor();
-    static
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(() ->
-        {
-            if (DEFAULT_THREAD_POOL != null)
-                DEFAULT_THREAD_POOL.shutdown();
-        }));
-    }
+    public static ExecutorService DEFAULT_THREAD_POOL;
     
     private final ExecutorService threadPool;
     
     public NewThreadLogger(Logger target)
     {
-        this(target, DEFAULT_THREAD_POOL);
+        this(target, DEFAULT_THREAD_POOL == null ? (DEFAULT_THREAD_POOL = Executors.newSingleThreadExecutor()) : DEFAULT_THREAD_POOL);
     }
     
     public NewThreadLogger(Logger target, ExecutorService threadPool)
@@ -40,6 +32,13 @@ public class NewThreadLogger extends DelegatingLogger
                 if (target != null)
                     target.log(record);
             });
+    }
+    
+    @Override
+    public void shutdown()
+    {
+        if (!threadPool.isShutdown())
+            threadPool.shutdown();
     }
     
 }

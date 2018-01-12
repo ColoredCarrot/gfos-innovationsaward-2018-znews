@@ -29,6 +29,8 @@ public interface Logger
     
     void fatal(String m, Throwable ex);
     
+    void shutdown();
+    
     static LoggerBuilder builder()
     {
         return Loggers.builder();
