@@ -3,6 +3,7 @@ package com.coloredcarrot.loggingapi.loggers;
 import com.coloredcarrot.loggingapi.LogRecord;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,10 +24,13 @@ public interface Loggers
         return new LoggerBuilder();
     }
     
-    static Logger build(Properties props)
+    static Logger build(Properties props, PrintStream copyInto)
     {
         LoggerBuilder b = builder()
                 .filter(LogRecord.Level.valueOf(props.getProperty("log.filter", "out").toUpperCase(Locale.ENGLISH)));
+    
+        if (Boolean.parseBoolean(props.getProperty("log.separate-thread", "true")))
+            b.delegateToOtherThreads();
         
         Map<LogRecord.Level, Map.Entry<String, DateFormat>> formats = new HashMap<>();
         for (Map.Entry<Object, Object> e : props.entrySet())
@@ -34,7 +38,8 @@ public interface Loggers
             String key = String.valueOf(e.getKey());
             if (key.startsWith("log.format."))
             {
-                LogRecord.Level level = LogRecord.Level.valueOf(key.substring("log.format.".length() + 1, key.endsWith(".date-format") ? key.length() - ".date-format".length() : key.length()).toUpperCase(Locale.ENGLISH));
+                String          levelName = key.substring("log.format.".length(), key.endsWith(".date-format") ? key.length() - ".date-format".length() : key.length());
+                LogRecord.Level level     = LogRecord.Level.valueOf(levelName.toUpperCase(Locale.ENGLISH));
                 if (key.endsWith(".date-format"))
                 {
                     DateFormat newDateFormat = new SimpleDateFormat(String.valueOf(e.getValue()));
@@ -55,8 +60,8 @@ public interface Loggers
     
         b.format(formatsArray);
         
-        if (Boolean.parseBoolean(props.getProperty("log.separate-thread", "true")))
-            b.newPhase(new NewThreadLogger(null));
+        if (copyInto != null)
+            b.copyInto(copyInto);
     
         // Right now, only logging to a directory using gzip is supported
         File logDir = new File(props.getProperty("log.out.files-gzip.dir", "log/"));
