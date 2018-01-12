@@ -12,7 +12,7 @@ public class CopyLogger extends DelegatingLogger
     public CopyLogger(Logger... targets)
     {
         super(targets.length == 0 ? null : targets[0]);
-        this.otherTargets = targets.length == 0 ? targets : Arrays.copyOfRange(targets, 1, targets.length);
+        this.otherTargets = targets.length < 2 ? targets : Arrays.copyOfRange(targets, 1, targets.length);
     }
     
     @Override

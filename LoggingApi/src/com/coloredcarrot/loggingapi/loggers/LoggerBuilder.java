@@ -66,6 +66,12 @@ public class LoggerBuilder extends AbstractLogger
         return this;
     }
     
+    public LoggerBuilder copyInto(Logger dump)
+    {
+        newPhase(new CopyLogger(null, dump));
+        return this;
+    }
+    
     public Logger saveInto(File file, Charset cs) throws FileNotFoundException
     {
         return saveInto(new OutputStreamWriter(new FileOutputStream(file), cs));
