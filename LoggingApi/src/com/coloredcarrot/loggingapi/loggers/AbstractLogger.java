@@ -3,10 +3,12 @@ package com.coloredcarrot.loggingapi.loggers;
 import com.coloredcarrot.loggingapi.LogRecord;
 import com.coloredcarrot.loggingapi.LogRecordOrigin;
 
+import java.util.function.Supplier;
+
 public abstract class AbstractLogger implements Logger
 {
     
-    protected LogRecord createRecord(String m, Throwable ex, LogRecord.Level level)
+    protected LogRecord createRecord(Object m, Throwable ex, LogRecord.Level level)
     {
         return new LogRecord(new LogRecordOrigin(getOriginStackTraceElement(), Thread.currentThread().getName(), Thread.currentThread().getId()), m, level, ex);
     }
@@ -97,6 +99,72 @@ public abstract class AbstractLogger implements Logger
     public void fatal(Object m, Throwable ex)
     {
         log(m, ex, LogRecord.Level.FATAL);
+    }
+    
+    @Override
+    public void log(Supplier<?> m, LogRecord.Level level)
+    {
+        log((Object) m, level);
+    }
+    
+    @Override
+    public void log(Supplier<?> m, Throwable ex, LogRecord.Level level)
+    {
+        log((Object) m, ex, level);
+    }
+    
+    @Override
+    public void dev(Supplier<?> m)
+    {
+        dev((Object) m);
+    }
+    
+    @Override
+    public void debug(Supplier<?> m)
+    {
+        debug((Object) m);
+    }
+    
+    @Override
+    public void out(Supplier<?> m)
+    {
+        out((Object) m);
+    }
+    
+    @Override
+    public void warn(Supplier<?> m)
+    {
+        warn((Object) m);
+    }
+    
+    @Override
+    public void warn(Supplier<?> m, Throwable ex)
+    {
+        warn((Object) m, ex);
+    }
+    
+    @Override
+    public void err(Supplier<?> m)
+    {
+        err((Object) m);
+    }
+    
+    @Override
+    public void err(Supplier<?> m, Throwable ex)
+    {
+        err((Object) m, ex);
+    }
+    
+    @Override
+    public void fatal(Supplier<?> m)
+    {
+        fatal((Object) m);
+    }
+    
+    @Override
+    public void fatal(Supplier<?> m, Throwable ex)
+    {
+        fatal((Object) m, ex);
     }
     
     @Override

@@ -2,6 +2,8 @@ package com.coloredcarrot.loggingapi.loggers;
 
 import com.coloredcarrot.loggingapi.LogRecord;
 
+import java.util.function.Supplier;
+
 public interface Logger
 {
     
@@ -28,6 +30,28 @@ public interface Logger
     void fatal(Object m);
     
     void fatal(Object m, Throwable ex);
+    
+    void log(Supplier<?> m, LogRecord.Level level);
+    
+    void log(Supplier<?> m, Throwable ex, LogRecord.Level level);
+    
+    void dev(Supplier<?> m);
+    
+    void debug(Supplier<?> m);
+    
+    void out(Supplier<?> m);
+    
+    void warn(Supplier<?> m);
+    
+    void warn(Supplier<?> m, Throwable ex);
+    
+    void err(Supplier<?> m);
+    
+    void err(Supplier<?> m, Throwable ex);
+    
+    void fatal(Supplier<?> m);
+    
+    void fatal(Supplier<?> m, Throwable ex);
     
     void shutdown();
     
