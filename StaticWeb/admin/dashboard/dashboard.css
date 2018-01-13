@@ -8,3 +8,38 @@ div.card-action > a > i
 {
     font-size: 1.6rem;
 }
+
+#filter
+{
+    border-bottom: 1px solid #fff;
+}
+
+#filter:focus
+{
+    box-shadow: none;
+}
+
+#filter::-webkit-input-placeholder
+{
+    color: #ededed;
+}
+#filter:-moz-placeholder
+{
+    color: #ededed;
+}
+#filter::-moz-placeholder
+{
+    color: #ededed;
+}
+#filter:-ms-input-placeholder
+{
+    color: #ededed;
+}
+#filter::-ms-input-placeholder
+{
+    color: #ededed;
+}
+#filter::placeholder
+{
+    color: #ededed;
+}
