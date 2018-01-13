@@ -1,36 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% University Assignment Title Page
-% LaTeX Template
-% Version 1.0 (27/12/12)
-%
-% This template has been downloaded from:
-% http://www.LaTeXTemplates.com
-%
-% Original author:
-% WikiBooks (http://en.wikibooks.org/wiki/LaTeX/Title_Creation)
-%
-% License:
-% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
-%
-% Instructions for using this template:
-% This title page is capable of being compiled as is. This is not useful for
-% including it in another document. To do this, you have two options:
-%
-% 1) Copy/paste everything between \begin{document} and \end{document}
-% starting at \begin{titlepage} and paste this into another LaTeX file where you
-% want your title page.
-% OR
-% 2) Remove everything outside the \begin{titlepage} and \end{titlepage} and
-% move this file to the same directory as the LaTeX file you wish to add it to.
-% Then add \input{./title_page_1.tex} to your LaTeX file where you want your
-% title page.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\title{Title page with logo}
-%----------------------------------------------------------------------------------------
-%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
-
 \documentclass[12pt]{article}
 \usepackage[german]{babel}
 \usepackage[T1]{fontenc} % for typewriter braces
@@ -125,9 +92,6 @@
     Nach deren Download kann sie mit einem Archivierungsprogramm
     wie WinRAR oder 7-Zip ausgepackt werden.
 
-    Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1}
-    dargestellt.
-
     \begin{enumerate}
         \item Extrahieren Sie nach deren Download die Datei \emph{ZNews.zip}.
         Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1} dargestellt.
@@ -165,6 +129,7 @@
         .2 config.properties.
         .2 newsletters.json.
         .2 registrations.json.
+        .2 \ldots.
         }
         \caption{\label{fig:dirtree2}Neu erstellte Dateien und Ordner}
     \end{figure}
@@ -180,7 +145,7 @@
 
     \subsection{Wichtige Konfigurationsschl"ussel}
 
-    \subsubsection{Der Port}
+    \subsubsection{Der Port} \label{sec:config:port}
 
     \begin{align*}
         \emph{Schl"ussel: } & \lstinline{port}\\
@@ -236,6 +201,86 @@ email.auth.pw=12345
     Eine vollst"andige Referenz der Konfiguration
     findet sich Tabelle~\ref{table:config-ref}
     und Abbildung~\ref{fig:config-std}.
+
+    \section{Befehle}
+
+    ZNews Server unterst"utzt eine Reihe von Befehlen,
+    die in die Konsole eingegeben werden k"onnen.
+    Um einen Befehl auszuf"uhren, schreiben Sie ihn
+    in die Eingabeaufforderung und best"atigen Sie
+    mit \meta{Enter}.
+
+    \subsection{Befehlsreferenz}
+
+    \subsubsection{end}
+
+    \hspace*{2cm}\emph{Syntax: } \lstinline{end}
+    \vspace*{0.2cm}
+
+    \emph{end} stoppt den Server, speichert alle Daten
+    und komprimiert die Log-Datei in einer Gzip-Datei.
+
+    Das Beenden des Servers kann einige Augenblicke
+    in Anspruch nehmen; die letzte Zeile in der
+    Konsole sollte ``(End)'' zeigen.
+
+    \subsubsection{restart}
+
+    \hspace*{2cm}\emph{Syntax: } \lstinline{restart}
+    \vspace*{0.2cm}
+
+    Startet den Server neu. "Ahnlich zu \emph{end}
+    werden alle Daten gespeichert, jedoch wird
+    das Logging-System nicht beendet, we"shalb
+    die Log-Datei nicht komprimiert wird.
+
+    \subsubsection{reset caches}
+
+    \hspace*{2cm}\emph{Syntax: } \lstinline{reset caches} oder \lstinline{rs}
+    \vspace*{0.2cm}
+
+    Leert (\emph{purge}) den Cache, sofern dieser
+    in der Konfiguration eingeschaltet ist.
+
+    \subsubsection{addadmin}
+
+    \hspace*{2cm}\emph{Syntax: } \lstinline{addadmin} \meta{email} \meta{name} \meta{password}
+    \vspace*{0.2cm}
+
+    Erstellt einen neuen Administrator-Account mit
+    der E-Mail Adresse \meta{email}, dem Namen \meta{name}
+    und dem Passwort \meta{password}.
+
+
+    \section{Troubleshooting}
+
+    \subsection[``Failed to bind port'']{Beim Starten des Servers erscheint die Nachricht ``Failed to bind port'' mit zugehörigem StackTrace.}
+    \begin{enumerate}
+        \item Überprüfen Sie, ob der Server noch an einer anderen Stelle gestartet ist. Nutzen Sie zur Not
+        einen Task Manager, um eine zweite Server-Instanz zu finden, oder starten Sie den PC / die
+        virtuelle Maschine neu.
+
+        \emph{Hinweis: Es ist möglich, mehrere Server-Instanzen gleichzeitig laufen zu lassen, ändern Sie
+        dafür den Port in der Konfigurationsdatei eines der Server.}
+        \item Läuft keine zweite Server-Instanz, so ist davon auszugehen, dass ein anderes Programm den
+        von Feedback Server genutzten Port bereits belegt. Ist dies der Fall, haben Sie drei
+        Möglichkeiten:
+        \begin{enumerate}
+            \item Schließen Sie das Programm und stellen Sie sicher, dass es nicht automatisch wieder gestartet wird.
+            \item Konfigurieren Sie das Programm so, einen anderen Port zu nutzen. Konsultieren Sie ggf. das dem Programm zugehörige Benutzerhandbuch
+            \item Konfigurieren Sie Feedback Server so, einen anderen Port zu nutzen\footnote{Siehe Abschnitt~\ref{sec:config:port}, ``\nameref{sec:config:port}''}.
+        \end{enumerate}
+    \end{enumerate}
+
+    \subsection[Mac: Fehler beim Ausf"uhren von start.command]{(Mac) Ich kann die start.command-Datei nicht ausführen (keine Berechtigung).}
+    \begin{enumerate}
+        \item Melden Sie sich mit administrativen Rechten an.
+        \item Sollte das nicht funktionieren, öffnen Sie Terminal, navigieren Sie mit Hilfe des Kommandos
+        \emph{cd} in den Ordner der Datei (konsultieren Sie ggf. das Internet) und schreiben Sie \emph{sudo sh
+        start.command}. Bei Bestätigung mit Enter sollte sich der Server starten. Unter Umständen werden Sie
+        vorher nach Ihrem Passwort gefragt.
+    \end{enumerate}
+
 
     \begin{table}[p]
         \centering
