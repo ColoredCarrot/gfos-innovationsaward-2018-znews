@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Documentation/Documentation.iml" filepath="$PROJECT_DIR$/Documentation/Documentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/JsonApi/JsonApi.iml" filepath="$PROJECT_DIR$/JsonApi/JsonApi.iml" />
       <module fileurl="file://$PROJECT_DIR$/LoggingApi/LoggingApi.iml" filepath="$PROJECT_DIR$/LoggingApi/LoggingApi.iml" />
       <module fileurl="file://$PROJECT_DIR$/StaticWeb/StaticWeb.iml" filepath="$PROJECT_DIR$/StaticWeb/StaticWeb.iml" />
