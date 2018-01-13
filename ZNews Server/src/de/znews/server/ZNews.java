@@ -55,7 +55,7 @@ public class ZNews
         config = new ZNewsConfiguration(this, cfgFile);
         
         Log.setLogger(Loggers.build(config.props(), System.out));
-    
+        
         config.printDebug();
         
         // Load registrationList
@@ -108,20 +108,17 @@ public class ZNews
             });
         }
         saveAll();
-        new Thread(() ->
+        try
         {
-            try
-            {
-                shutdownLatch.await();
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            Log.out("Shutdown complete! Have a nice day ;-)");
-            if (callback != null)
-                callback.run();
-        }).start();
+            shutdownLatch.await();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        Log.out("Shutdown complete! Have a nice day ;-)");
+        if (callback != null)
+            callback.run();
     }
     
     public void saveAll()
