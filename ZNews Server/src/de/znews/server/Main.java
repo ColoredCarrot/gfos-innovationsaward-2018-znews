@@ -19,6 +19,18 @@ public class Main
         
         Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("(End)")));
         
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+        {
+            Thread.UncaughtExceptionHandler javaDefaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+            @Override
+            public void uncaughtException(Thread t, Throwable e)
+            {
+                Log.ifReadyOrElse(l -> l.err("Unhandled exception. Future behaviour is unspecified. It is recommended to restart (NOT using \"restart\") ", e),
+                        () -> javaDefaultUncaughtExceptionHandler.uncaughtException(t, e));
+            }
+        });
+        Thread.currentThread().setUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler());
+        
         znews = new ZNews();
         
         znews.startServer();
