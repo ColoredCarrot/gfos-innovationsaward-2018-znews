@@ -41,6 +41,7 @@
 % Simple directory trees
 \usepackage{dirtree}
 \usepackage{nameref}
+\usepackage{listings}
 
 % \meta command
 \usepackage{textcomp}
@@ -80,7 +81,8 @@
                 \large
                 \emph{Aufsicht:} \\
                 Dennis Gro"skamp\\
-                \hfill % Empty line
+                \hfill
+                % Empty line
             \end{flushright}
         \end{minipage}\\[2cm]
 
@@ -126,14 +128,14 @@
 
     \begin{enumerate}
         \item Extrahieren Sie nach deren Download die Datei \emph{ZNews.zip}.
-              Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1} dargestellt.
+        Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1} dargestellt.
         \item Starten Sie den Server mit dem Startskript\footnote{%
-              Windows: \emph{start.bat}, Mac: \emph{start.command}}.
+        Windows: \emph{start.bat}, Mac: \emph{start.command}}.
         \item Nach Erscheinen der Nachricht ``Server started'' (o."a.),
-              Schreiben Sie ``end'' und dr"ucken Sie \meta{Enter}.
+        Schreiben Sie ``end'' und dr"ucken Sie \meta{Enter}.
         \item Nach Beenden des Programms sind die in Abb.~\ref{fig:dirtree2}
-              gezeigten Dateien und Ordner neu erstellt worden.
-              Konfigurieren Sie den Server wie in Abschnitt~\ref{sec:config} ``\nameref{sec:config}'' beschrieben.
+        gezeigten Dateien und Ordner neu erstellt worden.
+        Konfigurieren Sie den Server wie in Abschnitt~\ref{sec:config} ``\nameref{sec:config}'' beschrieben.
         \item Sie k"onnen nun jederzeit den Server mit dem Startskript starten.
     \end{enumerate}
 
@@ -165,15 +167,80 @@
         \caption{\label{fig:dirtree2}Neu erstellte Dateien und Ordner}
     \end{figure}
 
+    \pagebreak
     \section{Konfiguration}%
     \label{sec:config}
 
-    ha
+    ZNews Server beinhaltet viele Konfigurationsm"oglichkeiten,
+    allesamt in \emph{config.properties}.
+    Dieser Abschnitt zeigt die wichtigsten Konfigurationen
+    und bietet au"serdem eine vollst"andige Referenz am Ende.
 
+    \subsection{Der Port}
 
+    \begin{align*}
+        \emph{Schl"ussel: } & \lstinline{port}\\
+        \emph{Standardwert: } & \lstinline{8080}
+    \end{align*}
+    %% Consider this other, non-centered version:
+    %\hspace*{2cm}\emph{Schl"ussel: } \lstinline{port}\\
+    %\hspace*{2cm}\emph{Standardwert: } \lstinline{8080}
+    %\vspace*{0.2cm}
 
+    ZNews Server beansprucht einen Port, um eingehende
+    Anfragen bearbeiten zu k"onnen. Standardm"a"sig ist
+    \emph{8080} eingestellt, jedoch ist es empfohlen,
+    diesen Wert zu "andern.
 
+    \subsection{Email-Einstellungen}
 
+    ZNews Server muss dazu in der Lage sein, E-Mails
+    zu versenden. Dazu muss z.B. ein SMTP-Server eingestellt
+    werden, durch welchen die E-Mails geschickt werden.
+
+    Im Folgenden wird ein Gmail-Account mit der
+    E-Mail-Adresse \emph{john.smith@gmail.com} und
+    dem Passwort \emph{12345} verwendet:
+
+    \begin{lstlisting}[]%@formatter:off
+email.protocol=smtp
+email.port=465
+email.host=smtp.gmail.com
+email.auth=true
+email.auth.usr=john.smith@gmail.com
+email.auth.pw=12345
+    \end{lstlisting}%@formatter:on
+
+    F"ur die Verwendung von anderen Servern, konsultieren Sie
+    bitte deren spezifischen Anleitungen.
+
+    \subsection{Log-Level}
+
+    \begin{align*}
+        \emph{Schl"ussel: } & \lstinline{log.filter}\\
+        \emph{Standardwert: } & \lstinline{out}\\
+        \emph{M"ogliche Werte: } & \lstinline{dev|debug|out|warn|err|fatal}
+    \end{align*}
+
+    Das Log-Level spezifiziert, welche Logging-Ausgaben tats"achlich
+    ausgegeben werden. Zum Beispiel werden bei \lstinline{warn}
+    nur Warnungen, Fehler (\lstinline{err}) und schwerwiegende Fehler
+    (\lstinline{fatal}) ausgegeben.
+
+    \subsection{Lesbare JSON-Ausgabe}
+
+    \begin{align*}
+        \emph{Schl"ussel: } & \lstinline{pretty-print-json}\\
+        \emph{Standardwert: } & \lstinline{false}
+    \end{align*}
+
+    Standardm"a"sig werden die von ZNews ben"otigten Daten
+    in den Dateien \emph{auth.json}, \emph{newsletters.json} und \emph{registrations.json}
+    gespeichert\footnote{%
+    Alternativ kann auch eine MySQL-Datenbank verwendet werden, siehe % // TODO: Add option for MySQL
+    }, jedoch sind sie nicht besonders leserlich.
+
+    Die Lesbarkeit wird verbessert, wenn Sie diese Option aktivieren.
 
 
     %Comments can be added to the margins of the document using the \todo{Here's a comment in the margin!} todo command, as shown in the example on the right. You can also add inline comments too:
