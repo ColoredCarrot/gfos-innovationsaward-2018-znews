@@ -17,6 +17,19 @@
 \usepackage{amssymb}
 \providecommand\meta[1]{\textlangle{\itshape #1\/}\textrangle}
 
+\lstdefinelanguage{incomplete-Ini}
+{
+basicstyle=\ttfamily\small,
+columns=fullflexible,
+%morecomment=[s][\color{Orchid}\bfseries]{[}{]},
+morecomment=[l]{\#},
+morecomment=[l]{;},
+commentstyle=\color{gray}\ttfamily,
+morekeywords={},
+otherkeywords={=},
+keywordstyle={\color{green}\bfseries}
+}
+
 \begin{document}
 
     \begin{titlepage}
@@ -308,7 +321,7 @@ email.auth.pw=12345
 
     \begin{figure}[p]
         \centering
-        \begin{lstlisting}[frame=single]%formatter:off
+        \begin{lstlisting}[frame=single,language=incomplete-Ini]%formatter:off
 
 port=8080
 
@@ -330,20 +343,20 @@ email.auth.usr={ACCOUNT_LOGIN}
 email.auth.pw={ACCOUNT_PASSWORD}
 email.debug=false
 
-email.templates.double-opt-in=email_templates/
+email.templates.double-opt-in=email_templates/\
         double_opt_in
-email.templates.new-newsletter=email_templates/
+email.templates.new-newsletter=email_templates/\
         new_newsletter
 
 log.filter=out
-log.format.dev=[{date}] [{threadName}:{threadId}
-        /{level} @ {methodName}/{typeSimpleName}/
+log.format.dev=[{date}] [{threadName}:{threadId}\
+        /{level} @ {methodName}/{typeSimpleName}/\
         {fileName}:{line}] {msg}
 log.format.dev.date-format=HH:mm:ss:SSS
-log.format.debug=[{date}] [{threadName}:{threadId}
+log.format.debug=[{date}] [{threadName}:{threadId}\
         /{level}] {msg}
-log.format.fatal=FATAL [{date}] [{threadName}:
-        {threadId}/{level} @ {methodName}/{typeName}
+log.format.fatal=FATAL [{date}] [{threadName}:\
+        {threadId}/{level} @ {methodName}/{typeName}\
         /{fileName}:{line}] {msg}
 log.out.files-gzip.dir=logs/
 log.out.files-gzip.auto-flush=true
