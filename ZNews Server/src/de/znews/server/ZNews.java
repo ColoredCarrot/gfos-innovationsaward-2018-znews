@@ -119,7 +119,8 @@ public class ZNews
                 e.printStackTrace();
             }
             Log.out("Shutdown complete! Have a nice day ;-)");
-            callback.run();
+            if (callback != null)
+                callback.run();
         }).start();
     }
     
