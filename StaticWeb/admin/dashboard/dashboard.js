@@ -117,5 +117,32 @@ jQuery(function($)
             act.cfg.useAttrs($card);
             act.onBtnPublish({ callback: () => $card.find('.publish-btn').remove() });
         });
+
+        $('#filter').on('input', function()
+        {
+            onFilterUpdate($(this).val());
+        });
     }
+
+    function onFilterUpdate(filter)
+    {
+        if (typeof filter === typeof '')
+        {
+            let filterString = filter.toLowerCase();
+            filter = article => article.title.toLowerCase().includes(filterString);
+        }
+        $('div.article-card').each((idx, e) =>
+        {
+            let $this = $(e);
+            if (filter({
+                    nid: $this.attr('data-nid'),
+                    title: $this.attr('data-title'),
+                    published: $this.attr('data-published')
+                }))
+                $this.parent().show();
+            else
+                $this.parent().hide();
+        });
+    }
+
 });
