@@ -92,11 +92,6 @@ public class ZNews
     
     public void stopServer()
     {
-        stopServer(null);
-    }
-    
-    public void stopServer(Runnable callback)
-    {
         // FINDME: Here is defined the number znews.shutdownLatch.countDown() needs to be called
         shutdownLatch = new CountDownLatch(3);
         if (server != null)
@@ -117,8 +112,6 @@ public class ZNews
             e.printStackTrace();
         }
         Log.out("Shutdown complete! Have a nice day ;-)");
-        if (callback != null)
-            callback.run();
     }
     
     public void saveAll()

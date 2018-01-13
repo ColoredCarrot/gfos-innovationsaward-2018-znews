@@ -38,40 +38,39 @@ public class Main
             if (command.equalsIgnoreCase("end"))
             {
                 Log.out("Shutting down...");
-                znews.stopServer(znews::shutdownLogSystem);
+                znews.stopServer();
+                znews.shutdownLogSystem();
                 break;
             }
             if (command.equalsIgnoreCase("restart"))
             {
                 Log.out("Restarting...");
-                znews.stopServer(() ->
+                znews.stopServer();
+                new Thread(() ->
                 {
-                    new Thread(() ->
+                    try
                     {
-                        try
+                        for (int i = 5; i > 0; i--)
                         {
-                            for (int i = 5; i > 0; i--)
-                            {
-                                Log.out("Starting in " + i + " second" + (i != 1 ? "s" : ""));
-                                Thread.sleep(1000);
-                            }
+                            Log.out("Starting in " + i + " second" + (i != 1 ? "s" : ""));
+                            Thread.sleep(1000);
                         }
-                        catch (InterruptedException ignored)
-                        {
-                        }
-                        try
-                        {
-                            
-                            znews = new ZNews();
-                            znews.startServer();
-                            readConsole();
-                        }
-                        catch (IOException e)
-                        {
-                            throw new UncheckedIOException(e);
-                        }
-                    }).start();
-                });
+                    }
+                    catch (InterruptedException ignored)
+                    {
+                    }
+                    try
+                    {
+            
+                        znews = new ZNews();
+                        znews.startServer();
+                        readConsole();
+                    }
+                    catch (IOException e)
+                    {
+                        throw new UncheckedIOException(e);
+                    }
+                }).start();
                 break;
             }
             if (command.equalsIgnoreCase("reset caches") || command.equalsIgnoreCase("rs"))
