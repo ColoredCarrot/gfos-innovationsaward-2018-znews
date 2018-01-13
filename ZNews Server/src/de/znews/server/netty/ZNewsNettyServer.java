@@ -17,6 +17,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.net.BindException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ZNewsNettyServer extends Thread
@@ -65,10 +66,24 @@ public class ZNewsNettyServer extends Thread
 					      ch.pipeline().addLast(new ResourceProviderHandler(znews));
 				      }
 			      });
-			
-			channel = server.bind(port).sync().channel();
-			
-			Log.out("Server started, end with \"end\" (without quotation marks)");
+            
+            try
+            {
+                channel = server.bind(port).sync().channel();
+            }
+            catch (Throwable e)
+            {
+                //noinspection ConstantConditions
+                if (!(e instanceof BindException))
+                    //noinspection ProhibitedExceptionThrown
+                    throw e;
+                // Failed to bind to port
+                Log.fatal("Failed to bind to port " + port);
+                znews.shutdownLogSystem();
+                System.exit(-1);
+            }
+            
+            Log.out("Server started, end with \"end\" (without quotation marks)");
 			Log.debug("Listening for connections...");
 			
 			try

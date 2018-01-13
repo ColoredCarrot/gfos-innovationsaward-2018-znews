@@ -3,12 +3,13 @@ package de.znews.server;
 import com.coloredcarrot.loggingapi.LogRecord;
 import com.coloredcarrot.loggingapi.loggers.Logger;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Log
 {
     
-    private static Logger logger;
+    private static volatile Logger logger;
     
     public static Logger getLogger()
     {
@@ -135,9 +136,23 @@ public class Log
         logger.fatal(m, ex);
     }
     
-    public static void shutdown()
+    public static synchronized void shutdown()
     {
         logger.shutdown();
+        logger = null;
+    }
+    
+    public static boolean isReady()
+    {
+        return logger != null;
+    }
+    
+    public static synchronized void ifReadyOrElse(Consumer<? super Logger> ifReady, Runnable orElse)
+    {
+        if (isReady())
+            ifReady.accept(logger);
+        else
+            orElse.run();
     }
     
 }
