@@ -42,10 +42,12 @@
 \usepackage{dirtree}
 \usepackage{nameref}
 \usepackage{listings}
+\usepackage{tabularx}
 
 % \meta command
 \usepackage{textcomp}
 \usepackage{hyperref}
+\usepackage{amssymb}
 \providecommand\meta[1]{\textlangle{\itshape #1\/}\textrangle}
 
 \begin{document}
@@ -176,7 +178,9 @@
     Dieser Abschnitt zeigt die wichtigsten Konfigurationen
     und bietet au"serdem eine vollst"andige Referenz am Ende.
 
-    \subsection{Der Port}
+    \subsection{Wichtige Konfigurationsschl"ussel}
+
+    \subsubsection{Der Port}
 
     \begin{align*}
         \emph{Schl"ussel: } & \lstinline{port}\\
@@ -192,7 +196,7 @@
     \emph{8080} eingestellt, jedoch ist es empfohlen,
     diesen Wert zu "andern.
 
-    \subsection{Email-Einstellungen}
+    \subsubsection{Email-Einstellungen}
 
     ZNews Server muss dazu in der Lage sein, E-Mails
     zu versenden. Dazu muss z.B. ein SMTP-Server eingestellt
@@ -214,7 +218,7 @@ email.auth.pw=12345
     F"ur die Verwendung von anderen Servern, konsultieren Sie
     bitte deren spezifischen Anleitungen.
 
-    \subsection{Log-Level}
+    \subsubsection{Log-Level}
 
     \begin{align*}
         \emph{Schl"ussel: } & \lstinline{log.filter}\\
@@ -227,25 +231,86 @@ email.auth.pw=12345
     nur Warnungen, Fehler (\lstinline{err}) und schwerwiegende Fehler
     (\lstinline{fatal}) ausgegeben.
 
-    \subsection{Lesbare JSON-Ausgabe}
+    \subsection{Referenz}
 
-    \begin{align*}
-        \emph{Schl"ussel: } & \lstinline{pretty-print-json}\\
-        \emph{Standardwert: } & \lstinline{false}
-    \end{align*}
+    Eine vollst"andige Referenz der Konfiguration
+    findet sich Tabelle~\ref{table:config-ref}
+    und Abbildung~\ref{fig:config-std}.
 
-    Standardm"a"sig werden die von ZNews ben"otigten Daten
-    in den Dateien \emph{auth.json}, \emph{newsletters.json} und \emph{registrations.json}
-    gespeichert\footnote{%
-    Alternativ kann auch eine MySQL-Datenbank verwendet werden, siehe % // TODO: Add option for MySQL
-    }, jedoch sind sie nicht besonders leserlich.
+    \begin{table}[p]
+        \centering
+        \begin{tabularx}{\textwidth}{|X|X|X|}
+            \hline
+            \textbf{Schl"ussel} = Standard & M"ogliche Werte & Beschreibung\\ \hline
+            \textbf{port} = 8080 & 1-65535 & Der von ZNews Server genutzte Port\\ \hline
+            \textbf{err\textunderscore docs.404} = error/ 404notfound.html & any file path & Das Dokument, dass bei Anfragen, die mit 404 beantwortet werden, gesendet wird\\ \hline
+            \textbf{data.method} = file & file|mysql & Die Methode, mit welcher Daten gespeichert werden\\ \hline
+            \textbf{cache.enabled} = true & true|false & Ob der Cache von \emph{static\textunderscore web/} aktiviert werden soll\\ \hline
+            \textbf{cache.size} = 32 & $\in\mathbb{N}$ & Die maximale Gr"o"se des Caches\\ \hline
+            \textbf{pretty-print-json} = false & true|false & Erh"oht die Lesbarkeit der JSON-Dateien\\ \hline
+            \textbf{email.protocol} = smtp & smtp|smtps|tls & Das Email-Server-Protokoll\\ \hline
+            \textbf{email.port} = 465 & 1-65535 & Der Email-Server-Port\\ \hline
+            \textbf{email.host} = smtp.gmail.com & Die Email-Server-Adresse\\ \hline
+            \textbf{email.from} = noreply@ znews.de & E-Mail Adresse & Die E-Mail Adresse, von welcher alle E-Mails versendet werden\\ \hline
+            \textbf{email.auth} = true & true|false & Ob sich ZNews Server beim Email-Server authentifizieren muss\\ \hline
+            \textbf{email.auth.usr} & String & Beim Email-Server g"ultiger Login\\ \hline
+            \textbf{email.auth.pw} & String & Beim Email-Server g"ultiges Password\\ \hline
+            \textbf{email.debug} = false & true|false & Ob Debug-Output beim Email-Versenden eingeschaltet werden soll\\ \hline
+            % TODO: Add all config values to reference
+        \end{tabularx}
+        \caption{\label{table:config-ref}Konfigurationsreferenz}
+    \end{table}
 
-    Die Lesbarkeit wird verbessert, wenn Sie diese Option aktivieren.
+    \begin{figure}[p]
+        \centering
+        \begin{lstlisting}[frame=single]%formatter:off
+
+port=8080
+
+err_docs.404=error/404notfound.html
+
+data.method=file
+
+cache.enabled=true
+cache.size=32
+
+pretty-print-json=false
+
+email.protocol=smtp
+email.port=465
+email.host=smtp.gmail.com
+email.from=noreply@znews.de
+email.auth=true
+email.auth.usr={ACCOUNT_LOGIN}
+email.auth.pw={ACCOUNT_PASSWORD}
+email.debug=false
+
+email.templates.double-opt-in=email_templates/
+        double_opt_in
+email.templates.new-newsletter=email_templates/
+        new_newsletter
+
+log.filter=out
+log.format.dev=[{date}] [{threadName}:{threadId}
+        /{level} @ {methodName}/{typeSimpleName}/
+        {fileName}:{line}] {msg}
+log.format.dev.date-format=HH:mm:ss:SSS
+log.format.debug=[{date}] [{threadName}:{threadId}
+        /{level}] {msg}
+log.format.fatal=FATAL [{date}] [{threadName}:
+        {threadId}/{level} @ {methodName}/{typeName}
+        /{fileName}:{line}] {msg}
+log.out.files-gzip.dir=logs/
+log.out.files-gzip.auto-flush=true
+log.separate-thread=true
+        \end{lstlisting}%formatter:on
+        \caption{\label{fig:config-std}Standard Konfigurationsdatei}
+    \end{figure}
 
 
-    %Comments can be added to the margins of the document using the \todo{Here's a comment in the margin!} todo command, as shown in the example on the right. You can also add inline comments too:
+    %Comments can be added to the margins of the document using the \t%odo{Here's a comment in the margin!} tod%o command, as shown in the example on the right. You can also add inline comments too:
     %
-    %\todo[inline, color=green!40]{This is an inline comment.}
+    %\to%do[inline, color=green!40]{This is an inline comment.}
 
 
 \end{document}
