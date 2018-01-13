@@ -33,10 +33,19 @@
 
 \documentclass[12pt]{article}
 \usepackage[german]{babel}
+\usepackage[T1]{fontenc} % for typewriter braces
 \usepackage[utf8x]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
+% Simple directory trees
+\usepackage{dirtree}
+\usepackage{nameref}
+
+% \meta command
+\usepackage{textcomp}
+\usepackage{hyperref}
+\providecommand\meta[1]{\textlangle{\itshape #1\/}\textrangle}
 
 \begin{document}
 
@@ -53,7 +62,7 @@
 
         % Main title
         \HRule \\[0.4cm]
-        { \huge \bfseries ZNews\\ Bedienungsanleitung}\\[0.4cm]
+        { \huge \bfseries ZNews Server\\ Bedienungsanleitung}\\[0.4cm]
         \HRule \\[1.5cm]
 
         % Authors
@@ -93,67 +102,83 @@
     \end{titlepage}
 
 
-    \begin{abstract}
-        Dieses Dokument dient der Beschreibung der Funktionen
-        und Konfiguration von ZNews.
-    \end{abstract}
+    %% We don't need an abstract in this page
+    %% We'll add that to Dokumentation.pdf
+    %\begin{abstract}
+    %    ZNews besteht weitestgehend aus zwei sich gegen"uberstehenden
+    %    Komponenten: dem Server und dem Webinterface.
+    %    In diesem Dokument wird die Funktionsweise des Servers
+    %    dargestellt und erl"autert.
+    %\end{abstract}
 
-    \section{Introduction}
+    \newpage
+    \tableofcontents
+    \newpage
 
-    Your introduction goes here! Some examples of commonly used commands and features are listed below, to help you get started.
+    \section{Installation}
 
-    If you have a question, please use the support box in the bottom right of the screen to get in touch.
+    ZNews Server wird als archivierte Datei geliefert.
+    Nach deren Download kann sie mit einem Archivierungsprogramm
+    wie WinRAR oder 7-Zip ausgepackt werden.
 
-    \section{Some \LaTeX{} Examples}
-    \label{sec:examples}
-
-    \subsection{Sections}
-
-    Use section and subsection commands to organize your document. \LaTeX{} handles all the formatting and numbering automatically. Use ref and label commands for cross-references.
-
-    \subsection{Comments}
-
-    Comments can be added to the margins of the document using the \todo{Here's a comment in the margin!} todo command, as shown in the example on the right. You can also add inline comments too:
-
-    \todo[inline, color=green!40]{This is an inline comment.}
-
-    \subsection{Tables and Figures}
-
-    Use the table and tabular commands for basic tables --- see Table~\ref{tab:widgets}, for example. You can upload a figure (JPEG, PNG or PDF) using the files menu. To include it in your document, use the includegraphics command as in the code for below.
-
-    % Commands to include a figure:
-
-    \begin{table}
-        \centering
-        \begin{tabular}{l|r}
-            Item & Quantity \\\hline
-            Widgets & 42 \\
-            Gadgets & 13
-        \end{tabular}
-        \caption{\label{tab:widgets}An example table.}
-    \end{table}
-
-    \subsection{Mathematics}
-
-    \LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-    $$S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-    = \frac{1}{n}\sum_{i}^{n} X_i$$
-    denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
-
-    \subsection{Lists}
-
-    You can make lists with automatic numbering \dots
+    Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1}
+    dargestellt.
 
     \begin{enumerate}
-        \item Like this,
-        \item and like this.
+        \item Extrahieren Sie nach deren Download die Datei \emph{ZNews.zip}.
+              Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1} dargestellt.
+        \item Starten Sie den Server mit dem Startskript\footnote{%
+              Windows: \emph{start.bat}, Mac: \emph{start.command}}.
+        \item Nach Erscheinen der Nachricht ``Server started'' (o."a.),
+              Schreiben Sie ``end'' und dr"ucken Sie \meta{Enter}.
+        \item Nach Beenden des Programms sind die in Abb.~\ref{fig:dirtree2}
+              gezeigten Dateien und Ordner neu erstellt worden.
+              Konfigurieren Sie den Server wie in Abschnitt~\ref{sec:config} ``\nameref{sec:config}'' beschrieben.
+        \item Sie k"onnen nun jederzeit den Server mit dem Startskript starten.
     \end{enumerate}
-    \dots or bullet points \dots
-    \begin{itemize}
-        \item Like this,
-        \item and like this.
-    \end{itemize}
 
-    We hope you find write\LaTeX\ useful, and please let us know if you have any feedback using the help menu above.
+    \begin{figure}[htb]
+        \dirtree{%
+        .1 /.
+        .2 server.jar.
+        .2 start.bat.
+        .2 start.command.
+        .2 docs/.
+        .3 de/.
+        .4 Bedienungsanleitung.pdf.
+        .4 Server Bedienungsanleitung.pdf.
+        .4 Dokumentation.pdf.
+        }
+        \caption{\label{fig:dirtree1}Aufbau des heruntergeladenen Archivs}
+    \end{figure}
+
+    \begin{figure}[htb]
+        \dirtree{%
+        .1 /.
+        .2 logs/.
+        .2 static\textunderscore web/.
+        .2 auth.json.
+        .2 config.properties.
+        .2 newsletters.json.
+        .2 registrations.json.
+        }
+        \caption{\label{fig:dirtree2}Neu erstellte Dateien und Ordner}
+    \end{figure}
+
+    \section{Konfiguration}%
+    \label{sec:config}
+
+    ha
+
+
+
+
+
+
+
+    %Comments can be added to the margins of the document using the \todo{Here's a comment in the margin!} todo command, as shown in the example on the right. You can also add inline comments too:
+    %
+    %\todo[inline, color=green!40]{This is an inline comment.}
+
 
 \end{document}
