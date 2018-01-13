@@ -85,9 +85,9 @@ public class ZNews
         server = new ZNewsNettyServer(this, config.getPort());
         
         Log.out("Starting server on port " + config.getPort() + "...");
-        
+    
         server.start();
-        
+    
     }
     
     public void stopServer()
