@@ -58,3 +58,14 @@ div.article-card input[type=checkbox]:not(:checked) + label:before
     border-bottom: 1px solid #e1e1e1;
     border-left: 1px solid #e1e1e1;
 }
+
+#act-btn-container .btn-flat
+{
+    transition: background-color .5s, color .6s;
+}
+
+#act-btn-container .btn-flat:hover, #act-btn-container .btn-flat:focus
+{
+    color: #e53935 !important;
+    background-color: #ffffffed !important;
+}
