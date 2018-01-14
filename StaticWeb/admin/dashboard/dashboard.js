@@ -68,8 +68,17 @@ jQuery(function($)
                   .attr('data-title', article.title)
                   .attr('data-published', article.published)
                   .attr('data-hash', (article.title + article.text).hashCode());
-             $card.find('input[type=checkbox]').attr('id', 'select-' + article.nid)
-                                               .after(`<label for="select-${article.nid}"></label>`);
+             $card.find('input[type=checkbox]')
+                  .attr('id', 'select-' + article.nid)
+                  .after(`<label for="select-${article.nid}"></label>`);
+
+             $card.find('.card-content').click(function()
+             {
+                 // Virtually click checkbox when clicking card; not when on checkbox
+                 let $checkbox = $(this).find('input[type=checkbox]');
+                 if (!$checkbox.is(':hover'))
+                     $checkbox.click();
+             });
 
              // If article is published, remove 'publish' button
              if (article.published)
