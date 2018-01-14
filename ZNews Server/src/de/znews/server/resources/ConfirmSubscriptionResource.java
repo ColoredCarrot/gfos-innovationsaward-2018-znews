@@ -45,8 +45,7 @@ public class ConfirmSubscriptionResource extends Resource
         }
         catch (InterruptedException e)
         {
-            Log.warn("Could not confirm subscription of " + email + "!");
-            e.printStackTrace();
+            Log.warn("Could not confirm subscription of " + email + "!", e);
             throw new HttpException(HttpResponseStatus.INTERNAL_SERVER_ERROR, "Could not confirm subscription");
         }
     
