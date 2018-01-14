@@ -68,7 +68,7 @@ jQuery(function($)
          $('#main-container').append(renderText(article.text));
 
          if (article.publisher)
-             $('#description').html(`Published by ${article.publisher} on ${formatDate(article.datePublished)}. <a class="go-back-link" href="/">Go back</a>`);
+             $('#description').html(`Published by ${article.publisher} on ${formatDate(article.datePublished)}. <a class="go-back-link" href="javascript:window.history.back()">Go back</a>`);
          else
          {
              $('#description').html(`This article has not yet been published. You are viewing a draft version. <a class="go-back-link" href="/admin/dashboard">Go back</a>`)

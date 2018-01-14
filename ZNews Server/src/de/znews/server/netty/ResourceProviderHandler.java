@@ -33,7 +33,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
         // FINDME: Register resources here
         // TODO: Friggin make this dynamic...
         resources.addAll(Arrays
-                .asList(new RandomArticleResource(znews), new ChangePasswordResource(znews), new LogoutResource(znews), new ConfirmSubscriptionResource(znews), new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
+                .asList(new CancelSubscriptionResource(znews), new RandomArticleResource(znews), new ChangePasswordResource(znews), new LogoutResource(znews), new ConfirmSubscriptionResource(znews), new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
         this.staticWeb = znews.staticWeb;
     }
     

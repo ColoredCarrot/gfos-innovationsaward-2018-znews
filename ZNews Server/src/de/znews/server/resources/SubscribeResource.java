@@ -3,6 +3,7 @@ package de.znews.server.resources;
 import com.coloredcarrot.jsonapi.ast.JsonNode;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import de.znews.server.Common;
+import de.znews.server.Log;
 import de.znews.server.ZNews;
 import de.znews.server.emai_reg.DoubleOptInEmail;
 import de.znews.server.resources.exception.HttpException;
@@ -57,7 +58,7 @@ public class SubscribeResource extends JSONResource
         catch (MessagingException e)
         {
             // Failed to send email
-            e.printStackTrace();
+            Log.warn("Failed to send email in SubscribeResource", e);
             return JsonObject.createBuilder()
                              .add("success", false)
                              .add("error", JsonObject.createBuilder()

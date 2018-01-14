@@ -25,6 +25,11 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
 		registeredEmails.put(email, reg);
 		return reg;
 	}
+    
+    public boolean removeRegistration(String email)
+    {
+        return registeredEmails.remove(email) != null;
+    }
 	
 	public Registration getRegistration(String email)
 	{

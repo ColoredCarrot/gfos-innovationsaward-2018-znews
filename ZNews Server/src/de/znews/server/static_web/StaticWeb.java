@@ -97,8 +97,7 @@ public class StaticWeb
         }
         catch (ExecutionException e)
         {
-            System.err.println("Failed to load document from file");
-            e.getCause().printStackTrace();
+            Log.warn("Failed to load document from file", e.getCause());
             return "Error".getBytes(StandardCharsets.UTF_8);
         }
         catch (InterruptedException e)
