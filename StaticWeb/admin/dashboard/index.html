@@ -35,8 +35,17 @@
                 </div>
 
                 <div class="row red darken-1 valign-wrapper">
-                    <div class="col s8">
-                        <a class="waves-effect waves-light white-text btn-flat" href="/admin/edit_newsletter">Create Article</a>
+                    <div class="col s8" id="act-btn-container">
+                        <a class="waves-effect waves-red white-text btn-flat" href="/admin/edit_newsletter">Create Article</a>
+                        <a class="waves-effect waves-red white-text btn-flat dropdown-button" id="selected-dropdown-btn" data-activates="selected-dropdown">
+                            <span class="new badge left">0</span>
+                            Selected
+                            <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                        <ul id="selected-dropdown" class="dropdown-content">
+                            <li><a id="selected-act-view">Compare</a></li>
+                            <!-- TODO: Add more mass actions -->
+                        </ul>
                     </div>
                     <div class="col s4 input-field">
                         <input type="text" class="white-text" id="filter" placeholder="Filter">
@@ -65,6 +74,7 @@
 <script src="/js/display-articles-sc.min.js"></script>
 <script src="/js/act.min.js"></script>
 <script src="/admin/dashboard/dashboard.min.js"></script>
+<script src="/admin/dashboard/dashboard-select.min.js"></script>
 
 </body>
 </html>

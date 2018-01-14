@@ -43,3 +43,47 @@ div.card-action > a > i
 {
     color: #ededed;
 }
+
+div.article-card input[type=checkbox] + label
+{
+    position: absolute;
+    right: -10px;
+    top: 4px;
+    zoom: 1.2;
+}
+
+div.article-card input[type=checkbox]:not(:checked) + label:before
+{
+    border: none;
+    border-bottom: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+}
+
+#act-btn-container .btn-flat
+{
+    transition: background-color .5s, color .6s;
+}
+
+#act-btn-container .btn-flat:hover, #act-btn-container .btn-flat:focus
+{
+    color: #e53935 !important;
+    background-color: #ffffffed !important;
+}
+
+#selected-dropdown-btn span.new.badge
+{
+    min-width: 2rem;
+    margin-top: 6.5px;
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+#selected-dropdown-btn span.new.badge:after
+{
+    content: "";
+}
+
+#selected-dropdown-btn.disabled
+{
+    color: #d3d3d3 !important;
+}
