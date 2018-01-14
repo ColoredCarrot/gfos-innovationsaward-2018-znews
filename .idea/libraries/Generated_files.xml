@@ -3,6 +3,8 @@
     <properties>
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
@@ -23,6 +25,7 @@
     </properties>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />

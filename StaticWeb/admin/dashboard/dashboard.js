@@ -69,6 +69,10 @@ jQuery(function($)
                   .attr('data-published', article.published)
                   .attr('data-hash', (article.title + article.text).hashCode());
              $card.find('input[type=checkbox]')
+                  .click(function()
+                  {
+                      DashboardSelect.onToggleSelect();
+                  })
                   .attr('id', 'select-' + article.nid)
                   .after(`<label for="select-${article.nid}"></label>`);
 

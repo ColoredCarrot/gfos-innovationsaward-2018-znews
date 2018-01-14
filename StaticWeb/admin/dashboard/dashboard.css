@@ -69,3 +69,21 @@ div.article-card input[type=checkbox]:not(:checked) + label:before
     color: #e53935 !important;
     background-color: #ffffffed !important;
 }
+
+#selected-dropdown-btn span.new.badge
+{
+    min-width: 2rem;
+    margin-top: 6.5px;
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+#selected-dropdown-btn span.new.badge:after
+{
+    content: "";
+}
+
+#selected-dropdown-btn.disabled
+{
+    color: #d3d3d3 !important;
+}
