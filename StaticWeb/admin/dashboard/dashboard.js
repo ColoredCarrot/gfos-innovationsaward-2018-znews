@@ -61,13 +61,15 @@ jQuery(function($)
 
              let $card = $cardTemplate.clone();
 
-             $card.find('.card-content').text(article.title);
+             $card.find('.card-content').append($('<div/>').text(article.title));  // Don't use .text directly to leave existing contents intact
              $card.find('.view-btn').attr('href', '/view?nid=' + article.nid);
              $card.find('.article-card')
                   .attr('data-nid', article.nid)
                   .attr('data-title', article.title)
                   .attr('data-published', article.published)
                   .attr('data-hash', (article.title + article.text).hashCode());
+             $card.find('input[type=checkbox]').attr('id', 'select-' + article.nid)
+                                               .after(`<label for="select-${article.nid}"></label>`);
 
              // If article is published, remove 'publish' button
              if (article.published)

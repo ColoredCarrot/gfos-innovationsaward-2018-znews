@@ -43,3 +43,18 @@ div.card-action > a > i
 {
     color: #ededed;
 }
+
+div.article-card input[type=checkbox] + label
+{
+    position: absolute;
+    right: -10px;
+    top: 4px;
+    zoom: 1.2;
+}
+
+div.article-card input[type=checkbox]:not(:checked) + label:before
+{
+    border: none;
+    border-bottom: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+}
