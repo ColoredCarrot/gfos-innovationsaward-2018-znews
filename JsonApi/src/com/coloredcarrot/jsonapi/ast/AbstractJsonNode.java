@@ -73,4 +73,16 @@ public abstract class AbstractJsonNode extends Number implements JsonNode
         return (short) intValue();
     }
     
+    @Override
+    public int hashCode()
+    {
+        return toString().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        return this == obj || obj instanceof JsonNode && toString().equals(obj.toString());
+    }
+    
 }

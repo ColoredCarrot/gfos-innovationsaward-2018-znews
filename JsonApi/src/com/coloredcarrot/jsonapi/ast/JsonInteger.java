@@ -3,6 +3,8 @@ package com.coloredcarrot.jsonapi.ast;
 public class JsonInteger extends JsonNumber
 {
     
+    private static final long serialVersionUID = 6504598822975920871L;
+    
     private long value;
     
     public JsonInteger(long value)
@@ -50,6 +52,12 @@ public class JsonInteger extends JsonNumber
     public long longValue()
     {
         return value;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return Long.toString(value);
     }
     
 }

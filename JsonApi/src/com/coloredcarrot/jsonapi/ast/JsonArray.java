@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JsonArray extends JsonContainer
 {
+    
+    private static final long serialVersionUID = 8921191506768984301L;
     
     private List<JsonNode> array;
     private transient Builder builder;
@@ -58,6 +61,14 @@ public class JsonArray extends JsonContainer
             return true;
         Class<? extends JsonNode> theClass = array.get(0).getClass();
         return array.stream().allMatch(j -> j.getClass() == theClass);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return array.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", ", "[", "]"));
     }
     
     public Builder builder()
