@@ -3,6 +3,8 @@ package com.coloredcarrot.jsonapi.ast;
 public class JsonNull extends JsonPrimitive
 {
     
+    private static final long serialVersionUID = 8636008688840229935L;
+    
     public static final JsonNull INSTANCE = new JsonNull();
     
     private JsonNull()
@@ -30,6 +32,12 @@ public class JsonNull extends JsonPrimitive
     public double doubleValue()
     {
         return 0.0D;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "null";
     }
     
 }

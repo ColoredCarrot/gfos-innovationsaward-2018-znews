@@ -48,4 +48,10 @@ public class JsonDecimal extends JsonNumber
         return (long) value;
     }
     
+    @Override
+    public String toString()
+    {
+        return Double.toString(value);
+    }
+    
 }

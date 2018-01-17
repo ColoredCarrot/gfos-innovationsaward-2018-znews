@@ -3,6 +3,8 @@ package com.coloredcarrot.jsonapi.ast;
 public class JsonBoolean extends JsonPrimitive
 {
     
+    private static final long serialVersionUID = 345704022643295159L;
+    
     private boolean value;
     
     public JsonBoolean(boolean value)
@@ -44,6 +46,12 @@ public class JsonBoolean extends JsonPrimitive
     public double doubleValue()
     {
         return value ? 1.0D : 0.0D;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return value ? "true" : "false";
     }
     
 }

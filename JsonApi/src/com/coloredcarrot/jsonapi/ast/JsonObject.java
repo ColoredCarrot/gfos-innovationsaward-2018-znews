@@ -8,9 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JsonObject extends JsonContainer
 {
+    
+    private static final long serialVersionUID = -3116418050078669387L;
     
     private Map<String, JsonNode> contents;
     private transient Builder builder;
@@ -91,6 +94,14 @@ public class JsonObject extends JsonContainer
     public JsonNode getOrNull(String key)
     {
         return contents.getOrDefault(key, JsonNull.INSTANCE);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return contents.entrySet().stream()
+                       .map(e -> "\"" + e.getKey() + "\":" + e.getValue())
+                       .collect(Collectors.joining(", ", "{", "}"));
     }
     
     public Builder builder()

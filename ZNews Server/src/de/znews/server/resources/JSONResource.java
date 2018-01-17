@@ -18,7 +18,7 @@ public abstract class JSONResource extends Resource
     public RequestResponse handleRequest(RequestContext ctx) throws HttpException
     {
         JsonNode jsonResponse = handleJsonRequest(ctx);
-        return RequestResponse.ok(Json.serializeToString(jsonResponse));
+        return RequestResponse.ok(Json.toString(jsonResponse));
     }
     
     protected abstract JsonNode handleJsonRequest(RequestContext ctx) throws HttpException;

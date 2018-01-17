@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 public class JsonString extends JsonPrimitive
 {
     
+    private static final long serialVersionUID = -2204799298953401168L;
+    
     @NotNull private String value;
     
     public JsonString(@NotNull String value)
@@ -29,6 +31,12 @@ public class JsonString extends JsonPrimitive
     public String stringValue()
     {
         return value;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "\"" + value + "\"";
     }
     
 }

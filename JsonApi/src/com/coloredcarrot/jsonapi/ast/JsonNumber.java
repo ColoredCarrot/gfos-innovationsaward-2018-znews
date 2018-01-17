@@ -7,4 +7,10 @@ public abstract class JsonNumber extends JsonPrimitive
     
     public abstract Number getNumber();
     
+    @Override
+    public String toString()
+    {
+        return getNumber().toString();
+    }
+    
 }

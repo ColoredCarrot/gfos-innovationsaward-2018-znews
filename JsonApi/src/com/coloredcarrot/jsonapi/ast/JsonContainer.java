@@ -5,6 +5,8 @@ import java.util.Collection;
 public abstract class JsonContainer extends AbstractJsonNode
 {
     
+    private static final long serialVersionUID = -1162832191199680321L;
+    
     public abstract Collection<JsonNode> getContents();
     
     public abstract int size();
