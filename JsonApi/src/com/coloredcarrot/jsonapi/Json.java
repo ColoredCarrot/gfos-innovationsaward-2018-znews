@@ -108,16 +108,16 @@ public class Json
         return getDeserializer().deserialize(clazz, json);
     }
     
-    public static String serializeToString(JsonNode jsonNode)
+    public static String toString(JsonNode jsonNode)
     {
         StringWriter out = new StringWriter();
         getOutputStream(out).write(jsonNode);
         return out.toString();
     }
     
-    public static String serializeToString(Object obj)
+    public static String toString(Object obj)
     {
-        return serializeToString(serialize(obj));
+        return toString(serialize(obj));
     }
     
     public static <T> T deserializeFromString(String json, Class<T> clazz)
