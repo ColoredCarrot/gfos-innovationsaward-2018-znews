@@ -191,6 +191,11 @@ public class Json
         return new JsonString(Character.toString(c));
     }
     
+    public static JsonNull serializeNull()
+    {
+        return JsonNull.INSTANCE;
+    }
+    
     public static String escape(String s)
     {
         return s.replace("\\", "\\\\")
