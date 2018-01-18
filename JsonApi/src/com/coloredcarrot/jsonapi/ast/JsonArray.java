@@ -169,9 +169,15 @@ public class JsonArray extends JsonContainer
                 list.add(Json.deserialize(e, clazz));
             return list;
         }
+    
+        public JsonArray get()
+        {
+            return JsonArray.this;
+        }
         
         public JsonArray build()
         {
+            builder = null;
             return JsonArray.this;
         }
         
