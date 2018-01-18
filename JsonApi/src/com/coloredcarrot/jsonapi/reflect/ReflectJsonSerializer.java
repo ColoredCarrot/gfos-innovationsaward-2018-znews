@@ -35,6 +35,10 @@ public class ReflectJsonSerializer
         
         if (toSerialize instanceof JsonNode)
             return (JsonNode) toSerialize;
+        if (toSerialize instanceof JsonObject.Builder)
+            return ((JsonObject.Builder) toSerialize).get();
+        if (toSerialize instanceof JsonArray.Builder)
+            return ((JsonArray.Builder) toSerialize).get();
         
         Method serializerMethod = scanForSerializerMethod(toSerialize.getClass());
         if (serializerMethod != null)
