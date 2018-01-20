@@ -34,7 +34,8 @@ public class ZNews
     
     public ZNewsNettyServer server;
     
-    public CountDownLatch shutdownLatch;
+    // FINDME: Here is defined the number znews.shutdownLatch.countDown() needs to be called
+    public final CountDownLatch shutdownLatch = new CountDownLatch(3);
     
     public ZNews() throws IOException
     {
@@ -92,8 +93,6 @@ public class ZNews
     
     public void stopServer()
     {
-        // FINDME: Here is defined the number znews.shutdownLatch.countDown() needs to be called
-        shutdownLatch = new CountDownLatch(3);
         if (server != null)
         {
             server.shutdownGracefully(() ->
