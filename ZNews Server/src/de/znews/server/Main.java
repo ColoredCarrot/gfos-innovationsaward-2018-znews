@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.util.concurrent.TimeUnit;
 
 public class Main
 {
@@ -51,6 +52,14 @@ public class Main
             {
                 Log.out("Shutting down...");
                 znews.stopServer();
+                try
+                {
+                    znews.awaitTermination(10, TimeUnit.SECONDS);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
                 znews.shutdownLogSystem();
                 break;
             }
