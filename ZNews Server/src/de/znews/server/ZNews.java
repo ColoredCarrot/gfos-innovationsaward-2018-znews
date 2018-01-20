@@ -10,6 +10,8 @@ import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
 import de.znews.server.sessions.SessionManager;
 import de.znews.server.static_web.StaticWeb;
+import io.netty.util.ThreadDeathWatcher;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -19,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ZNews
 {
@@ -95,22 +98,23 @@ public class ZNews
     {
         if (server != null)
         {
-            server.shutdownGracefully(() ->
+            server.shutdownGracefully();
+            server.onShutdown(() ->
             {
                 server = null;
                 shutdownLatch.countDown();
+                Log.out("Shutdown complete! Have a nice day ;-)");
             });
         }
         saveAll();
-        try
-        {
-            shutdownLatch.await();
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        Log.out("Shutdown complete! Have a nice day ;-)");
+    }
+    
+    public void awaitTermination(long timeout, TimeUnit unit) throws InterruptedException
+    {
+        long start = System.nanoTime();
+        server.awaitShutdown(timeout, unit);
+        long remainingTimeoutNanos = unit.toNanos(timeout) - (System.nanoTime() - start);
+        awaitNettyGlobalThreadsTermination(remainingTimeoutNanos);
     }
     
     public void saveAll()
@@ -148,6 +152,37 @@ public class ZNews
     public void shutdownLogSystem()
     {
         new Thread(Log::shutdown).start();
+    }
+    
+    /**
+     * Awaits the shutdown of {@link ThreadDeathWatcher}
+     * and {@link GlobalEventExecutor} using
+     * {@link ThreadDeathWatcher#awaitInactivity(long, TimeUnit) ThreadDeathWatcher.awaitInactivity}
+     * and {@link GlobalEventExecutor#awaitInactivity(long, TimeUnit) GlobalEventExecutor.INSTANCE.awaitInactivity}
+     * respectively.
+     *
+     * @param timeoutNanos The maximum amount of nanoseconds this method may block
+     */
+    protected void awaitNettyGlobalThreadsTermination(long timeoutNanos) throws InterruptedException
+    {
+        long start = System.nanoTime();
+        try
+        {
+            ThreadDeathWatcher.awaitInactivity(timeoutNanos, TimeUnit.NANOSECONDS);
+        }
+        finally
+        {
+            timeoutNanos -= System.currentTimeMillis() - start;
+            start = 0L;
+            try
+            {
+                GlobalEventExecutor.INSTANCE.awaitInactivity(timeoutNanos, TimeUnit.MILLISECONDS);
+            }
+            catch (IllegalStateException ignored)
+            {
+                // Occurs when there was no globalEventExecutor thread
+            }
+        }
     }
     
 }
