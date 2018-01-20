@@ -18,6 +18,8 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.net.BindException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ZNewsNettyServer extends Thread
@@ -33,8 +35,8 @@ public class ZNewsNettyServer extends Thread
 		this.port = port;
 	}
 	
+	private final CountDownLatch shutdownLatch = new CountDownLatch(3);
 	private Channel channel;
-	
 	private EventLoopGroup workerGroup;
 	
 	@Override
@@ -101,37 +103,44 @@ public class ZNewsNettyServer extends Thread
 		}
 		finally
 		{
-			
-			AtomicInteger shutdownCount = new AtomicInteger(0);
-			GenericFutureListener<? extends Future<Object>> f = a ->
-			{
-				Log.debug("Closing IO-Threads (" + shutdownCount.incrementAndGet() + "/2)");
-				if (shutdownCount.get() == 2)
-                    znews.shutdownLatch.countDown();
-			};
-			
+		    // Shutdown event loop groups
+			AtomicInteger eventLoopGroupShutdownIdx = new AtomicInteger(0);
+			GenericFutureListener<? extends Future<Object>> f = _f -> onEventLoopGroupShutdown(eventLoopGroupShutdownIdx.getAndIncrement());
 			workerGroup.shutdownGracefully().addListener(f);
 			bossGroup.shutdownGracefully().addListener(f);
-			
 		}
 		
 	}
 	
-	public void shutdownGracefully(Runnable callback)
+	public void shutdownGracefully()
 	{
-		if (channel != null)
-			channel.close().addListener(f ->
-			{
-				channel = null;
-				znews.staticWeb.purgeCache();
-				if (callback != null)
-					callback.run();
-			});
+	    if (channel == null)
+            throw new IllegalStateException("Already shut down");
+        channel.close().addListener(f -> onChannelShutdown());
 	}
+    
+    public void awaitShutdown(long timeout, TimeUnit unit) throws InterruptedException
+    {
+        shutdownLatch.await(timeout, unit);
+    }
     
     public EventLoopGroup getWorkerGroup()
     {
         return workerGroup;
+    }
+    
+    protected void onEventLoopGroupShutdown(int idx)
+    {
+        shutdownLatch.countDown();
+        Log.debug("Closing IO-Threads (" + (idx + 1) + "/2)");
+    }
+    
+    protected void onChannelShutdown()
+    {
+        channel = null;
+        // Not exactly sure why we purge the cache here
+        znews.staticWeb.purgeCache();
+        shutdownLatch.countDown();
     }
     
 }
