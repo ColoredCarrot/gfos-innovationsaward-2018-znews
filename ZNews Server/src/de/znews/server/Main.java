@@ -105,6 +105,19 @@ public class Main
                 }).start();
                 break;
             }
+            if (command.equalsIgnoreCase("restart server") || command.equalsIgnoreCase("srestart"))
+            {
+                znews.stopServer();
+                try
+                {
+                    znews.server.awaitShutdown();
+                }
+                catch (InterruptedException e)
+                {
+                    Log.err("Could not await server termination", e);
+                }
+                znews.startServer();
+            }
             if (command.equalsIgnoreCase("reset caches") || command.equalsIgnoreCase("rs"))
             {
                 znews.staticWeb.purgeCache();
