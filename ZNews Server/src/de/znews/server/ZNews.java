@@ -38,7 +38,9 @@ public class ZNews
     public ZNewsNettyServer server;
     
     // FINDME: Here is defined the number znews.shutdownLatch.countDown() needs to be called
-    public final CountDownLatch shutdownLatch = new CountDownLatch(3);
+    private final CountDownLatch shutdownLatch = new CountDownLatch(2);
+    
+    private boolean valid;
     
     public ZNews() throws IOException
     {
@@ -77,42 +79,51 @@ public class ZNews
         
         emailSender = new EmailSender(this);
         emailTemplates = new EmailTemplates(this);
-        
+    
+        valid = true;
     }
     
     public void startServer()
     {
-        
+        if (!valid)
+            throw new IllegalStateException("ZNews instance is not valid");
         if (server != null)
-            return;
-        
+            throw new IllegalStateException("Server already started");
         server = new ZNewsNettyServer(this, config.getPort());
-        
-        Log.out("Starting server on port " + config.getPort() + "...");
-    
+        Log.dev("Starting server thread");
         server.start();
-    
     }
     
     public void stopServer()
     {
-        if (server != null)
+        if (!valid)
+            throw new IllegalStateException("ZNews instance is not valid");
+        if (server == null)
+            throw new IllegalStateException("Server not started");
+        Log.debug("Stopping server...");
+        server.shutdownGracefully();
+        server.onShutdown(() ->
         {
-            server.shutdownGracefully();
-            server.onShutdown(() ->
-            {
-                server = null;
-                shutdownLatch.countDown();
-                Log.out("Shutdown complete! Have a nice day ;-)");
-            });
-        }
+            server = null;
+            sessionManager.invalidateAllSessions();
+            shutdownLatch.countDown();
+            Log.debug("Server stopped");
+        });
+    }
+    
+    public void shutdown()
+    {
+        if (!valid)
+            throw new IllegalStateException("ZNews instance is not valid");
+        stopServer();
         saveAll();
+        valid = false;
     }
     
     public void awaitTermination(long timeout, TimeUnit unit) throws InterruptedException
     {
         long start = System.nanoTime();
-        server.awaitShutdown(timeout, unit);
+        shutdownLatch.await();
         long remainingTimeoutNanos = unit.toNanos(timeout) - (System.nanoTime() - start);
         awaitNettyGlobalThreadsTermination(remainingTimeoutNanos);
     }
@@ -151,6 +162,7 @@ public class ZNews
     
     public void shutdownLogSystem()
     {
+        Log.dev("Shutting down log system...");
         new Thread(Log::shutdown).start();
     }
     

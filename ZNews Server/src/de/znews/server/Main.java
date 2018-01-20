@@ -51,22 +51,34 @@ public class Main
             if (command.equalsIgnoreCase("end"))
             {
                 Log.out("Shutting down...");
-                znews.stopServer();
+                znews.shutdown();
                 try
                 {
                     znews.awaitTermination(10, TimeUnit.SECONDS);
                 }
                 catch (InterruptedException e)
                 {
-                    e.printStackTrace();
+                    Log.err("Could not await server termination", e);
                 }
-                znews.shutdownLogSystem();
+                finally
+                {
+                    Log.out("Shutdown complete! Have a nice day ;-)");
+                    znews.shutdownLogSystem();
+                }
                 break;
             }
             if (command.equalsIgnoreCase("restart"))
             {
                 Log.out("Restarting...");
-                znews.stopServer();
+                znews.shutdown();
+                try
+                {
+                    znews.awaitTermination(10, TimeUnit.SECONDS);
+                }
+                catch (InterruptedException e)
+                {
+                    Log.err("Could not await server termination", e);
+                }
                 new Thread(() ->
                 {
                     try
@@ -82,7 +94,6 @@ public class Main
                     }
                     try
                     {
-            
                         znews = new ZNews();
                         znews.startServer();
                         readConsole();

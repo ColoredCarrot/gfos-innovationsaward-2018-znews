@@ -43,6 +43,8 @@ public class ZNewsNettyServer extends Thread
     @Override
     public void run()
     {
+    
+        Log.out("Starting server on port " + port + "...");
         
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
