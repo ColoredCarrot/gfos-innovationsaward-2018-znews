@@ -35,10 +35,10 @@ public class ZNews
     public final EmailSender        emailSender;
     public final EmailTemplates     emailTemplates;
     
-    public ZNewsNettyServer server;
+    public volatile ZNewsNettyServer server;
     
-    // FINDME: Here is defined the number znews.shutdownLatch.countDown() needs to be called
-    private final CountDownLatch shutdownLatch = new CountDownLatch(2);
+    private volatile CountDownLatch stopServerLatch = new CountDownLatch(0);
+    private volatile CountDownLatch shutdownLatch = new CountDownLatch(0);
     
     private boolean valid;
     
@@ -100,21 +100,41 @@ public class ZNews
             throw new IllegalStateException("ZNews instance is not valid");
         if (server == null)
             throw new IllegalStateException("Server not started");
+        stopServerLatch = new CountDownLatch(1);
         Log.debug("Stopping server...");
         server.shutdownGracefully();
         server.onShutdown(() ->
         {
             server = null;
             sessionManager.invalidateAllSessions();
-            shutdownLatch.countDown();
             Log.debug("Server stopped");
+            stopServerLatch.countDown();
+            shutdownLatch.countDown();
         });
+    }
+    
+    public boolean isServerStopping()
+    {
+        return stopServerLatch.getCount() == 1;
+    }
+    
+    public void awaitServerStop() throws InterruptedException
+    {
+        if (!valid)
+            throw new IllegalStateException("ZNews instance is not valid");
+        stopServerLatch.await();
+    }
+    
+    public boolean awaitServerStop(long timeout, TimeUnit unit) throws InterruptedException
+    {
+        return stopServerLatch.await(timeout, unit);
     }
     
     public void shutdown()
     {
         if (!valid)
             throw new IllegalStateException("ZNews instance is not valid");
+        shutdownLatch = new CountDownLatch(2);
         stopServer();
         saveAll();
         valid = false;

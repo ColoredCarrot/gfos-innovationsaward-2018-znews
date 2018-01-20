@@ -110,7 +110,7 @@ public class Main
                 znews.stopServer();
                 try
                 {
-                    znews.server.awaitShutdown();
+                    znews.awaitServerStop();
                 }
                 catch (InterruptedException e)
                 {
