@@ -2,7 +2,6 @@ package de.znews.server.tags;
 
 import de.znews.server.Log;
 import de.znews.server.ZNews;
-import de.znews.server.util.Str;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,8 +18,7 @@ import java.util.Set;
 public class TagsList
 {
     
-    private static final String  DELIMITER = "\n";
-    private static final Charset CHARSET   = StandardCharsets.UTF_8;
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
     
     private final ZNews       znews;
     private       Set<String> tags;
@@ -30,11 +27,12 @@ public class TagsList
     {
         if (tags != null)
             return tags;
-        File   f  = znews.staticWeb.getFile("list_tags.txt");
-        byte[] bytes;
+        File f = znews.staticWeb.getFile("list_tags.txt");
+        if (!f.exists())
+            return tags = Collections.synchronizedSet(new HashSet<>());
         try
         {
-            bytes = Files.readAllBytes(f.toPath());
+            return tags = Collections.synchronizedSet(new HashSet<>(Files.readAllLines(f.toPath(), CHARSET)));
         }
         catch (FileNotFoundException e)
         {
@@ -45,7 +43,6 @@ public class TagsList
             Log.warn("Cannot read tags list from " + f.getAbsolutePath());
             return new HashSet<>();
         }
-        return tags = Collections.synchronizedSet(new HashSet<>(Arrays.asList(new Str(bytes, CHARSET).splitString(DELIMITER.toCharArray(), -1))));  // Use Str for efficiency because String#split always uses a regex
     }
     
     public synchronized void addTag(String tag)
@@ -55,10 +52,10 @@ public class TagsList
     
     public void save() throws IOException
     {
-        byte[] bytes = String.join(DELIMITER, this.tags.toArray(new String[0]))
-                             .getBytes(CHARSET);
+        if (tags == null)
+            return;
         File f = znews.staticWeb.getFile("list_tags.txt");
-        Files.write(f.toPath(), bytes);
+        Files.write(f.toPath(), tags);
     }
     
 }
