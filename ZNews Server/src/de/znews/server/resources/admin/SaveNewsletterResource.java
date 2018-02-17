@@ -12,6 +12,9 @@ import de.znews.server.resources.RequestContext;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.sessions.Session;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SaveNewsletterResource extends JSONResource
 {
     
@@ -63,7 +66,7 @@ public class SaveNewsletterResource extends JSONResource
         {
             // Create new newsletter
             Newsletter n = new Newsletter(newTitle, newText, authSession.getOwner());
-            n.setTags(newTags);
+            n.setTags(newTags != null ? new ArrayList<>(Arrays.asList(newTags)) : new ArrayList<>());
             znews.newsletterManager.addNewsletter(n);
             newsletterId = n.getId();
         }
@@ -77,7 +80,7 @@ public class SaveNewsletterResource extends JSONResource
                 if (newText != null)
                     n.setText(newText);
                 if (newTags != null)
-                    n.setTags(newTags);
+                    n.setTags(new ArrayList<>(Arrays.asList(newTags)));
             }
             catch (IllegalArgumentException e)
             {
