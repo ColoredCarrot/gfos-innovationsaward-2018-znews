@@ -48,7 +48,7 @@ var ServerComm = (function()
 
     sc.doSave = function(parameters)
     {
-        let { nid, newTitle, newText, nidConsumer } = parameters;
+        let { nid, newTitle, newText, newTags, nidConsumer } = parameters;
 
         if (actSaving)
             return false;
@@ -98,6 +98,8 @@ var ServerComm = (function()
             data.title = newTitle;
         if (newText)
             data.text = newText;
+        if (newTags)
+            data.tags = newTags;
 
         // Send XMLHttpRequest
         $.ajax('/admin/api/newsletter/save', {
