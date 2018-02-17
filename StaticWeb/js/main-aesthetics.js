@@ -1,3 +1,11 @@
+/*
+Core aesthetics functionality.
+Adjusts div.background's height css dynamically
+(correctly placing the footer),
+makes the main ZNEWS image (img[src="/img/logo.jpg"]) clickable,
+and adds the footer.
+ */
+
 jQuery(function($)
 {
     let onResize = () => $('div.background').css('height', window.innerHeight + 'px');
