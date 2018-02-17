@@ -1,3 +1,8 @@
+/*
+Add $.animateCss function to animate
+an element once over a certain duration
+and optionally call a callback on completion.
+ */
 $.fn.extend({
     animateCss: function(animationName, duration, onEnd)
     {
@@ -13,6 +18,9 @@ $.fn.extend({
     }
 });
 
+/*
+Intercept #subscribe-form.submit to call doSubscribe
+ */
 $(function()
 {
 
@@ -35,6 +43,16 @@ $(function()
 
 });
 
+/**
+ * Called when subscribe action initiated.
+ *
+ * Fades out #subscribe-form, fades in #loading-img-div,
+ * and makes an AJAX request to /api/subscribe,
+ * handling success and error responses using swal
+ * and fading #loading-im-div out and #check-your-email in.
+ *
+ * @param email The email address the user entered that they wish to be subscribed
+ */
 function doSubscribe(email)
 {
 
