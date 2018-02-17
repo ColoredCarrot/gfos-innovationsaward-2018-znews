@@ -67,6 +67,20 @@ jQuery(function($)
                     dirty_hash.recompute();
                 });
 
+                let allKnownTags = ["banana", "apple", "Hello"]; // TODO: retrieve list of all known tags
+
+                let tags = data.tags;
+                $('#tags').material_chip({
+                    data: tags.map(e => { return { tag: e }; }),
+                    secondaryPlaceholder: "Tags",  // Materialize seems to swap placeholder and secondaryPlaceholder
+                    placeholder: "Add Tag",
+                    autocompleteOptions: {
+                        data: allKnownTags.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
+                        limit: Infinity,
+                        minLength: 1
+                    }
+                });
+
                 $('#ntitle').val(data.title);
                 // If article is published, remove "Publish" button
                 if (data.published)
