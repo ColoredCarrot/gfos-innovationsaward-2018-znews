@@ -44,6 +44,8 @@ public class ReflectJsonSerializer
         if (serializerMethod != null)
             return serializeUsingSerializer(toSerialize, serializerMethod);
         
+        if (toSerialize.getClass().isArray())
+            return serializeArray((Object[]) toSerialize);
         if (Primitives.isWrapperClass(toSerialize.getClass()) || toSerialize instanceof String)
             return serializePrimitive(toSerialize);
         if (toSerialize instanceof Collection<?>)
@@ -101,6 +103,14 @@ public class ReflectJsonSerializer
             throw new JsonException(e);
         }
         
+    }
+    
+    protected JsonNode serializeArray(Object[] array)
+    {
+        JsonArray json = new JsonArray();
+        for (Object e : array)
+            json.add(serialize(array));
+        return json;
     }
     
     protected JsonNode serializePrimitive(Object primitive)

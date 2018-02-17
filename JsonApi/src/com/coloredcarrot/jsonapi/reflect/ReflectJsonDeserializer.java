@@ -71,6 +71,8 @@ public class ReflectJsonDeserializer
         if (json instanceof JsonNull)
             return null;
         
+        if (clazz.isArray())
+        
         if (Primitives.isPrimitiveOrWrapperClass(clazz) || clazz == String.class)
             return deserializePrimitive(clazz, json);
         
@@ -99,6 +101,12 @@ public class ReflectJsonDeserializer
         if (!unsafeFactory.isUnsafeAvailable())
             throw new JsonException(new ClassNotFoundException("sun.misc.Unsafe"));
         return unsafeFactory.getOrNull(clazz, this::deserialize).deserialize(json);
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected <T> T deserializeArray(Class<T> clazz, JsonNode json) throws InstantiationException, IllegalAccessException
+    {
+        return (T) deserializeCollection(ArrayList.class, json).toArray();
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
