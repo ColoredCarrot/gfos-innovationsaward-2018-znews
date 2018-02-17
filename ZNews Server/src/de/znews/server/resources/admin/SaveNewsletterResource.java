@@ -47,7 +47,7 @@ public class SaveNewsletterResource extends JSONResource
             newTags = null;
         else try
         {
-            newTags = Json.deserializeFromString(newTagsStr, String[].class);
+            newTags = Json.deserializeArrayFromString(newTagsStr, String[].class);
         }
         catch (JsonException e)
         {
@@ -87,6 +87,11 @@ public class SaveNewsletterResource extends JSONResource
                                  .build();
             }
         }
+        
+        // Register the added tags
+        if (newTags != null)
+            for (String newTag : newTags)
+                znews.tagsList.addTag(newTag);
         
         JsonObject.Builder data = JsonObject.createBuilder();
         
