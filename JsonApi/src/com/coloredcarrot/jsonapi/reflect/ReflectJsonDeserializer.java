@@ -72,6 +72,7 @@ public class ReflectJsonDeserializer
             return null;
         
         if (clazz.isArray())
+            return deserializeArray(clazz, json);
         
         if (Primitives.isPrimitiveOrWrapperClass(clazz) || clazz == String.class)
             return deserializePrimitive(clazz, json);
