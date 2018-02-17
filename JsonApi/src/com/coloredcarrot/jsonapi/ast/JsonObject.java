@@ -100,7 +100,7 @@ public class JsonObject extends JsonContainer
     public String toString()
     {
         return contents.entrySet().stream()
-                       .map(e -> "\"" + e.getKey() + "\":" + e.getValue())
+                       .map(e -> "\"" + e.getKey() + "\": " + e.getValue())
                        .collect(Collectors.joining(", ", "{", "}"));
     }
     
