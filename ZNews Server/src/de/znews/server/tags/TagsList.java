@@ -29,7 +29,11 @@ public class TagsList
         if (tags != null)
             return tags;
         byte[] bytes = znews.staticWeb.get("list_tags.txt");
-        return tags = Collections.synchronizedSet(new HashSet<>(Arrays.asList(new Str(bytes, CHARSET).splitString(DELIMITER.toCharArray(), -1))));  // Use Str for efficiency because String#split always uses a regex
+        return tags = Collections.synchronizedSet(
+                Arrays.equals(bytes, "Error".getBytes(StandardCharsets.UTF_8))
+                ? new HashSet<>()
+                : new HashSet<>(Arrays.asList(new Str(bytes, CHARSET).splitString(DELIMITER.toCharArray(), -1)))
+        );  // Use Str for efficiency because String#split always uses a regex
     }
     
     public synchronized void addTag(String tag)
