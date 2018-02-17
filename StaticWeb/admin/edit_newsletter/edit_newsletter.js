@@ -5,7 +5,7 @@ jQuery(function($)
     {
         name = name.replace(/[\[\]]/g, "\\$&");
         const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-              results = regex.exec(url);
+            results = regex.exec(url);
         if (!results)
             return null;
         if (!results[2])
@@ -37,21 +37,32 @@ jQuery(function($)
             $('#edit-article-headline').text("Create Article");
             return;
         }
-        $.ajax('/admin/api/by_nid', {
-            async: true,  // TODO: disable functions until loaded/show preloader
-            cache: false,
-            data: {
-                nid: nidParam
-            },
-            success: function(data, textStatus, jqXHR)
-            {
-                // Store retrieved data
 
-                data = JSON.parse(data);
+        $.when(
+            $.ajax('/admin/api/by_nid', {
+                async: true,  // TODO: disable functions until loaded/show preloader
+                cache: false,
+                data: {
+                    nid: nidParam
+                }
+            }), $.ajax('/list_tags', {
+                async: true,
+                cache: false,  // TODO: Maybe we should cache?
+                data: {
+                    limit: -1  // No limit
+                }
+            })
+        ).then(
+            function success(a1, a2)
+            {
+                // a1 and a2 are of the form [data, textStatus, jqXHR]
+
+                let data = JSON.parse(a1[0]);
+                let allKnownTags = JSON.parse(a2[0]);
 
                 if (!data.success)
                 {
-                    // TODO: Display actual error message
+                    // TODO: Display actual error message data.error.message
                     window.location.replace('/404');
                     return;
                 }
@@ -67,13 +78,11 @@ jQuery(function($)
                     dirty_hash.recompute();
                 });
 
-                let allKnownTags = ["banana", "apple", "Hello"]; // TODO: retrieve list of all known tags
-
                 let tags = data.tags;
                 $('#tags').material_chip({
                     data: tags.map(e => { return { tag: e }; }),
                     secondaryPlaceholder: "Tags",  // Materialize seems to swap placeholder and secondaryPlaceholder
-                    placeholder: "Add Tag",
+                    placeholder: "Add tag...",
                     autocompleteOptions: {
                         data: allKnownTags.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
                         limit: Infinity,
@@ -82,13 +91,60 @@ jQuery(function($)
                 });
 
                 $('#ntitle').val(data.title);
-                // If article is published, remove "Publish" button
+                // TODO: Add another indicator.  If article is published, remove "Publish" button
                 if (data.published)
                     $('#publish-btn').remove();
                 Materialize.updateTextFields();
 
+                dirty_hash.allowDisplayWarning = true;
+
+            },
+            function error(jqXHR)
+            {
+                console.error(jqXHR);
+                if (jqXHR.status === 403)
+                {
+                    // Not logged in; session expired
+                    swal("Session Expired", "You are not logged in. Click \"Continue\" to log in.", 'error',
+                        {
+                            closeOnClickOutside: false,
+                            closeOnEsc: false,
+                            buttons: {
+                                confirm: "Continue"
+                            }
+                        })
+                        .then(() => window.location.href = '/admin/login');
+                    return;
+                }
+                swal("Internal Error", "An unexpected error occurred. Please see the console for more details or try again later.", 'error',
+                    {
+                        buttons: {
+                            retry: {
+                                text: "Try Again",
+                                value: 'retry'
+                            },
+                            exit: {
+                                text: "Exit",
+                                value: 'exit'
+                            }
+                        },
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    })
+                    .then(value =>
+                    {
+                        switch (value)
+                        {
+                            case 'retry':
+                                window.location.reload(true);  // Forced reload
+                                break;
+                            case 'exit':
+                                window.location.href = '/';
+                                break;
+                        }
+                    });
             }
-        });
+        );
     })(getQueryParamByName('nid'));
 
     $('#save-btn').click(function()
