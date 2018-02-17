@@ -99,7 +99,7 @@ var ServerComm = (function()
         if (newText)
             data.text = newText;
         if (newTags)
-            data.tags = newTags;
+            data.tags = JSON.stringify(newTags);
 
         // Send XMLHttpRequest
         $.ajax('/admin/api/newsletter/save', {
