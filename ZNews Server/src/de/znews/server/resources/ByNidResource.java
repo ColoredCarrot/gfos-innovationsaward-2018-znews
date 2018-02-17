@@ -34,6 +34,7 @@ public class ByNidResource extends JSONResource
                              .add("data", JsonObject.createBuilder()
                                                     .add("title", n.getTitle())
                                                     .add("text", n.getText())
+                                                    .add("tags", n.getTags())
                                                     .add("published", n.isPublished())
                                                     .build())
                              .build();
