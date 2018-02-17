@@ -166,6 +166,11 @@ jQuery(function($)
             newText: $editorFrame.contents().find('#markdown').val()
         };
 
+        // Add tags to saveData
+        let tags = $('#tags').material_chip('data');  // [{tag:"a"},{tag:"b"}]
+        tags = tags.reduce((res, e) => { return res.push(e.tag), res; }, []);  // ["a", "b"]
+        saveData.newTags = tags;
+
         if (nid)
         {
             saveData.nid = nid;
