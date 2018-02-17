@@ -1,10 +1,12 @@
 package de.znews.server.tags;
 
+import de.znews.server.Log;
 import de.znews.server.ZNews;
 import de.znews.server.util.Str;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -28,12 +30,22 @@ public class TagsList
     {
         if (tags != null)
             return tags;
-        byte[] bytes = znews.staticWeb.get("list_tags.txt");
-        return tags = Collections.synchronizedSet(
-                Arrays.equals(bytes, "Error".getBytes(StandardCharsets.UTF_8))
-                ? new HashSet<>()
-                : new HashSet<>(Arrays.asList(new Str(bytes, CHARSET).splitString(DELIMITER.toCharArray(), -1)))
-        );  // Use Str for efficiency because String#split always uses a regex
+        File   f  = znews.staticWeb.getFile("list_tags.txt");
+        byte[] bytes;
+        try
+        {
+            bytes = Files.readAllBytes(f.toPath());
+        }
+        catch (FileNotFoundException e)
+        {
+            return tags = Collections.synchronizedSet(new HashSet<>());
+        }
+        catch (IOException e)
+        {
+            Log.warn("Cannot read tags list from " + f.getAbsolutePath());
+            return new HashSet<>();
+        }
+        return tags = Collections.synchronizedSet(new HashSet<>(Arrays.asList(new Str(bytes, CHARSET).splitString(DELIMITER.toCharArray(), -1))));  // Use Str for efficiency because String#split always uses a regex
     }
     
     public synchronized void addTag(String tag)
