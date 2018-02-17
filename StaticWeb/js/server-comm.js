@@ -1,3 +1,28 @@
+/**
+ * ServerComm.useProgressBar($progressBar: jQuery)
+ *   Set ServerComm.onUpdateProgress to update
+ *   the specified materialize progress bar
+ *   and then call the old onUpdateProgress function.
+ *
+ * ServerComm.onUpdateProgress(percentComplete: integer)
+ *   (opt.) function called on AJAX request progress update
+ *
+ * ServerComm.loginModal
+ *   $loginModal: The jQuery modal containing the login iframe
+ *   open(completeCallback): open the $loginModal and call
+ *                           completeCallback when done.
+ *   close(): closes the $loginModal
+ *
+ * ServerComm.isSaving()
+ *   checks whether saving is in progress
+ *
+ * ServerComm.doSave(parameters { nid, newTitle, newText, newTags, nidConsumer })
+ *   1)  Abort if isSaving(), else set to true
+ *   2)  updateProgress(1)
+ *   3)  make AJAX request to /admin/api/newsletter/save
+ *   4a) handle 403 Forbidden with login iframe in ServerComm.loginModal
+ *   4b) handle success: call nidConsumer with newsletter ID, display toast
+ */
 var ServerComm = (function()
 {
     let sc = {
