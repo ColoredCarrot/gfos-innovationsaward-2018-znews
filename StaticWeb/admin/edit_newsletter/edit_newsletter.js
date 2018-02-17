@@ -1,6 +1,8 @@
 jQuery(function($)
 {
 
+    let KNOWN_TAGS = [];
+
     function getQueryParamByName(name, url = window.location.href)
     {
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -44,12 +46,12 @@ jQuery(function($)
                 success: function(allKnownTags, statusText, jqXHR)
                 {
                     // allKnownTags is array of tags
-                    allKnownTags = JSON.parse(allKnownTags);
+                    KNOWN_TAGS = JSON.parse(allKnownTags);
                     $('#tags').material_chip({
                         secondaryPlaceholder: "Tags",  // Materialize seems to swap placeholder and secondaryPlaceholder
                         placeholder: "Add tag...",
                         autocompleteOptions: {
-                            data: allKnownTags.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
+                            data: KNOWN_TAGS.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
                             limit: Infinity,
                             minLength: 1
                         }
@@ -79,7 +81,7 @@ jQuery(function($)
                 // a1 and a2 are of the form [data, textStatus, jqXHR]
 
                 let data = JSON.parse(a1[0]);
-                let allKnownTags = JSON.parse(a2[0]);
+                KNOWN_TAGS = JSON.parse(a2[0]);
 
                 if (!data.success)
                 {
@@ -105,7 +107,7 @@ jQuery(function($)
                     secondaryPlaceholder: "Tags",  // Materialize seems to swap placeholder and secondaryPlaceholder
                     placeholder: "Add tag...",
                     autocompleteOptions: {
-                        data: allKnownTags.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
+                        data: KNOWN_TAGS.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
                         limit: Infinity,
                         minLength: 1
                     }
@@ -192,30 +194,47 @@ jQuery(function($)
         tags = tags.reduce((res, e) => { return res.push(e.tag), res; }, []);  // ["a", "b"]
         saveData.newTags = tags;
 
-        if (nid)
+        // Check if any unknown tags would be saved and warn
+        let unknownTags = tags.filter(tag => !KNOWN_TAGS.includes(tag));
+
+        (unknownTags.length
+            ? swal("Warning", `Please confirm you wish to create these unknown tags: ${unknownTags.join(", ")}`, 'warning', {
+                buttons: true
+            })
+            : Promise.resolve(true))
+            .then(confirm =>
         {
-            saveData.nid = nid;
-            saveData.nidConsumer = function(assignedNid)
+            if (!confirm)
+                return;
+
+            if (nid)
             {
-                if (assignedNid !== nid)
+                saveData.nid = nid;
+                saveData.nidConsumer = function(assignedNid)
                 {
-                    swal("Internal Error", "Returned assigned newsletter ID does not match stored ID", 'error')
-                        .then(() => { throw new Error("INTERNAL ERROR: Returned assigned newsletter ID does not match stored ID") });
-                }
-                else
-                {
-                    // Success
-                    dirty_hash.recompute();
+                    if (assignedNid !== nid)
+                    {
+                        swal("Internal Error", "Returned assigned newsletter ID does not match stored ID", 'error')
+                            .then(() => { throw new Error("INTERNAL ERROR: Returned assigned newsletter ID does not match stored ID") });
+                    }
+                    else
+                    {
+                        // Success
+                        dirty_hash.recompute();
+                        KNOWN_TAGS = KNOWN_TAGS.concat(unknownTags);
+                    }
                 }
             }
-        }
-        else
-            saveData.nidConsumer = function(assignedNid)
-            {
-                $('#-data-nid-container').attr('data-nid', assignedNid);
-            };
+            else
+                saveData.nidConsumer = function(assignedNid)
+                {
+                    $('#-data-nid-container').attr('data-nid', assignedNid);
+                };
 
-        ServerComm.doSave(saveData);
+            // Make request to server
+            ServerComm.doSave(saveData);
+
+        });
 
     });
 
