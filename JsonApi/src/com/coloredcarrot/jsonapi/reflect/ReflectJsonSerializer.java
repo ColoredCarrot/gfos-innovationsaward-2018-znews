@@ -109,7 +109,7 @@ public class ReflectJsonSerializer
     {
         JsonArray json = new JsonArray();
         for (Object e : array)
-            json.add(serialize(array));
+            json.add(serialize(e));
         return json;
     }
     
