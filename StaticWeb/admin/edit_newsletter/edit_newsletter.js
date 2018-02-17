@@ -113,7 +113,7 @@ jQuery(function($)
                                 confirm: "Continue"
                             }
                         })
-                        .then(() => window.location.href = '/admin/login');
+                        .then(() => window.location.href = '/admin/login?target=' + encodeURIComponent('/admin/edit_newsletter?nid=' + nidParam));
                     return;
                 }
                 swal("Internal Error", "An unexpected error occurred. Please see the console for more details or try again later.", 'error',
