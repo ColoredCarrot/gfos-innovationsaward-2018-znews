@@ -35,6 +35,27 @@ jQuery(function($)
         if (!nidParam)
         {
             $('#edit-article-headline').text("Create Article");
+            $.ajax('/list_tags', {
+                async: true,
+                cache: false,  // TODO: Maybe we should cache?
+                data: {
+                    limit: -1  // No limit
+                },
+                success: function(allKnownTags, statusText, jqXHR)
+                {
+                    // allKnownTags is array of tags
+                    allKnownTags = JSON.parse(allKnownTags);
+                    $('#tags').material_chip({
+                        secondaryPlaceholder: "Tags",  // Materialize seems to swap placeholder and secondaryPlaceholder
+                        placeholder: "Add tag...",
+                        autocompleteOptions: {
+                            data: allKnownTags.reduce(((res, e) => { return res[e] = null, res; }), {}),  // Cannot use comma expression in form ((res, e) => res[e] = null, res) because of UglifyJS. Must use braces
+                            limit: Infinity,
+                            minLength: 1
+                        }
+                    });
+                }
+            });
             return;
         }
 
