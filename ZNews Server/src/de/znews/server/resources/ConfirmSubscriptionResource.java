@@ -35,7 +35,7 @@ public class ConfirmSubscriptionResource extends Resource
         {
             if (znews.registrationList.isRegistered(email))
                 throw new Http400BadRequestException("Email already registered");
-            znews.registrationList.registerNewEmail(email);
+            znews.registrationList.registerNewEmail(znews, email);
         }
     
         StaticWeb staticWeb = null;

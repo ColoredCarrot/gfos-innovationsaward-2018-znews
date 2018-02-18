@@ -5,7 +5,7 @@ import de.znews.server.ZNews;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
 @Getter
@@ -18,15 +18,24 @@ public class Registration implements Serializable, JsonSerializable
     {
         Registration reg = new Registration();
         reg.email = email;
-        reg.subscribedTags.addAll(znews.tagsList.getTags());
         return reg;
     }
     
     private String email;
-    private Set<String> subscribedTags = new HashSet<>();
+    private Set<String> subscribedTags;
     
     private Registration()
     {
+    }
+    
+    public void setSubscribedTags(Set<String> subscribedTags)
+    {
+        this.subscribedTags = subscribedTags;
+    }
+    
+    public Set<String> getAllSubscribedTags(ZNews znews)
+    {
+        return Collections.unmodifiableSet(subscribedTags != null ? subscribedTags : znews.tagsList.getTags());
     }
     
 }

@@ -3,6 +3,7 @@ package de.znews.server.newsletter;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.reflect.JsonDeserializer;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import de.znews.server.ZNews;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -16,12 +17,12 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
 {
 	
 	private static final long serialVersionUID = 1245091416250410698L;
-	
-	private final Map<String, Registration> registeredEmails = new HashMap<>();
-	
-	public Registration registerNewEmail(String email)
+    
+    private final Map<String, Registration> registeredEmails = new HashMap<>();
+    
+    public Registration registerNewEmail(ZNews znews, String email)
 	{
-		Registration reg = Registration.newStandardRegistration(email);
+		Registration reg = Registration.newStandardRegistration(znews, email);
 		registeredEmails.put(email, reg);
 		return reg;
 	}
