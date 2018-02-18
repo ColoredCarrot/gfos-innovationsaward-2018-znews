@@ -70,6 +70,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
                     
                     // Convert post-data ByteBuf to Params
                     // We utilize URIQuery because the post data is also x-www-form-urlencoded
+                    // TODO: We shouldn't assume the below conversion will work. Add checks.
                     Params postParams = URIQuery.fromString(request.getPost().toString(StandardCharsets.UTF_8)).toParams().withURLDecodedValues();
                     
                     // URL params (/api/{version})
