@@ -25,14 +25,18 @@ jQuery(function($)
 
     function handleSuccessfulRequest(data, statusText, jqXHR)
     {
-        console.log(data);
+        console.log("request successful received; ", data, " ; ", jqXHR);
     }
 
     function handleUnsuccessfulRequest(jqXHR)
     {
-
+        console.error("request unsuccessful; ", jqXHR);
     }
 
+    /**
+     * Quick and dirty email validation;
+     *  not to be relied on
+     */
     function validateEmail(email)
     {
         return email.length >= 3 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
@@ -66,7 +70,6 @@ jQuery(function($)
                 return new Promise(((resolve, reject) => {}));  // Return promise that will never be resolved or rejected
             }
             email = $('#email-input').val();
-            console.log('validate ' + email + ' => ' + validateEmail(email));
             if (!validateEmail(email))
                 return displayAndHandleEmailPrompt(displayEmailPrompt(true));
             return makeRequest(email);
@@ -93,6 +96,8 @@ jQuery(function($)
             })*/
             .then(data =>
             {
+                // Request successful; data is array of tags (strings)
+                // TODO: Display tags
 
             }, error =>
             {
