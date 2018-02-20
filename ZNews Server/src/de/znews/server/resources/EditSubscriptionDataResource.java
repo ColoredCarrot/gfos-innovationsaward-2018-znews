@@ -3,15 +3,18 @@ package de.znews.server.resources;
 import com.coloredcarrot.jsonapi.Json;
 import com.coloredcarrot.jsonapi.ast.JsonArray;
 import com.coloredcarrot.jsonapi.ast.JsonNode;
+import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.parsing.JsonException;
 import de.znews.server.ZNews;
 import de.znews.server.newsletter.Registration;
 import de.znews.server.resources.exception.Http400BadRequestException;
+import de.znews.server.resources.exception.Http404NotFoundException;
 import de.znews.server.resources.exception.HttpException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.io.StringReader;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EditSubscriptionDataResource extends JSONResource
@@ -27,11 +30,13 @@ public class EditSubscriptionDataResource extends JSONResource
     {
         
         String email = ctx.getStringParam("email");
+        if (email == null)
+            throw new Http400BadRequestException("Missing email parameter");
         
         Registration reg = znews.registrationList.getRegistration(email);
         
         if (reg == null)
-            throw new HttpException(HttpResponseStatus.NOT_FOUND, email);
+            throw new Http404NotFoundException(email);
         
         // Currently, we don't support other data types but "application/x-www-form-urlencoded";
         // we must use some other data serialization format in the parameter values
@@ -63,11 +68,36 @@ public class EditSubscriptionDataResource extends JSONResource
             // review the results (NYI).
             
         }
+        else if (ctx.hasPostParam("unsubscribe_tag"))
+        {
+            Set<String> newSubscribedTags = new HashSet<>(reg.getAllSubscribedTags(znews));
+            if (!newSubscribedTags.remove(ctx.getStringPostParam("unsubscribe_tag")))
+                throw new Http404NotFoundException(ctx.getStringPostParam("unsubscribe_tag"));
+            reg.setSubscribedTags(newSubscribedTags.equals(znews.tagsList.getTags()) ? null : newSubscribedTags);
+            // Fallthrough (see above)
+        }
+        else if (ctx.hasPostParam("subscribe_tag"))
+        {
+            Set<String> newSubscribedTags = new HashSet<>(reg.getAllSubscribedTags(znews));
+            if (!newSubscribedTags.add(ctx.getStringPostParam("subscribe_tag")))
+                throw new HttpException(HttpResponseStatus.NOT_FOUND, ctx.getStringPostParam("subscribe_tag"));  // TODO: 404 may not best represent this scenario...
+            reg.setSubscribedTags(newSubscribedTags.equals(znews.tagsList.getTags()) ? null : newSubscribedTags);
+            // Fallthrough (see above)
+        }
         
         // Just return all subscribed-to tags
-        return JsonArray.createBuilder()
+        // Also, all other known tags
+        Set<String> allSubscribedTags = reg.getAllSubscribedTags(znews);
+        Set<String> otherKnownTags = new HashSet<>(znews.tagsList.getTags());
+        otherKnownTags.removeAll(allSubscribedTags);
+        
+        return JsonObject.createBuilder()
+                         .add("subscribed", allSubscribedTags)
+                         .add("other_known", otherKnownTags)
+                         .build();
+        /*return JsonArray.createBuilder()
                         .addAll(reg.getAllSubscribedTags(znews))
-                        .build();
+                        .build();*/
         
     }
     
