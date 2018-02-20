@@ -122,40 +122,26 @@ jQuery(function($)
     {
         // Make request, remove button (TODO: Replace with loading icon)
         let tag = $collectItem.attr('data-tag');
-        $.ajax('/edit_subscription_data', {
-            method: 'post',
-            data: {
-                email: EMAIL,
-                unsubscribe_tag: tag
-            },
-            dataType: 'json'
-        })
-         .then(function success(data)
-         {
-             // data in form { subscribed: ["a", "b"], other_known: ["c", "d"] }
-             // TODO: Add consistency check with expected values
-             // Always display what the server returned, not what we have client-side
-             updateData(data.subscribed, data.other_known);
-         }, function error(jqXHR, textStatus)
-         {
-             console.error(jqXHR, textStatus);
-             if (jqXHR.status === 404)
-             {
-                 // TODO: Handle 404
-             }
-         });
+        tagAction(tag, 'unsubscribe_tag');
     }
 
     function actionAddTag($collectItem)
     {
         // Make request, remove button (TODO: Replace with loading icon)
         let tag = $collectItem.attr('data-tag');
+        tagAction(tag, 'subscribe_tag');
+    }
+
+    function tagAction(tag, operation)
+    {
+        // Make request, remove button (TODO: Replace with loading icon)
+
+        let requestData = { email: EMAIL };
+        requestData[operation] = tag;
+
         $.ajax('/edit_subscription_data', {
             method: 'post',
-            data: {
-                email: EMAIL,
-                subscribe_tag: tag
-            },
+            data: requestData,
             dataType: 'json'
         })
          .then(function success(data)
