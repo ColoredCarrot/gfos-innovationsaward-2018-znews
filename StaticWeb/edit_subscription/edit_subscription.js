@@ -101,11 +101,18 @@ jQuery(function($)
 
             }, error =>
             {
-                if (error === 'invalid_email')
-                {
-                    //swal();
-                }
                 window.console.error(error);
+                swal("Error", "You have specified an invalid email address.", 'error', {
+                    buttons: [true, "Retry"]
+                })
+                    .then(value =>
+                    {
+                        if (value)
+                            // Retry
+                            init();
+                        else
+                            window.location.href = '/';
+                    });
             });
     }
 
