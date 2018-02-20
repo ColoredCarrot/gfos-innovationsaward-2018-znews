@@ -45,7 +45,15 @@ jQuery(function($)
     {
         return swal({
             title: "Enter email address",
-            content: $(`<input id="email-input" type="email" placeholder="Email address" class="validate${invalidEmail ? " invalid" : ""}">`)[0],
+            content: $(`<input id="email-input" type="email" placeholder="Email address" class="validate${invalidEmail ? " invalid" : ""}">`).on('keyup', function(evt)
+            {
+                if (evt.keyCode === 13)
+                {
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                    $('.swal-button--confirm').click();  // This cannot be the best way
+                }
+            })[0],
             buttons: {
                 cancel: true,
                 confirm: {
