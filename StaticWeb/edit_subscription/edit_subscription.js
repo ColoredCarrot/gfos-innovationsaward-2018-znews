@@ -1,6 +1,14 @@
 jQuery(function($)
 {
 
+    let EMAIL,
+        OTHER_TAGS,
+        SUBSCRIBED_TAGS;
+
+    /*
+    TODO: Add Drag n' Drop-support
+     */
+
     // TODO: Duplicate code (in /admin/edit_newsletter.js)
     function getQueryParamByName(name, url = window.location.href)
     {
@@ -16,21 +24,12 @@ jQuery(function($)
 
     function makeRequest(email)
     {
+        EMAIL = email;
         return $.ajax('/edit_subscription_data', {
             data: { email: email },
             dataType: 'json',
             method: 'post'
         });
-    }
-
-    function handleSuccessfulRequest(data, statusText, jqXHR)
-    {
-        console.log("request successful received; ", data, " ; ", jqXHR);
-    }
-
-    function handleUnsuccessfulRequest(jqXHR)
-    {
-        console.error("request unsuccessful; ", jqXHR);
     }
 
     /**
@@ -80,24 +79,17 @@ jQuery(function($)
     {
         let email = getQueryParamByName('email');
         (email
-            ? Promise.resolve(email)
+            ? makeRequest(email)
             : displayAndHandleEmailPrompt())
-            /*.then(email =>
-            {
-                if (email === null)
-                {
-                    // Cancel
-                    window.location.href = '/';
-                    return new Promise(((resolve, reject) => {}));  // Return promise that will never be resolved or rejected
-                }
-                if (!validateEmail(email))
-                    throw 'invalid_email';
-                return makeRequest(email);
-            })*/
             .then(data =>
             {
-                // Request successful; data is array of tags (strings)
-                // TODO: Display tags
+                // Request successful; data is of form { subscribed: ["a", "b"], other_known: ["c", "d"] }
+                // Display tags
+
+                updateData(data.subscribed, data.other_known);
+
+                swal.stopLoading();
+                swal.close();
 
             }, error =>
             {
@@ -107,19 +99,94 @@ jQuery(function($)
                 }
                 window.console.error(error);
             });
-        /*let email = getQueryParamByName('email');
-        if (!email)
-        {
-            swal("Error", "No email parameter specified", 'error', {
-                closeOnClickOutside: false,
-                closeOnEsc: false,
-                buttons: {}
-            });
-            return;
-        }
-        makeRequest(email).then(handleSuccessfulRequest, handleUnsuccessfulRequest);*/
     }
 
     init();
+
+    function actionRemoveTag($collectItem)
+    {
+        // Make request, remove button (TODO: Replace with loading icon)
+        let tag = $collectItem.attr('data-tag');
+        $.ajax('/edit_subscription_data', {
+            method: 'post',
+            data: {
+                email: EMAIL,
+                unsubscribe_tag: tag
+            },
+            dataType: 'json'
+        })
+         .then(function success(data)
+         {
+             // data in form { subscribed: ["a", "b"], other_known: ["c", "d"] }
+             // TODO: Add consistency check with expected values
+             // Always display what the server returned, not what we have client-side
+             updateData(data.subscribed, data.other_known);
+         }, function error(jqXHR, textStatus)
+         {
+             console.error(jqXHR, textStatus);
+             if (jqXHR.status === 404)
+             {
+                 // TODO: Handle 404
+             }
+         });
+    }
+
+    function actionAddTag($collectItem)
+    {
+        // Make request, remove button (TODO: Replace with loading icon)
+        let tag = $collectItem.attr('data-tag');
+        $.ajax('/edit_subscription_data', {
+            method: 'post',
+            data: {
+                email: EMAIL,
+                subscribe_tag: tag
+            },
+            dataType: 'json'
+        })
+         .then(function success(data)
+         {
+             // data in form { subscribed: ["a", "b"], other_known: ["c", "d"] }
+             // TODO: Add consistency check with expected values
+             // Always display what the server returned, not what we have client-side
+             updateData(data.subscribed, data.other_known);
+         }, function error(jqXHR, textStatus)
+         {
+             console.error(jqXHR, textStatus);
+             if (jqXHR.status === 404)
+             {
+                 // TODO: Handle 404
+             }
+         });
+    }
+
+    function updateData(subscribedTags = SUBSCRIBED_TAGS, otherTags = OTHER_TAGS)
+    {
+        SUBSCRIBED_TAGS = subscribedTags;
+        OTHER_TAGS = otherTags;
+
+        let SUBSCRIBED_TEMPLATE = '<li class="collection-item" data-tag="{tag}"><div>{tag}<a class="secondary-content flow-text" style="padding: 2px; zoom: 1.2; cursor: pointer; margin-top: -3px">&times;</a></div></li>';
+        let AVAILABLE_TEMPLATE = '<li class="collection-item" data-tag="{tag}"><div>{tag}<a class="secondary-content flow-text" style="padding: 2px; zoom: 1.2; cursor: pointer; margin-top: -3px">+</a></div></li>';
+
+        let $collection = $('#subscribed-tags');
+
+        $collection.empty();
+        subscribedTags.map(tag => $(SUBSCRIBED_TEMPLATE.replace(/{tag}/g, tag))
+            .appendTo($collection)
+            .find('a').click(function()
+            {
+                actionRemoveTag($(this).parents('li'));
+            }));
+
+        $collection = $('#available-tags');
+
+        $collection.empty();
+        otherTags.map(tag => $(AVAILABLE_TEMPLATE.replace(/{tag}/g, tag))
+            .appendTo($collection)
+            .find('a').click(function()
+            {
+                actionAddTag($(this).parents('li'));
+            }));
+
+    }
 
 });
