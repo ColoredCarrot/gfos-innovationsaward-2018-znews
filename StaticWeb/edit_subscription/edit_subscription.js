@@ -45,7 +45,7 @@ jQuery(function($)
     {
         return swal({
             title: "Enter email address",
-            content: $(`<input id="email-input" type="email" placeholder="Email address" class="validate${invalidEmail ? " invalid" : ""}">`).on('keyup', function(evt)
+            content: $(`<input id="email-input" type="email" placeholder="Email address" autofocus="autofocus" class="validate${invalidEmail ? " invalid" : ""}">`).on('keyup', function(evt)
             {
                 if (evt.keyCode === 13)
                 {
