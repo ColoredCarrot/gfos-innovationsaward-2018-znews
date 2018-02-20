@@ -179,8 +179,8 @@ jQuery(function($)
         SUBSCRIBED_TAGS = subscribedTags;
         OTHER_TAGS = otherTags;
 
-        let SUBSCRIBED_TEMPLATE = '<li class="collection-item" data-tag="{tag}"><div>{tag}<a class="secondary-content flow-text" style="padding: 2px; zoom: 1.2; cursor: pointer; margin-top: -3px">&times;</a></div></li>';
-        let AVAILABLE_TEMPLATE = '<li class="collection-item" data-tag="{tag}"><div>{tag}<a class="secondary-content flow-text" style="padding: 2px; zoom: 1.2; cursor: pointer; margin-top: -3px">+</a></div></li>';
+        let SUBSCRIBED_TEMPLATE = '<li class="collection-item" data-tag="{tag}"><div>{tag}<a class="secondary-content flow-text" title="Remove" style="padding: 2px; zoom: 1.2; cursor: pointer; margin-top: -3px">&times;</a></div></li>';
+        let AVAILABLE_TEMPLATE = '<li class="collection-item" data-tag="{tag}"><div>{tag}<a class="secondary-content flow-text" title="Add" style="padding: 2px; zoom: 1.2; cursor: pointer; margin-top: -3px">+</a></div></li>';
 
         let $collection = $('#subscribed-tags');
 
