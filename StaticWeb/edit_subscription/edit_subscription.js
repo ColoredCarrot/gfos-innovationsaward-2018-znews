@@ -185,6 +185,8 @@ jQuery(function($)
         let $collection = $('#subscribed-tags');
 
         $collection.empty();
+        $collection.append($('<li class="collection-header"><h5>Subscribed tags</h5></li>'));
+
         subscribedTags.map(tag => $(SUBSCRIBED_TEMPLATE.replace(/{tag}/g, tag))
             .appendTo($collection)
             .find('a').click(function()
@@ -195,6 +197,8 @@ jQuery(function($)
         $collection = $('#available-tags');
 
         $collection.empty();
+        $collection.append($('<li class="collection-header"><h5>Available tags</h5></li>'));
+
         otherTags.map(tag => $(AVAILABLE_TEMPLATE.replace(/{tag}/g, tag))
             .appendTo($collection)
             .find('a').click(function()
