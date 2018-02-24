@@ -279,6 +279,20 @@ jQuery(function($)
         });
     });
 
+    $('#view-btn').click(function()
+    {
+        let nid = $('#-data-nid-container').attr('data-nid');
+
+        // Abort if article is not saved
+        if (typeof nid === typeof undefined || !nid)
+        {
+            swal("Error", "This article is not saved and can therefore not be viewed.", 'error');
+            return;
+        }
+
+        window.location.href = '/view?nid=' + nid;
+    });
+
     // TODO: Register other action buttons here
 
 });
