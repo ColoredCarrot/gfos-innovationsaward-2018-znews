@@ -2,6 +2,7 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/StaticWeb/admin/OLD_create_newsletter/toolbar.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
@@ -24,6 +25,7 @@
       </sourceFilesUrls>
     </properties>
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/StaticWeb/admin/OLD_create_newsletter/toolbar.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />

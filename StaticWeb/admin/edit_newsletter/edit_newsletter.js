@@ -46,7 +46,7 @@ jQuery(function($)
                 success: function(allKnownTags, statusText, jqXHR)
                 {
                     // allKnownTags is array of tags
-                    KNOWN_TAGS = JSON.parse(allKnownTags);
+                    KNOWN_TAGS = /*JSON.parse*/(allKnownTags);
                     $('#tags').material_chip({
                         secondaryPlaceholder: "Tags",  // Materialize seems to swap placeholder and secondaryPlaceholder
                         placeholder: "Add tag...",
@@ -80,8 +80,8 @@ jQuery(function($)
             {
                 // a1 and a2 are of the form [data, textStatus, jqXHR]
 
-                let data = JSON.parse(a1[0]);
-                KNOWN_TAGS = JSON.parse(a2[0]);
+                let data = /*JSON.parse*/(a1[0]);
+                KNOWN_TAGS = /*JSON.parse*/(a2[0]);
 
                 if (!data.success)
                 {

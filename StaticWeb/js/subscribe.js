@@ -63,7 +63,7 @@ function doSubscribe(email)
 
     function handleSubscribeResponse(data)
     {
-        data = JSON.parse(data);
+        data = /*JSON.parse*/(data);
 
         if (data.success)
         {

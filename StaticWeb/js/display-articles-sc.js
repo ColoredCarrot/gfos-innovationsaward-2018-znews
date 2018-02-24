@@ -20,7 +20,7 @@ ServerComm = (function(sc)
 
         function handleSaveResult(data)
         {
-            data = JSON.parse(data);
+            //data = JSON.parse(data);
 
             // Save successful
             if (data.success)

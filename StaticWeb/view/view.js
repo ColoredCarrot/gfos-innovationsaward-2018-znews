@@ -56,7 +56,7 @@ jQuery(function($)
     })
      .then(data =>
      {
-         data = JSON.parse(data);
+         data = /*JSON.parse*/(data);
 
          let article = data.data;
 
