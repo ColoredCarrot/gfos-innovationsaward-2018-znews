@@ -38,4 +38,9 @@ public class Registration implements Serializable, JsonSerializable
         return Collections.unmodifiableSet(subscribedTags != null ? subscribedTags : znews.tagsList.getTags());
     }
     
+    public boolean isSubscribedToTag(String tag)
+    {
+        return subscribedTags == null || subscribedTags.contains(tag);
+    }
+    
 }
