@@ -2,49 +2,15 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/OLD_create_newsletter/toolbar.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/login/submit.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/admin/logout/logout.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/edit_subscription/edit_subscription.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/error/404notfound.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/OLD_editor.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/act.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/auto-add-main-tag.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/display-articles-sc.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/main-aesthetics.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/phaser.min.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/js/subscribe.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/OLD_create_newsletter/toolbar.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/change_password/change_password.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard-select.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/dashboard/dashboard.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/login/submit.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/admin/logout/logout.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/edit_subscription/edit_subscription.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/error/404notfound.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/OLD_editor.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/act.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/auto-add-main-tag.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/display-articles-sc.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/main-aesthetics.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/phaser.min.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/js/subscribe.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
