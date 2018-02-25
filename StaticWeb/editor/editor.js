@@ -1,3 +1,5 @@
+let quill;
+
 jQuery(function($)
 {
 
@@ -10,7 +12,7 @@ jQuery(function($)
         [ 'clean' ]
     ];
 
-    let quill = new Quill('#editor', {
+    quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
             toolbar: toolbarStructure,
@@ -23,3 +25,8 @@ jQuery(function($)
     $('div.ql-editor').attr('tabindex', '2');
 
 });
+
+function setEditorContents(delta)
+{
+    quill.setContents(delta, 'silent');  // 'silent' source to disable undo
+}

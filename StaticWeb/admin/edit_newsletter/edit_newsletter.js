@@ -96,7 +96,7 @@ jQuery(function($)
 
                 $('#editor-frame').on('load', () =>
                 {
-                    $('#editor-frame').contents().find('#markdown').val(data.text);
+                    $('#editor-frame')[0].contentWindow.setEditorContents(data.the_delta);
                     dirty_hash.recompute();
                 });
 
