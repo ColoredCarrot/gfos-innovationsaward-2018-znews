@@ -4,12 +4,16 @@
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/js/highlightjs.min.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/js/katex.min.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/js/highlightjs.min.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/js/katex.min.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
     </CLASSES>
     <JAVADOC />
