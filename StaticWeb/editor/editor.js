@@ -20,4 +20,6 @@ jQuery(function($)
         }
     });
 
+    $('div.ql-editor').attr('tabindex', '2');
+
 });

@@ -25,7 +25,6 @@ jQuery(function($)
 
     // Change tab focus order. Must be done after iframe has loaded
     let $editorFrame = $('#editor-frame');
-    $editorFrame.on('load', () => $editorFrame.contents().find('#markdown').attr('tabindex', '2'));
 
     // TODO: We could provide a progress bar using ServerComm.useProgressBar($progressBar)
 
