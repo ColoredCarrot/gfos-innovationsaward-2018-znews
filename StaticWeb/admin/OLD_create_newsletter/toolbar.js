@@ -16,7 +16,7 @@ $(function()
 
     function handleSaveResult(data)
     {
-        data = JSON.parse(data);
+        data = /*JSON.parse*/(data);
         updateProgress(100);
 
         // Save successful

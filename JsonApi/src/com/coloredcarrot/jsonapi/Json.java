@@ -27,6 +27,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +124,17 @@ public class Json
     public static <T> T deserializeFromString(String json, Class<T> clazz)
     {
         return deserialize(getInputStream(new StringReader(json)).next(), clazz);
+    }
+    
+    public static <T> T[] deserializeArray(JsonNode json, Class<T[]> arrayType)
+    {
+        T[] objectArray = deserialize(json, arrayType);
+        return Arrays.copyOf(objectArray, objectArray.length, arrayType);
+    }
+    
+    public static <T> T[] deserializeArrayFromString(String json, Class<T[]> arrayType)
+    {
+        return deserializeArray(getInputStream(new StringReader(json)).next(), arrayType);
     }
     
     /**

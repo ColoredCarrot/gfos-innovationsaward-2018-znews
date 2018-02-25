@@ -6,6 +6,8 @@ import de.znews.server.ZNews;
 import de.znews.server.resources.exception.HttpException;
 import de.znews.server.uri.URIFragment;
 
+import java.nio.charset.StandardCharsets;
+
 public abstract class JSONResource extends Resource
 {
     
@@ -18,7 +20,7 @@ public abstract class JSONResource extends Resource
     public RequestResponse handleRequest(RequestContext ctx) throws HttpException
     {
         JsonNode jsonResponse = handleJsonRequest(ctx);
-        return RequestResponse.ok(Json.toString(jsonResponse));
+        return new RequestResponse("text/json", Json.toString(jsonResponse).getBytes(StandardCharsets.UTF_8));
     }
     
     protected abstract JsonNode handleJsonRequest(RequestContext ctx) throws HttpException;

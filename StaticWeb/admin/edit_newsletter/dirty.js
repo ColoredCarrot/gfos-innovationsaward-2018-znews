@@ -5,6 +5,8 @@ if form has been edited
 
 var dirty_hash = {
 
+    allowDisplayWarning: false,
+
     hashString: function(str)
     {
         if (str.length === 0)
@@ -37,7 +39,7 @@ var dirty_hash = {
 
     onbeforeunloadHandler: function()
     {
-        if (dirty_hash.hash !== dirty_hash.compute())
+        if (dirty_hash.allowDisplayWarning && dirty_hash.hash !== dirty_hash.compute())
             return "You have unsaved changes!\nAre you sure you want to leave and discard them?";
     }
 

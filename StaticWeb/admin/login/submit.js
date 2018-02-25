@@ -1,6 +1,19 @@
 $(function()
 {
 
+    // TODO: Duplicate code (in /admin/edit_newsletter.js)
+    function getQueryParamByName(name, url = window.location.href)
+    {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     window.setTimeout(() => $('#usr').focus(), 50);
 
     $('#main-form').submit(function(e)
@@ -27,7 +40,8 @@ $(function()
                 }).then(function()
                 {
                     // Redirect user to a main admin page
-                    window.location.href = '/admin/index';
+                    let target = getQueryParamByName('target');
+                    window.location.href = target || '/admin/index';
                 });
             },
             statusCode: {

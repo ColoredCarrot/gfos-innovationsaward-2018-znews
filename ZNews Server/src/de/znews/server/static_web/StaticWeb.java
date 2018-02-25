@@ -88,6 +88,12 @@ public class StaticWeb
         return new String(get(path));
     }
     
+    /**
+     * Reads the file or, if that failed, returns {@code "Error".getBytes(StandardCharsets.UTF_8)}
+     *
+     * @param path The path (normalized using {@link #normalizePath(String)})
+     * @return The raw bytes
+     */
     public byte[] get(String path)
     {
         path = normalizePath(path);

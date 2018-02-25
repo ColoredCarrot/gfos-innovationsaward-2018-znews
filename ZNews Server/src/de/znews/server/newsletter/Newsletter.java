@@ -6,12 +6,14 @@ import de.znews.server.auth.Admin;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -20,16 +22,18 @@ import java.util.UUID;
 public class Newsletter implements Serializable, JsonSerializable
 {
     
-    private static final long serialVersionUID = -9142303673191329331L;
+    private static final long serialVersionUID = -132258376981572237L;
     
     @Setter(AccessLevel.NONE)
-    private String  id;
-    private String  title;
-    private String  text;
-    private boolean published;
+    private String       id;
+    private String       title;
+    private String       text;
+    @Getter(AccessLevel.NONE)
+    private List<String> tags;
+    private boolean      published;
     @Nullable
-    private Date    datePublished;
-    private UUID    publisher;
+    private Date         datePublished;
+    private UUID         publisher;
     
     public Newsletter(String title, String text, UUID publisher)
     {
@@ -46,6 +50,11 @@ public class Newsletter implements Serializable, JsonSerializable
                znewsInstance.authenticator.getAdmin(publisher)
                                           .map(Admin::getName)
                                           .orElse(publisher.toString());
+    }
+    
+    public String[] getTags()
+    {
+        return tags != null ? tags.toArray(new String[0]) : new String[0];
     }
     
 }
