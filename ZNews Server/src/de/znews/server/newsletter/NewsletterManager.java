@@ -6,11 +6,11 @@ import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
 import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import de.znews.server.Main;
 import de.znews.server.emai_reg.NewNewsletterEmail;
+import de.znews.server.lib.QuillJS;
 
 import javax.mail.MessagingException;
 import java.io.Serializable;
@@ -87,8 +87,9 @@ public class NewsletterManager implements Serializable, JsonSerializable
             
             MutableDataSet mkToHtmlOpts = new MutableDataSet();
             mkToHtmlOpts.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), AutolinkExtension.create(), StrikethroughExtension.create()));
-            String html = HtmlRenderer.builder(mkToHtmlOpts).build()
-                                      .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));
+            /*String html = HtmlRenderer.builder(mkToHtmlOpts).build()
+                                      .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));*/
+            String html = QuillJS.renderAsHTML(n.getContent(), Main.getZnews());
     
             Main.getZnews().registrationList.forEach(reg ->
             {
@@ -98,7 +99,7 @@ public class NewsletterManager implements Serializable, JsonSerializable
                 NewNewsletterEmail email = new NewNewsletterEmail(Main.getZnews());
                 email.setTitle(n.getTitle());
                 email.setWithHtml(html);
-                email.setWithoutHtml(n.getText());
+                email.setWithoutHtml(html);  // TODO: Find better alternative for non-HTML (or just drop support)
                 email.setRegisteredEmail(reg.getEmail());
                 email.setNid(n.getId());
                 Main.getZnews().server.getWorkerGroup().execute(() ->

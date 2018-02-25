@@ -43,7 +43,7 @@ public class GetNewslettersResource extends JSONResource
         
         Stream<JsonObject.Builder> stream = newsletterStream.map(n -> JsonObject.createBuilder()
                                                                                 .add("title", n.getTitle())
-                                                                                .add("text", n.getText())
+                                                                                .add("the_delta", n.getContent())
                                                                                 .add("published", n.isPublished())
                                                                                 .add("nid", n.getId()));
         
