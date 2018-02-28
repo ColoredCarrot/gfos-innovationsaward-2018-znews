@@ -15,6 +15,7 @@ import de.znews.server.emai_reg.NewNewsletterEmail;
 import de.znews.server.stat.NewsletterPublicationResult;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,6 +143,16 @@ public class NewsletterManager implements Serializable, JsonSerializable
             NewsletterPublicationResult res = resBuilder.build();
     
             Log.out(String.format("Finished publication of \"%s\" (%s). Email send success rate: %d/%d = %.2f%%", n.getTitle(), nid, res.getNumSuccesses(), res.getNumTotal(), res.getSuccessRate() * 100));
+    
+            // Store results in file/database
+            try
+            {
+                Main.getZnews().config.getDataAccessConfig().access().storeNewNewsletterPublicationResult(res);
+            }
+            catch (IOException e)
+            {
+                Log.err("Could not save newsletter publication results", e);
+            }
     
         });
     }
