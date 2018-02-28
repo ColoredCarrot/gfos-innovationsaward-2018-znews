@@ -51,12 +51,12 @@ public class NewsletterPublicationResult
     
     public double getSuccessRate()
     {
-        return getNumSuccesses() / getNumTotal();
+        return getNumTotal() == 0 ? 0 : getNumSuccesses() / getNumTotal();
     }
     
     public double getFailureRate()
     {
-        return getNumFailures() / getNumTotal();
+        return getNumTotal() == 0 ? 0 : getNumFailures() / getNumTotal();
     }
     
     public static NewsletterPublicationResultBuilder builder()
