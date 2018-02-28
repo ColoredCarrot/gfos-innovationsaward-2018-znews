@@ -76,4 +76,12 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
         return registeredEmails.size();
     }
     
+    // TODO: Add proper synchronization
+    public RegistrationList snapshot()
+    {
+        RegistrationList snapshot = new RegistrationList();
+        snapshot.registeredEmails.putAll(registeredEmails);
+        return snapshot;
+    }
+    
 }

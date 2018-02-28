@@ -97,7 +97,7 @@ public class NewsletterManager implements Serializable, JsonSerializable
             String html = HtmlRenderer.builder(mkToHtmlOpts).build()
                                       .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));
             
-            RegistrationList registrationListCopy = Main.getZnews().registrationList;
+            RegistrationList registrationListCopy = Main.getZnews().registrationList.snapshot();
             CountDownLatch   finishLatch          = new CountDownLatch(registrationListCopy.getNumRegistrations());
             
             registrationListCopy.forEach(reg ->
