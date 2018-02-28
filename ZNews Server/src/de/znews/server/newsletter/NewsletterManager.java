@@ -8,11 +8,14 @@ import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.options.MutableDataSet;
+import de.znews.server.Log;
 import de.znews.server.Main;
 import de.znews.server.emai_reg.NewNewsletterEmail;
 import de.znews.server.lib.QuillJS;
+import de.znews.server.stat.NewsletterPublicationResult;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -74,6 +78,8 @@ public class NewsletterManager implements Serializable, JsonSerializable
     
     public synchronized void doPublishNewsletter(String nid, UUID publisher)
     {
+        Log.debug(String.format("Publishing %s ...", nid));
+        
         int        index = getIndexOfNewsletter(nid);
         Newsletter n     = newsletters.remove(index);
         n.setPublished(true);
@@ -85,13 +91,17 @@ public class NewsletterManager implements Serializable, JsonSerializable
         Main.getZnews().server.getWorkerGroup().execute(() ->
         {
             
+            NewsletterPublicationResult.NewsletterPublicationResultBuilder resBuilder = NewsletterPublicationResult.builder();
+            
             MutableDataSet mkToHtmlOpts = new MutableDataSet();
             mkToHtmlOpts.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), AutolinkExtension.create(), StrikethroughExtension.create()));
             /*String html = HtmlRenderer.builder(mkToHtmlOpts).build()
                                       .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));*/
             String html = QuillJS.renderAsHTML(n.getContent(), Main.getZnews());
-    
-            Main.getZnews().registrationList.forEach(reg ->
+            RegistrationList registrationListCopy = Main.getZnews().registrationList.snapshot();
+            CountDownLatch   finishLatch          = new CountDownLatch(registrationListCopy.getNumRegistrations());
+            
+            registrationListCopy.forEach(reg ->
             {
                 // Don't sent if tags are set (for legacy reasons) and if the registration does not subscribe to at least one tag
                 if (n.getTags() != null && Arrays.stream(n.getTags()).noneMatch(reg::isSubscribedToTag))
@@ -107,14 +117,43 @@ public class NewsletterManager implements Serializable, JsonSerializable
                     try
                     {
                         email.send(reg.getEmail());
+                        resBuilder.addSuccess(reg.getEmail());
                     }
                     catch (MessagingException e)
                     {
-                        throw new RuntimeException(e);
+                        Log.debug("Failed to send newsletter publication email to " + reg.getEmail() + ": " + e.getMessage());
+                        resBuilder.addFailure(reg.getEmail(), e);
+                    }
+                    finally
+                    {
+                        finishLatch.countDown();
                     }
                 });
             });
             
+            // We are in an asynchronous environment, so this works
+            try
+            {
+                finishLatch.await();
+            }
+            catch (InterruptedException ignored)
+            {
+            }
+    
+            NewsletterPublicationResult res = resBuilder.build();
+    
+            Log.out(String.format("Finished publication of \"%s\" (%s). Email send success rate: %d/%d = %.2f%%", n.getTitle(), nid, res.getNumSuccesses(), res.getNumTotal(), res.getSuccessRate() * 100));
+    
+            // Store results in file/database
+            try
+            {
+                Main.getZnews().config.getDataAccessConfig().access().storeNewNewsletterPublicationResult(res);
+            }
+            catch (IOException e)
+            {
+                Log.err("Could not save newsletter publication results", e);
+            }
+    
         });
     }
     
