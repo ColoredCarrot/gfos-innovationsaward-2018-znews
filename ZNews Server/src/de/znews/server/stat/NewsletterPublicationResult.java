@@ -1,11 +1,17 @@
 package de.znews.server.stat;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.mail.MessagingException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+@Immutable
+@ThreadSafe
 public class NewsletterPublicationResult
 {
     
@@ -14,8 +20,8 @@ public class NewsletterPublicationResult
     
     public NewsletterPublicationResult(Set<String> successes, Map<String, MessagingException> failures)
     {
-        this.successes = successes;
-        this.failures = failures;
+        this.successes = Collections.unmodifiableSet(new HashSet<>(successes));
+        this.failures = Collections.unmodifiableMap(new HashMap<>(failures));
     }
     
     public Set<String> getSuccesses()
@@ -58,10 +64,11 @@ public class NewsletterPublicationResult
         return new NewsletterPublicationResultBuilder();
     }
     
+    @ThreadSafe
     public static class NewsletterPublicationResultBuilder
     {
-        private Set<String>                     successes = new HashSet<>();
-        private Map<String, MessagingException> failures = new HashMap<>();
+        private Set<String>                     successes = Collections.synchronizedSet(new HashSet<>());
+        private Map<String, MessagingException> failures  = new ConcurrentHashMap<>();
         
         public NewsletterPublicationResultBuilder successes(Set<String> successes)
         {
@@ -74,17 +81,17 @@ public class NewsletterPublicationResult
             this.failures = failures;
             return this;
         }
-    
+        
         public boolean addSuccess(String email)
         {
             return successes.add(email);
         }
-    
+        
         public MessagingException addFailure(String email, MessagingException ex)
         {
             return failures.put(email, ex);
         }
-    
+        
         public NewsletterPublicationResult build()
         {
             return new NewsletterPublicationResult(successes, failures);
