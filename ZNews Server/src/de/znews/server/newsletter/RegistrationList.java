@@ -71,4 +71,9 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
         return registeredEmails.values().spliterator();
     }
     
+    public int getNumRegistrations()
+    {
+        return registeredEmails.size();
+    }
+    
 }
