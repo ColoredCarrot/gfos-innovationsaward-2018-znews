@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class RegistrationList implements Serializable, JsonSerializable, Iterable<Registration>
 {
@@ -40,6 +41,11 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
     public boolean isRegistered(String email)
     {
         return registeredEmails.containsKey(email);
+    }
+    
+    public Stream<Registration> getAllRegistrations()
+    {
+        return registeredEmails.values().stream();
     }
     
     @JsonDeserializer
