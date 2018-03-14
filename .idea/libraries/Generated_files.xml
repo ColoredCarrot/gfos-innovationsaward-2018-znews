@@ -9,6 +9,7 @@
         <item url="file://$PROJECT_DIR$/StaticWeb/js/materialize.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
@@ -19,6 +20,7 @@
       <root url="file://$PROJECT_DIR$/StaticWeb/js/materialize.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
