@@ -31,25 +31,7 @@ jQuery(function($)
 
     function renderText(text)
     {
-
-        if (!textToHtmlRendererQuill || !textToHtmlRendererVirtContainer)
-        {
-            textToHtmlRendererVirtContainer = $('<div/>').appendTo($('<div/>'))[0];
-            textToHtmlRendererQuill = new Quill(textToHtmlRendererVirtContainer, {
-                theme: 'snow',
-                modules: {
-                    syntax: true,
-                    formula: true,
-                    clipboard: true
-                }
-            });
-        }
-
-        textToHtmlRendererQuill.setContents({ ops: text });
-        let result = $(textToHtmlRendererVirtContainer.getElementsByClassName("ql-editor")[0].innerHTML).clone()[0];
-        textToHtmlRendererVirtContainer.innerHTML = '';
-        return result;
-
+        return DeltaRenderer.renderToHTML(text);
     }
 
     $.ajax('/admin/api/view', {
