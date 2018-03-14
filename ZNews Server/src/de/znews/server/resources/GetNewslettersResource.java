@@ -39,8 +39,6 @@ public class GetNewslettersResource extends JSONResource
         if (!includeNonPublished)
             newsletterStream = newsletterStream.filter(Newsletter::isPublished);
         
-        newsletterStream = newsletterStream.limit(amount);
-        
         Stream<JsonObject.Builder> stream = newsletterStream.map(n -> JsonObject.createBuilder()
                                                                                 .add("title", n.getTitle())
                                                                                 .add("text", n.getText())
@@ -50,6 +48,8 @@ public class GetNewslettersResource extends JSONResource
         if (!includeNonPublished)
             stream = stream.map(n -> n.remove("published"));
         
+        stream = stream.limit(amount);
+    
         JsonArray.Builder data = JsonArray.createBuilder();
         
         stream.map(JsonObject.Builder::build)
