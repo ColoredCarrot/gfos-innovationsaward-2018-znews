@@ -126,6 +126,8 @@ var ServerComm = (function()
         if (newTags)
             data.tags = JSON.stringify(newTags);
 
+        console.log("data sent: ", data);
+
         // Send XMLHttpRequest
         $.ajax('/admin/api/newsletter/save', {
             cache: false,
