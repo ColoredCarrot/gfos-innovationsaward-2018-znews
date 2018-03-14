@@ -1,4 +1,4 @@
-let quill;
+var quill;
 
 jQuery(function($)
 {
