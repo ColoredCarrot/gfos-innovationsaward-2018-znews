@@ -132,6 +132,7 @@ var ServerComm = (function()
         $.ajax('/admin/api/newsletter/save', {
             cache: false,
             data: data,
+            method: 'post',
             success: function(data, textStatus, jqXHR)
             {
                 updateProgress(100);
