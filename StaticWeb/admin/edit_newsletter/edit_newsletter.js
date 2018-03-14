@@ -176,16 +176,20 @@ jQuery(function($)
         let nid = $('#-data-nid-container').attr('data-nid');
         nid = typeof nid !== typeof undefined && nid !== false ? nid : null;
 
-        if (!$('#ntitle').val().trim())
+        let title = $('#ntitle').val();
+
+        if (!title.trim())
         {
             swal("Error", "You must specify a title in order to save this newsletter.", 'error')
                 .then(() => $('#ntitle').focus());
             return;
         }
 
+        let quill = $editorFrame[0].contentWindow.quill;
+
         let saveData = {
-            newTitle: $('#ntitle').val(),
-            newText: $editorFrame.contents().find('#markdown').val()
+            newTitle: title,
+            newText: JSON.stringify(quill.getContents().ops)//.editor.delta.ops//.getContents()
         };
 
         // Add tags to saveData
