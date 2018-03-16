@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 
+@Deprecated
 public class QuillJS
 {
     
@@ -30,6 +31,15 @@ public class QuillJS
     public static String renderAsHTML(JsonArray delta, ZNews znews)
     {
         
+        /*
+        Problem:
+        jvm-npm require() cannot find modules
+        How to fix:
+        No idea
+         */
+        
+        File jvmNpmFile       = znews.staticWeb.getFile("/jvm-npm/jvm-npm.js");
+        File cheerioFile      = znews.staticWeb.getFile("/cheerio/lib/cheerio.js");
         File jqueryFile       = znews.staticWeb.getFile("/js/jquery.min.js");
         File hightlightjsFile = znews.staticWeb.getFile("/js/highlightjs.min.js");
         File katexFile        = znews.staticWeb.getFile("/js/katex.min.js");
@@ -39,7 +49,45 @@ public class QuillJS
         ScriptEngineManager sem = new ScriptEngineManager();
         ScriptEngine        se  = sem.getEngineByName("JavaScript");
         
-        for (File libFile : new File[] { jqueryFile, hightlightjsFile, katexFile, quillFile, converterFile })
+        try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(jvmNpmFile))))
+        {
+            se.eval(reader);
+        }
+        catch (IOException e)
+        {
+            throw new UncheckedIOException(e);
+        }
+        catch (ScriptException e)
+        {
+            Log.warn("Could not load library script " + jvmNpmFile.getName() + ": " + e.getMessage() + " (" + e.getFileName() + ":" + e.getLineNumber() + ":" + e.getColumnNumber() + " in " + jvmNpmFile.getAbsolutePath() + ")", e);
+            return null;
+        }
+        
+        try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(cheerioFile))))
+        {
+            se.eval(reader);
+        }
+        catch (IOException e)
+        {
+            throw new UncheckedIOException(e);
+        }
+        catch (ScriptException e)
+        {
+            Log.warn("Could not load library script " + cheerioFile.getName() + ": " + e.getMessage() + " (" + e.getFileName() + ":" + e.getLineNumber() + ":" + e.getColumnNumber() + " in " + cheerioFile.getAbsolutePath() + ")", e);
+            return null;
+        }
+        
+        try
+        {
+            se.eval("var $ = require('cheerio').load('<div><div></div></div>')");
+        }
+        catch (ScriptException e)
+        {
+            Log.warn("Could not import Cheerio", e);
+            return null;
+        }
+        
+        for (File libFile : new File[] { /*jqueryFile,*/ hightlightjsFile, katexFile, quillFile, converterFile })
             try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(libFile))))
             {
                 se.eval(reader);
@@ -56,7 +104,7 @@ public class QuillJS
         
         // JavaScript engine is Invocable
         Invocable ise = (Invocable) se;
-    
+        
         Object jsResult = null;
         try
         {
@@ -73,9 +121,9 @@ public class QuillJS
             Log.warn("Could not invoke script", e);
             return null;
         }
-    
+        
         return jsResult.toString();
-    
+        
     }
     
 }
