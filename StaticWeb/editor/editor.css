@@ -1,0 +1,17 @@
+div.ql-toolbar
+{
+    border: 0 !important;
+}
+
+div.ql-container
+{
+    border: 0 !important;
+    border-left: 1px solid #ccc !important;
+    transition: border-left-color .5s !important;
+}
+
+div.ql-container:focus-within
+{
+    box-shadow: none;
+    border-left-color: #9eb9ff !important;
+}

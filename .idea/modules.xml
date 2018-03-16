@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Documentation/Documentation.iml" filepath="$PROJECT_DIR$/Documentation/Documentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/JsonApi/JsonApi.iml" filepath="$PROJECT_DIR$/JsonApi/JsonApi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Licenses/Licenses.iml" filepath="$PROJECT_DIR$/Licenses/Licenses.iml" />
       <module fileurl="file://$PROJECT_DIR$/LoggingApi/LoggingApi.iml" filepath="$PROJECT_DIR$/LoggingApi/LoggingApi.iml" />
       <module fileurl="file://$PROJECT_DIR$/StaticWeb/StaticWeb.iml" filepath="$PROJECT_DIR$/StaticWeb/StaticWeb.iml" />
       <module fileurl="file://$PROJECT_DIR$/ZNews Server/ZNews Server.iml" filepath="$PROJECT_DIR$/ZNews Server/ZNews Server.iml" />

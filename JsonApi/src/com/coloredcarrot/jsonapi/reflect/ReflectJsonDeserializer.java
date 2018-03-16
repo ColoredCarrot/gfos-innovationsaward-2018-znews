@@ -85,6 +85,9 @@ public class ReflectJsonDeserializer
             return (T) deserializeDate(json);
         if (clazz == UUID.class && !(json instanceof JsonObject))
             return (T) deserializeUUID(json);
+        
+        if (clazz == json.getClass())
+            return (T) json;
     
         return deserializeFields(clazz, json);
         

@@ -1,5 +1,6 @@
 package de.znews.server.resources;
 
+import com.coloredcarrot.jsonapi.Json;
 import com.coloredcarrot.jsonapi.ast.JsonNode;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import de.znews.server.Common;
@@ -43,7 +44,7 @@ public class DeleteResource extends JSONResource
     
                 Newsletter n = znews.newsletterManager.getNewsletter(nid);
     
-                if (force || hash == null || hash == (n.getTitle() + n.getText()).hashCode())
+                if (force || hash == null || hash == (n.getTitle() + Json.toString(n.getContent())).hashCode())
                 {
                     znews.newsletterManager.doDeleteNewsletter(nid);
     

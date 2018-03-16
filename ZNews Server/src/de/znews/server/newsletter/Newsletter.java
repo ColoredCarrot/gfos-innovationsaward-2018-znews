@@ -1,5 +1,6 @@
 package de.znews.server.newsletter;
 
+import com.coloredcarrot.jsonapi.ast.JsonArray;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import de.znews.server.ZNews;
 import de.znews.server.auth.Admin;
@@ -22,12 +23,12 @@ import java.util.UUID;
 public class Newsletter implements Serializable, JsonSerializable
 {
     
-    private static final long serialVersionUID = -132258376981572237L;
+    private static final long serialVersionUID = 508675215015238869L;
     
     @Setter(AccessLevel.NONE)
     private String       id;
     private String       title;
-    private String       text;
+    private JsonArray    content;
     @Getter(AccessLevel.NONE)
     private List<String> tags;
     private boolean      published;
@@ -35,10 +36,10 @@ public class Newsletter implements Serializable, JsonSerializable
     private Date         datePublished;
     private UUID         publisher;
     
-    public Newsletter(String title, String text, UUID publisher)
+    public Newsletter(String title, JsonArray content, UUID publisher)
     {
         this.title = title;
-        this.text = text;
+        this.content = content;
         this.publisher = publisher;
         this.id = UUID.randomUUID().toString();
     }
@@ -46,7 +47,7 @@ public class Newsletter implements Serializable, JsonSerializable
     public String getPublisherName(ZNews znewsInstance)
     {
         return publisher == null
-               ? "anonymous" :
+               ? "anonymous" :  // Legacy
                znewsInstance.authenticator.getAdmin(publisher)
                                           .map(Admin::getName)
                                           .orElse(publisher.toString());

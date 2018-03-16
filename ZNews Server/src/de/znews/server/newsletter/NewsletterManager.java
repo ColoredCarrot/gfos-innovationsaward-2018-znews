@@ -3,12 +3,6 @@ package de.znews.server.newsletter;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.reflect.JsonDeserializer;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
-import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
-import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
-import com.vladsch.flexmark.ext.tables.TablesExtension;
-import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.parser.Parser;
-import com.vladsch.flexmark.util.options.MutableDataSet;
 import de.znews.server.Log;
 import de.znews.server.Main;
 import de.znews.server.emai_reg.NewNewsletterEmail;
@@ -93,11 +87,11 @@ public class NewsletterManager implements Serializable, JsonSerializable
             
             NewsletterPublicationResult.NewsletterPublicationResultBuilder resBuilder = NewsletterPublicationResult.builder();
             
-            MutableDataSet mkToHtmlOpts = new MutableDataSet();
+            /*MutableDataSet mkToHtmlOpts = new MutableDataSet();
             mkToHtmlOpts.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), AutolinkExtension.create(), StrikethroughExtension.create()));
-            String html = HtmlRenderer.builder(mkToHtmlOpts).build()
-                                      .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));
-            
+            //String html = HtmlRenderer.builder(mkToHtmlOpts).build()
+            //                          .render(Parser.builder(mkToHtmlOpts).build().parse(n.getText()));
+            String html = QuillJS.renderAsHTML(n.getContent(), Main.getZnews());*/
             RegistrationList registrationListCopy = Main.getZnews().registrationList.snapshot();
             CountDownLatch   finishLatch          = new CountDownLatch(registrationListCopy.getNumRegistrations());
             
@@ -105,11 +99,12 @@ public class NewsletterManager implements Serializable, JsonSerializable
             {
                 // Don't sent if tags are set (for legacy reasons) and if the registration does not subscribe to at least one tag
                 if (n.getTags() != null && Arrays.stream(n.getTags()).noneMatch(reg::isSubscribedToTag))
+                {
+                    finishLatch.countDown();
                     return;
+                }
                 NewNewsletterEmail email = new NewNewsletterEmail(Main.getZnews());
                 email.setTitle(n.getTitle());
-                email.setWithHtml(html);
-                email.setWithoutHtml(n.getText());
                 email.setRegisteredEmail(reg.getEmail());
                 email.setNid(n.getId());
                 Main.getZnews().server.getWorkerGroup().execute(() ->

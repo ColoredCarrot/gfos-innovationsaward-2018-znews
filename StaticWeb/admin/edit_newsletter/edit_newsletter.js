@@ -25,7 +25,6 @@ jQuery(function($)
 
     // Change tab focus order. Must be done after iframe has loaded
     let $editorFrame = $('#editor-frame');
-    $editorFrame.on('load', () => $editorFrame.contents().find('#markdown').attr('tabindex', '2'));
 
     // TODO: We could provide a progress bar using ServerComm.useProgressBar($progressBar)
 
@@ -97,7 +96,7 @@ jQuery(function($)
 
                 $('#editor-frame').on('load', () =>
                 {
-                    $('#editor-frame').contents().find('#markdown').val(data.text);
+                    $('#editor-frame')[0].contentWindow.setEditorContents(data.the_delta);
                     dirty_hash.recompute();
                 });
 
@@ -177,16 +176,20 @@ jQuery(function($)
         let nid = $('#-data-nid-container').attr('data-nid');
         nid = typeof nid !== typeof undefined && nid !== false ? nid : null;
 
-        if (!$('#ntitle').val().trim())
+        let title = $('#ntitle').val();
+
+        if (!title.trim())
         {
             swal("Error", "You must specify a title in order to save this newsletter.", 'error')
                 .then(() => $('#ntitle').focus());
             return;
         }
 
+        let quill = $editorFrame[0].contentWindow.quill;
+
         let saveData = {
-            newTitle: $('#ntitle').val(),
-            newText: $editorFrame.contents().find('#markdown').val()
+            newTitle: title,
+            newText: JSON.stringify(quill.getContents().ops)//.editor.delta.ops//.getContents()
         };
 
         // Add tags to saveData

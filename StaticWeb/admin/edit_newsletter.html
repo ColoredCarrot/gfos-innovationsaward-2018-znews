@@ -113,24 +113,27 @@
     {
         // TODO: compute these values dynamically
         let INTERVAL = 200,
-            CARD_ADDITIONAL_HEIGHT = 90;
+            CARD_ADDITIONAL_HEIGHT = 115;
         let initBodyHeight = $('body').height();
         let $editorFrame = $('#editor-frame'),
             $editorCard = $('#editor-card'),
             $background = $('.background'),
             lastHeight = 0,
             curHeight = 0;
-        setInterval(function()
+        $editorFrame.on('load', () =>
         {
-            curHeight = $editorFrame[0].contentWindow.document.body.scrollHeight;
-            if (curHeight !== lastHeight)
+            setInterval(function()
             {
-                lastHeight = curHeight;
-                $editorFrame.css('height', curHeight + 'px');
-                $editorCard.css('height', curHeight + CARD_ADDITIONAL_HEIGHT + 'px');
-                $background.css('height', Math.max(initBodyHeight,  curHeight + CARD_ADDITIONAL_HEIGHT + 500) + 'px');
-            }
-        }, INTERVAL);
+                curHeight = $editorFrame[0].contentWindow.document.body.scrollHeight;
+                if (curHeight !== lastHeight)
+                {
+                    lastHeight = curHeight;
+                    $editorFrame.css('height', curHeight + 'px');
+                    $editorCard.css('height', curHeight + CARD_ADDITIONAL_HEIGHT + 'px');
+                    $background.css('height', Math.max(initBodyHeight,  curHeight + CARD_ADDITIONAL_HEIGHT + 500) + 'px');
+                }
+            }, INTERVAL);
+        });
     });
 </script>
 

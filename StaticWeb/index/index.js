@@ -13,27 +13,7 @@ jQuery(function($)
 
     function renderText(text)
     {
-
-        showdown.setFlavor('github');
-
-        let mkToHtmlConverter = new showdown.Converter({
-            noHeaderId: true,
-            simplifiedAutoLink: true,
-            excludeTrailingPunctuationFromURLs: true,
-            tables: true,
-            headerLevelStart: 5
-        });
-
-        // TODO: this is (somewhat) duplicate code, see /editor/editor.js
-        // Convert markdown to html (currently using Showdown)
-        let html = mkToHtmlConverter.makeHtml(text);
-        // Wrap generated html in temporary div
-        let $html = $('<div></div>').append($(html));
-        // FINDME: Make elements negatively affected by Materialize browser-default
-        $html.find('ul').addClass('browser-default');
-
-        return $html;
-
+        return DeltaRenderer.renderToHTML(text);
     }
 
     ServerComm.doGetArticles(function(data)
@@ -78,16 +58,16 @@ jQuery(function($)
         // For each article...
         $.each(data, function(idx, n)
         {
-            let { title, text, nid } = n;
+            let { title, the_delta, nid } = n;
 
             let $article = $(articleTemplate);
-            let $html = renderText(text);
+            let $html = $('<div/>').append($(renderText(the_delta)));
             let articlePreview = trimString(stripHtmlTags($html.prop('outerHTML')));
 
             $article.find('.article-headline').html(title);
             $article.find('.article-preview').append($('<div/>').text(articlePreview).prop('innerHTML'));
             $article.find('a.view-article-btn').attr('href', '/view?nid=' + nid);
-            $article.find('.collapsible-body').append($html.children());
+            $article.find('.collapsible-body').append($('<span class="ql-editor"></span>').append($html.children()));
 
             $articlesContainer.append($article);
 

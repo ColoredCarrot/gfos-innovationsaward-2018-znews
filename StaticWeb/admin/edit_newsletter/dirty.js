@@ -33,7 +33,7 @@ var dirty_hash = {
     compute: function()
     {
         let title = $('#ntitle').val(),
-            text = $('#editor-frame').contents().find('#markdown').val();
+            text = JSON.stringify($('#editor-frame')[0].contentWindow.quill.getContents());
         return '' + dirty_hash.hashString(title) + dirty_hash.hashString(text);
     },
 
