@@ -4,16 +4,6 @@
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/index.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/attributes.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/css.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/forms.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/manipulation.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/traversing.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/cheerio.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/parse.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/static.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/utils.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/delta_renderer.min.js" />
@@ -21,7 +11,6 @@
         <item url="file://$PROJECT_DIR$/StaticWeb/js/katex.min.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
-        <item url="file://$PROJECT_DIR$/StaticWeb/jvm-npm/jvm-npm.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/quill_delta_to_html.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
       </sourceFilesUrls>
@@ -29,16 +18,6 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/dirty.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/edit_newsletter/edit_newsletter.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/index.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/attributes.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/css.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/forms.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/manipulation.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/api/traversing.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/cheerio.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/parse.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/static.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/cheerio/lib/utils.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/delta_renderer.min.js" />
@@ -46,7 +25,6 @@
       <root url="file://$PROJECT_DIR$/StaticWeb/js/katex.min.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/quill.min.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/server-comm.min.js" />
-      <root url="file://$PROJECT_DIR$/StaticWeb/jvm-npm/jvm-npm.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/quill_delta_to_html.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/view/view.min.js" />
     </CLASSES>

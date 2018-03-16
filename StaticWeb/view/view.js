@@ -26,9 +26,6 @@ jQuery(function($)
         return;
     }
 
-    let textToHtmlRendererQuill;
-    let textToHtmlRendererVirtContainer;
-
     function renderText(text)
     {
         return DeltaRenderer.renderToHTML(text);
