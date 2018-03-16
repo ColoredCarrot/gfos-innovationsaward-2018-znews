@@ -105,7 +105,10 @@ public class NewsletterManager implements Serializable, JsonSerializable
             {
                 // Don't sent if tags are set (for legacy reasons) and if the registration does not subscribe to at least one tag
                 if (n.getTags() != null && Arrays.stream(n.getTags()).noneMatch(reg::isSubscribedToTag))
+                {
+                    finishLatch.countDown();
                     return;
+                }
                 NewNewsletterEmail email = new NewNewsletterEmail(Main.getZnews());
                 email.setTitle(n.getTitle());
                 email.setWithHtml(html);
