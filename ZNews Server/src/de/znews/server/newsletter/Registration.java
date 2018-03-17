@@ -3,6 +3,7 @@ package de.znews.server.newsletter;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import de.znews.server.ZNews;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class Registration implements Serializable, JsonSerializable
         return reg;
     }
     
+    @Setter
     private String email;
     private Set<String> subscribedTags;
     
