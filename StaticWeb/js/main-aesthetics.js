@@ -55,6 +55,10 @@ jQuery(function($)
                         <a class="grey-text text-lighten-3" href="/admin/change_password">Change Password</a>
                         <i class="material-icons left nav-link-bullet">keyboard_arrow_right</i>
                     </li>
+                    <li>
+                        <a class="grey-text text-lighten-3" href="/admin/statistics">Statistics</a>
+                        <i class="material-icons left nav-link-bullet">keyboard_arrow_right</i>
+                    </li>
                 </ul>
             </div>
         </div>
