@@ -38,6 +38,17 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
 		return registeredEmails.get(email);
 	}
     
+    public Registration changeRegistrationEmail(String oldEmail, String newEmail)
+    {
+        Registration reg = getRegistration(oldEmail);
+        if (reg == null)
+            return null;
+        registeredEmails.put(newEmail, reg);
+        registeredEmails.remove(oldEmail);
+        reg.setEmail(newEmail);
+        return reg;
+    }
+    
     public boolean isRegistered(String email)
     {
         return registeredEmails.containsKey(email);

@@ -29,12 +29,10 @@ public class AdminEditRegistrationResource extends JSONResource
         if (oldEmail == null || newEmail == null)
             throw new Http400BadRequestException("missing oldemail or newemail parameter");
     
-        Registration reg = znews.registrationList.getRegistration(oldEmail);
+        Registration reg = znews.registrationList.changeRegistrationEmail(oldEmail, newEmail);
     
         if (reg == null)
             throw new Http404NotFoundException("email not registered: " + oldEmail);
-    
-        reg.setEmail(newEmail);
     
         return JsonObject.createBuilder()
                          .add("success", true)
