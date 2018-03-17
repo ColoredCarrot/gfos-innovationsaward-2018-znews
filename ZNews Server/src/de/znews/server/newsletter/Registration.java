@@ -7,24 +7,27 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
 public class Registration implements Serializable, JsonSerializable
 {
     
-    private static final long serialVersionUID = -3977523515006038071L;
+    private static final long serialVersionUID = 7257088997484675470L;
     
     protected static Registration newStandardRegistration(ZNews znews, String email)
     {
         Registration reg = new Registration();
         reg.email = email;
+        reg.dateRegistered = new Date();
         return reg;
     }
     
     @Setter
     private String email;
     private Set<String> subscribedTags;
+    private Date dateRegistered;
     
     private Registration()
     {
