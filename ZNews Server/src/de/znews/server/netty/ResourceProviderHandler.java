@@ -3,6 +3,7 @@ package de.znews.server.netty;
 import de.znews.server.Log;
 import de.znews.server.ZNews;
 import de.znews.server.resources.*;
+import de.znews.server.resources.admin.AdminEditRegistrationResource;
 import de.znews.server.resources.admin.ChangePasswordResource;
 import de.znews.server.resources.admin.GetTokenResource;
 import de.znews.server.resources.admin.LogoutResource;
@@ -33,7 +34,8 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
         // FINDME: Register resources here
         // TODO: Friggin make this dynamic...
         resources.addAll(Arrays
-                .asList(new EditSubscriptionDataResource(znews),
+                .asList(new AdminEditRegistrationResource(znews),
+                        new EditSubscriptionDataResource(znews),
                         new ListTagsResource(znews),
                         new CancelSubscriptionResource(znews),
                         new RandomArticleResource(znews),
