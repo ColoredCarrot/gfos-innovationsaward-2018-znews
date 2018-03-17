@@ -38,6 +38,7 @@ public class StatisticsResource extends JSONResource
                                  .map(n -> JsonObject.createBuilder()
                                                      .add("nid", n.getId())
                                                      .add("title", n.getTitle())
+                                                     // TODO: views statistics
                                                      .build())
                                  .reduce(JsonArray.createBuilder(), JsonArray.Builder::add, (b1, b2) -> b1.addAll(b2.get().getContents()))
                                  .build())

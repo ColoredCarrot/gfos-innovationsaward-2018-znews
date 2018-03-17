@@ -34,7 +34,8 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
         // FINDME: Register resources here
         // TODO: Friggin make this dynamic...
         resources.addAll(Arrays
-                .asList(new AdminEditRegistrationResource(znews),
+                .asList(new StatisticsResource(znews),
+                        new AdminEditRegistrationResource(znews),
                         new EditSubscriptionDataResource(znews),
                         new ListTagsResource(znews),
                         new CancelSubscriptionResource(znews),
