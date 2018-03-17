@@ -79,21 +79,44 @@ jQuery(function($)
                             displayAndHandleEditRegPrompt(entry.title)
                                 .then(data =>
                                 {
-                                    console.log(data);
+                                    console.assert(data.success);
+
+                                    // Update UI
+                                    entry.title = data.newemail;
+
+                                    // Replace old with new email in $entry
+                                    $entry.find(':contains("' + data.oldemail + '")').text((idx, oldText) => oldText.replace(data.oldemail, data.newemail));
+
+                                    swal.stopLoading();
+                                    swal.close();
+
+                                    Materialize.toast("Email address updated", 4000);  // TODO: Add undo button
+
                                 }, error =>
                                 {
                                     if (error === 'cancellation')
                                         return;
                                     window.console.error(error);
-                                    swal("Error", "You have specified an invalid email address.", 'error', {
-                                        buttons: [true, "Retry"]
-                                    })
-                                        .then(value =>
-                                        {
-                                            if (value)
-                                                // Retry
-                                                entry.buttons[0].clickHandler(entry, $entry, column);
-                                        });
+                                    switch (error.status)
+                                    {
+                                        case 403:
+                                            CommonSwals.notLoggedIn({ forceLogin: true, loginTarget: '/admin/statistics' });
+                                            break;
+                                        case 404:
+                                            swal("Error", "You have specified an invalid email address.", 'error', {
+                                                buttons: [true, "Retry"]
+                                            })
+                                                .then(value =>
+                                                {
+                                                    if (value)
+                                                    // Retry
+                                                        entry.buttons[0].clickHandler(entry, $entry, column);
+                                                });
+                                            break;
+                                        default:
+                                            CommonSwals.internalError();
+                                            break;
+                                    }
                                 });
                         }
                     }
@@ -194,13 +217,13 @@ var Statistics = (function(s)
                           entry.buttons
                                .map(btn =>
                                {
-                                    let $btn = $(`<a class="btn-floating">${btn.innerMarkup}</a>`);
-                                    if (btn.clickHandler)
-                                        $btn.on('click', function()
-                                        {
-                                            btn.clickHandler(entry, $e, column);
-                                        });
-                                    return $btn;
+                                   let $btn = $(`<a class="btn-floating" style="margin-right: 10px">${btn.innerMarkup}</a>`);
+                                   if (btn.clickHandler)
+                                       $btn.on('click', function()
+                                       {
+                                           btn.clickHandler(entry, $e, column);
+                                       });
+                                   return $btn;
                                })
                                .reverse()
                                .forEach($btn =>
