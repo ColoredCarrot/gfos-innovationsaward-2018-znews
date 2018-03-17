@@ -7,6 +7,7 @@
         <item url="file://$PROJECT_DIR$/StaticWeb/admin/statistics/statistics.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
+        <item url="file://$PROJECT_DIR$/StaticWeb/js/common_swals.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/delta_renderer.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/highlightjs.min.min.js" />
         <item url="file://$PROJECT_DIR$/StaticWeb/js/katex.min.min.js" />
@@ -22,6 +23,7 @@
       <root url="file://$PROJECT_DIR$/StaticWeb/admin/statistics/statistics.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/editor/editor.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/index/index.min.js" />
+      <root url="file://$PROJECT_DIR$/StaticWeb/js/common_swals.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/delta_renderer.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/highlightjs.min.min.js" />
       <root url="file://$PROJECT_DIR$/StaticWeb/js/katex.min.min.js" />
