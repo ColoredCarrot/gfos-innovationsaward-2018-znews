@@ -147,11 +147,29 @@ var Statistics = (function(s)
                  };
              };
 
+             function formatDate(date)
+             {
+                 const monthNames = [
+                     "January", "February", "March",
+                     "April", "May", "June", "July",
+                     "August", "September", "October",
+                     "November", "December"
+                 ];
+
+                 let day = date.getDate(),
+                     monthIndex = date.getMonth(),
+                     year = date.getFullYear();
+
+                 return `${monthNames[monthIndex]} ${day}, ${year}`;
+             }
+
              // At the moment, registrations is just an array of emails
-             let regColEntries = registrations.map(email =>
+             let regColEntries = Object.keys(registrations).map(email =>
                  ({
                      title: email,
-                     attrs: {},
+                     attrs: {
+                         "Registered": formatDate(new Date(registrations[email].dateRegistered))
+                     },
                      buttons: [
                          makeEditButton(email)
                      ]
@@ -168,7 +186,29 @@ var Statistics = (function(s)
                      nid: pub.nid,
                      attrs: {
                          "ID": pub.nid
-                     }
+                     },
+                     buttons: [
+                         {
+                             innerMarkup: '<i class="material-icons">pageview</i>',
+                             clickHandler: function(entry, $entry, column)
+                             {
+                                 if (entry.title !== pub.title)
+                                     throw new Error(`entry.title (${entry.title}) does not match pub.title (${pub.title})`);
+                                 console.assert(entry.nid === pub.nid);
+                                 window.location.href = '/view?nid=' + pub.nid;
+                             }
+                         },
+                         {
+                             innerMarkup: '<i class="material-icons">mode_edit</i>',
+                             clickHandler: function(entry, $entry, column)
+                             {
+                                 if (entry.title !== pub.title)
+                                     throw new Error(`entry.title (${entry.title}) does not match pub.title (${pub.title})`);
+                                 console.assert(entry.nid === pub.nid);
+                                 window.location.href = '/admin/edit_newsletter?nid=' + pub.nid;
+                             }
+                         }
+                     ]
                  }));
              let publicationsColumn = {
                  title: "Publications",
