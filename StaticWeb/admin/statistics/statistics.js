@@ -1,149 +1,7 @@
 jQuery(function($)
 {
 
-    function editRegMakeRequest(oldEmail, email)
-    {
-        EMAIL = email;
-        return $.ajax('/admin/api/admin_edit_registration', {
-            data: { oldemail: oldEmail, newemail: email },
-            dataType: 'json',
-            method: 'post'
-        });
-    }
-
-    /**
-     * Quick and dirty email validation;
-     *  not to be relied on
-     */
-    function validateEmail(email)
-    {
-        return email.length >= 3 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
-    }
-
-    function displayEditRegPrompt(oldEmail, invalidEmail = false)
-    {
-        return swal({
-            title: "Edit registration",
-            content: $(`<input id="edit-reg-input" type="email" placeholder="${oldEmail}" autofocus="autofocus" class="validate${invalidEmail ? " invalid" : ""}">`).on('keyup', function(evt)
-            {
-                if (evt.keyCode === 13)
-                {
-                    evt.stopPropagation();
-                    evt.preventDefault();
-                    $('.swal-button--confirm').click();  // This cannot be the best way
-                }
-            })[0],
-            buttons: {
-                cancel: true,
-                confirm: {
-                    text: "Confirm",
-                    closeModal: false
-                }
-            },
-            closeOnClickOutside: false,
-            closeOnEsc: false
-        });
-    }
-
-    function displayAndHandleEditRegPrompt(oldEmail, a = displayEditRegPrompt(oldEmail))
-    {
-        return a.then(email =>
-        {
-            if (email === null)
-            {
-                // Cancel
-                return Promise.reject('cancellation');
-            }
-            email = $('#edit-reg-input').val();
-            if (!validateEmail(email))
-                return displayAndHandleEditRegPrompt(oldEmail, displayEditRegPrompt(oldEmail, true));
-            return editRegMakeRequest(oldEmail, email);
-        });
-    }
-
-    Statistics.columns = ([{
-        title: "Registrations",
-        domId: "col-regs",
-        entries: [
-            {
-                title: "contact.coloredcarrot@gmail.com",
-                attrs: {
-                    "Emails": "12/13",
-                    "Subscribed": "12. January 2018"
-                },
-                buttons: [
-                    {
-                        innerMarkup: '<i class="material-icons">mode_edit</i>',
-                        clickHandler: function(entry, $entry, column)
-                        {
-                            displayAndHandleEditRegPrompt(entry.title)
-                                .then(data =>
-                                {
-                                    console.assert(data.success);
-
-                                    // Update UI
-                                    entry.title = data.newemail;
-
-                                    // Replace old with new email in $entry
-                                    $entry.find(':contains("' + data.oldemail + '")').text((idx, oldText) => oldText.replace(data.oldemail, data.newemail));
-
-                                    swal.stopLoading();
-                                    swal.close();
-
-                                    Materialize.toast("Email address updated", 4000);  // TODO: Add undo button
-
-                                }, error =>
-                                {
-                                    if (error === 'cancellation')
-                                        return;
-                                    window.console.error(error);
-                                    switch (error.status)
-                                    {
-                                        case 403:
-                                            CommonSwals.notLoggedIn({ forceLogin: true, loginTarget: '/admin/statistics' });
-                                            break;
-                                        case 404:
-                                            swal("Error", "You have specified an invalid email address.", 'error', {
-                                                buttons: [true, "Retry"]
-                                            })
-                                                .then(value =>
-                                                {
-                                                    if (value)
-                                                    // Retry
-                                                        entry.buttons[0].clickHandler(entry, $entry, column);
-                                                });
-                                            break;
-                                        default:
-                                            CommonSwals.internalError();
-                                            break;
-                                    }
-                                });
-                        }
-                    }
-                ]/*,
-                preInsertAttrs: function(column)
-                {
-                    return `<a class="btn-floating" title="Edit"><i class="material-icons">edit</i></a>`;
-                }*/
-            }
-        ]
-    }, {
-        title: "Newsletters",
-        domId: "col-nid",
-        entries: [
-            {
-                title: "Test 2",
-                attrs: {
-                    "Views": "312"
-                }
-            }, {
-                title: "Test 3",
-                attrs: {
-                    "Views": "12"
-                }
-            }
-        ]
-    }]);
+    Statistics.init();
 
 });
 
@@ -163,6 +21,178 @@ var Statistics = (function(s)
             updateColumns();
         }
     });
+
+    let init = s.init = function()
+    {
+        $.ajax('/admin/api/statistics', {
+            cache: false,
+            dataType: 'json'
+        })
+         .then(function success(data)
+         {
+             console.log(data);
+             let { registrations, publications } = data;
+
+             function editRegMakeRequest(oldEmail, email)
+             {
+                 EMAIL = email;
+                 return $.ajax('/admin/api/admin_edit_registration', {
+                     data: { oldemail: oldEmail, newemail: email },
+                     dataType: 'json',
+                     method: 'post'
+                 });
+             }
+
+             /**
+              * Quick and dirty email validation;
+              *  not to be relied on
+              */
+             function validateEmail(email)
+             {
+                 return email.length >= 3 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
+             }
+
+             function displayEditRegPrompt(oldEmail, invalidEmail = false)
+             {
+                 return swal({
+                     title: "Edit registration",
+                     content: $(`<input id="edit-reg-input" type="email" placeholder="${oldEmail}" autofocus="autofocus" class="validate${invalidEmail ? " invalid" : ""}">`).on('keyup', function(evt)
+                     {
+                         if (evt.keyCode === 13)
+                         {
+                             evt.stopPropagation();
+                             evt.preventDefault();
+                             $('.swal-button--confirm').click();  // This cannot be the best way
+                         }
+                     })[0],
+                     buttons: {
+                         cancel: true,
+                         confirm: {
+                             text: "Confirm",
+                             closeModal: false
+                         }
+                     },
+                     closeOnClickOutside: false,
+                     closeOnEsc: false
+                 });
+             }
+
+             function displayAndHandleEditRegPrompt(oldEmail, a = displayEditRegPrompt(oldEmail))
+             {
+                 return a.then(email =>
+                 {
+                     if (email === null)
+                     {
+                         // Cancel
+                         return Promise.reject('cancellation');
+                     }
+                     email = $('#edit-reg-input').val();
+                     if (!validateEmail(email))
+                         return displayAndHandleEditRegPrompt(oldEmail, displayEditRegPrompt(oldEmail, true));
+                     return editRegMakeRequest(oldEmail, email);
+                 });
+             }
+
+             let makeEditButton = function(email)
+             {
+                 return {
+                     innerMarkup: '<i class="material-icons">mode_edit</i>',
+                     clickHandler: function handleClick(entry, $entry, column)
+                     {
+                         if (entry.title !== email)
+                             throw new Error(`entry.title (${entry.title}) does not match email (${email})`);
+                         displayAndHandleEditRegPrompt(email)
+                             .then(data =>
+                             {
+                                 console.assert(data.success);
+
+                                 // Update UI
+                                 entry.title = data.newemail;
+
+                                 // Replace old with new email in $entry
+                                 $entry.find(':contains("' + data.oldemail + '")').text((idx, oldText) => oldText.replace(data.oldemail, data.newemail));
+
+                                 swal.stopLoading();
+                                 swal.close();
+
+                                 Materialize.toast("Email address updated", 4000);  // TODO: Add undo button
+
+                             }, error =>
+                             {
+                                 if (error === 'cancellation')
+                                     return;
+                                 window.console.error(error);
+                                 switch (error.status)
+                                 {
+                                     case 403:
+                                         CommonSwals.notLoggedIn({ forceLogin: true, loginTarget: '/admin/statistics' });
+                                         break;
+                                     case 404:
+                                         swal("Error", "You have specified an invalid email address.", 'error', {
+                                             buttons: [true, "Retry"]
+                                         })
+                                             .then(value =>
+                                             {
+                                                 if (value)
+                                                 // Retry
+                                                     entry.buttons[0].clickHandler(entry, $entry, column);
+                                             });
+                                         break;
+                                     default:
+                                         CommonSwals.internalError();
+                                         break;
+                                 }
+                             });
+                     }
+                 };
+             };
+
+             // At the moment, registrations is just an array of emails
+             let regColEntries = registrations.map(email =>
+                 ({
+                     title: email,
+                     attrs: {},
+                     buttons: [
+                         makeEditButton(email)
+                     ]
+                 }));
+             let registrationsColumn = {
+                 title: "Registrations",
+                 domId: "col-regs",
+                 entries: regColEntries
+             };
+
+             let pubColEntries = publications.map(pub =>
+                 ({
+                     title: pub.title,
+                     nid: pub.nid,
+                     attrs: {
+                         "ID": pub.nid
+                     }
+                 }));
+             let publicationsColumn = {
+                 title: "Publications",
+                 domId: "col-pubs",
+                 entries: pubColEntries
+             };
+
+             s.columns = ([registrationsColumn, publicationsColumn]);
+
+         }, function error(error)
+         {
+             console.error(error);
+
+             switch (error.status)
+             {
+                 case 403:
+                     CommonSwals.notLoggedIn({ forceLogin: true, loginTarget: '/admin/statistics' });
+                     break;
+                 default:
+                     CommonSwals.internalError();
+                     break;
+             }
+         });
+    };
 
     let updateColumns = s.updateColumns = function()
     {
