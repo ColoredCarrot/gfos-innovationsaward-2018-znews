@@ -226,6 +226,7 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>, A
         // Assume ensureCapacity has already been called
         // Assume we need not care about the characters at the to-be-shifted-away-from positions
         System.arraycopy(buffer, index, buffer, index + amount, len);
+        length += amount;
         return this;
     }
     
