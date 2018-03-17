@@ -9,6 +9,8 @@ import de.znews.server.newsletter.Registration;
 import de.znews.server.resources.exception.Http400BadRequestException;
 import de.znews.server.resources.exception.HttpException;
 
+import java.util.Map;
+
 public class StatisticsResource extends JSONResource
 {
     
@@ -44,8 +46,22 @@ public class StatisticsResource extends JSONResource
                                  .build())
                          .add("registrations", znews.registrationList
                                  .getAllRegistrations()
-                                 .map(Registration::getEmail)
-                                 .reduce(JsonArray.createBuilder(), JsonArray.Builder::add, (b1, b2) -> b1.addAll(b2.get().getContents()))
+                                 .reduce(JsonObject.createBuilder(),
+                                         (res, r) ->
+                                                 res.add(r.getEmail(),
+                                                         JsonObject.createBuilder()
+                                                                   .add("dateRegistered", r.getDateRegistered())
+                                                                   .build()),
+                                         (b1, b2) ->
+                                         {
+                                             for (Map.Entry<String, JsonNode> e : b2.build().getMappings().entrySet())
+                                                 b1 = b1.add(e.getKey(), e.getValue());
+                                             return b1;
+                                         })
+                                 /*.map(r -> JsonObject.createBuilder()
+                                                     .add("email")
+                                                     .build())
+                                 .reduce(JsonArray.createBuilder(), JsonArray.Builder::add, (b1, b2) -> b1.addAll(b2.get().getContents()))*/
                                  .build())
                          .build();
     }
