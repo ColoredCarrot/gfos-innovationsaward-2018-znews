@@ -82,7 +82,7 @@ public class NewsletterManager implements Serializable, JsonSerializable
         newsletters.add(0, n);
         
         // Asynchronously send email to all registered subscribers
-        Main.getZnews().server.getWorkerGroup().execute(() ->
+        new Thread(() ->
         {
             
             NewsletterPublicationResult.NewsletterPublicationResultBuilder resBuilder = NewsletterPublicationResult.builder();
@@ -149,7 +149,8 @@ public class NewsletterManager implements Serializable, JsonSerializable
                 Log.err("Could not save newsletter publication results", e);
             }
     
-        });
+        }).start();
+        
     }
     
     private int getIndexOfNewsletter(String nid)
