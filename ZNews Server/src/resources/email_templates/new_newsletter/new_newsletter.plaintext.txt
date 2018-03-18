@@ -5,3 +5,4 @@ View it on {{full_address}}/view?nid={{nid}}
 
 You are receiving this email because you have subscribed to ZNews.
 To unsubscribe, follow this link: {{full_address}}/cancel_subscription?email={{registered_email}}.
+To change which topics interest you, use this page: {{full_address}}/edit_subscription?email={{registered_email}}.
