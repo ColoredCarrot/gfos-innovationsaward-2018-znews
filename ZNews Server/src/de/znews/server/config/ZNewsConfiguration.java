@@ -76,6 +76,24 @@ public class ZNewsConfiguration
         return getBoolean("pretty-print-json");
     }
     
+    public String getExternalAddress()
+    {
+        return props.getProperty("external-address");
+    }
+    
+    public boolean getExternalAddressAddPort()
+    {
+        return getBoolean("external-address-add-port");
+    }
+    
+    public String getFullExternalAddress()
+    {
+        String a = getExternalAddress();
+        if (getExternalAddressAddPort())
+            a += ":" + getPort();
+        return a;
+    }
+    
     private int getInt(String key)
     {
         return Integer.parseInt(props.getProperty(key));

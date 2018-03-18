@@ -30,16 +30,24 @@ public class DoubleOptInEmail extends Email
         return template.getSubject();
     }
     
+    private Object[] a()
+    {
+        return new Object[] {
+                "{{full_address}}", znews.config.getFullExternalAddress(),
+                "{{registered_email}}", registeredEmail,
+                "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')) };
+    }
+    
     @Override
     public String getPlaintext()
     {
-        return template.getPlaintext("{{registered_email}}", registeredEmail, "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')));
+        return template.getPlaintext(a());
     }
     
     @Override
     public String getHtml()
     {
-        return template.getHtml("{{registered_email}}", registeredEmail, "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')));
+        return template.getHtml(a());
     }
     
 }

@@ -3,6 +3,7 @@ package de.znews.server.newsletter;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import com.coloredcarrot.jsonapi.reflect.JsonDeserializer;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import de.znews.server.ZNews;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -11,17 +12,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class RegistrationList implements Serializable, JsonSerializable, Iterable<Registration>
 {
 	
 	private static final long serialVersionUID = 1245091416250410698L;
-	
-	private final Map<String, Registration> registeredEmails = new HashMap<>();
-	
-	public Registration registerNewEmail(String email)
+    
+    private final Map<String, Registration> registeredEmails = new HashMap<>();
+    
+    public Registration registerNewEmail(ZNews znews, String email)
 	{
-		Registration reg = Registration.newStandardRegistration(email);
+		Registration reg = Registration.newStandardRegistration(znews, email);
 		registeredEmails.put(email, reg);
 		return reg;
 	}
@@ -36,9 +38,25 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
 		return registeredEmails.get(email);
 	}
     
+    public Registration changeRegistrationEmail(String oldEmail, String newEmail)
+    {
+        Registration reg = getRegistration(oldEmail);
+        if (reg == null)
+            return null;
+        registeredEmails.put(newEmail, reg);
+        registeredEmails.remove(oldEmail);
+        reg.setEmail(newEmail);
+        return reg;
+    }
+    
     public boolean isRegistered(String email)
     {
         return registeredEmails.containsKey(email);
+    }
+    
+    public Stream<Registration> getAllRegistrations()
+    {
+        return registeredEmails.values().stream();
     }
     
     @JsonDeserializer
@@ -68,6 +86,19 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
     public Spliterator<Registration> spliterator()
     {
         return registeredEmails.values().spliterator();
+    }
+    
+    public int getNumRegistrations()
+    {
+        return registeredEmails.size();
+    }
+    
+    // TODO: Add proper synchronization
+    public RegistrationList snapshot()
+    {
+        RegistrationList snapshot = new RegistrationList();
+        snapshot.registeredEmails.putAll(registeredEmails);
+        return snapshot;
     }
     
 }

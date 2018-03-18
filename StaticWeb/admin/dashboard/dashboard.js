@@ -43,7 +43,7 @@ jQuery(function($)
          // Called when all ajax requests complete
 
          // Convert string data to usable types
-         let articles = JSON.parse(dataArticles[0]).data,
+         let articles = dataArticles[0].data,
              $rowTemplate = $(dataRow[0]),
              $cardTemplate = $(dataCard[0]);
 

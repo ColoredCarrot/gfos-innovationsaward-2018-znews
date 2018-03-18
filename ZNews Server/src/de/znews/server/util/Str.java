@@ -3,6 +3,7 @@ package de.znews.server.util;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,6 +44,11 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>, A
     public Str(byte[] bytes)
     {
         this(new String(bytes));
+    }
+    
+    public Str(byte[] bytes, Charset cs)
+    {
+        this(new String(bytes, cs));
     }
     
     public Str(int initBufferLen)
@@ -220,6 +226,7 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>, A
         // Assume ensureCapacity has already been called
         // Assume we need not care about the characters at the to-be-shifted-away-from positions
         System.arraycopy(buffer, index, buffer, index + amount, len);
+        length += amount;
         return this;
     }
     

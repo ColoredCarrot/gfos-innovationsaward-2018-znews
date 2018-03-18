@@ -37,7 +37,7 @@ public class ViewResource extends JSONResource
             
             JsonObject.Builder dataJson = JsonObject.createBuilder();
             dataJson.add("title", n.getTitle())
-                    .add("text", n.getText());
+                    .add("the_delta", n.getContent());
             if (n.isPublished())
                 dataJson.add("datePublished", Objects.requireNonNull(n.getDatePublished()).getTime())
                         .add("publisher", n.getPublisherName(znews));

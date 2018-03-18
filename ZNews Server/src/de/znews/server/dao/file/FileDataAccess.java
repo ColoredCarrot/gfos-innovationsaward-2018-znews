@@ -9,6 +9,7 @@ import de.znews.server.auth.Authenticator;
 import de.znews.server.dao.DataAccess;
 import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
+import de.znews.server.stat.NewsletterPublicationResult;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -19,22 +20,29 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Supplier;
 
 public class FileDataAccess extends DataAccess
 {
-	
+    
+    private static final DateFormat nprDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ss.SSSZ");
+    
 	private final File registrationsFile;
 	private final File authFile;
 	private final File newslettersFile;
+	private final File nprFolder;
 	
-	public FileDataAccess(ZNews znews, File registrationsFile, File authFile, File newslettersFile)
+	public FileDataAccess(ZNews znews, File registrationsFile, File authFile, File newslettersFile, File nprFolder)
 	{
 		super(znews);
 		this.registrationsFile = registrationsFile;
 		this.authFile = authFile;
 		this.newslettersFile = newslettersFile;
-	}
+        this.nprFolder = nprFolder;
+    }
 	
 	@Override
 	public void storeRegistrationList(RegistrationList list) throws IOException
@@ -75,8 +83,20 @@ public class FileDataAccess extends DataAccess
 	{
 		return queryJsonSerializable(newslettersFile, NewsletterManager::new, NewsletterManager.class);
 	}
-    
-    private void storeJsonSerializable(JsonSerializable serializable, File file) throws IOException
+	
+	@Override
+	public void storeNewNewsletterPublicationResult(NewsletterPublicationResult res) throws IOException
+    {
+	    File f;
+        synchronized (nprDateFormat)  // SimpleDateFormat provides no internal synchronization
+        {
+            f = new File(nprFolder, nprDateFormat.format(new Date()) + ".json");
+        }
+        nprFolder.mkdirs();
+        storeJsonSerializable(res, f);
+    }
+	
+	private void storeJsonSerializable(JsonSerializable serializable, File file) throws IOException
     {
         try (JsonOutput out = new JsonOutput(Json.getOutputStream(new BufferedOutputStream(new FileOutputStream(file)), getZNews().config.getEnableJSONPrettyPrinting())))
         {

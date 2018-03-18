@@ -4,55 +4,28 @@
     <meta charset="UTF-8">
     <title>ZNews Newsletter Editor</title>
     <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/highlightjs.min.css">
+    <link rel="stylesheet" href="/css/katex.min.css">
+    <link rel="stylesheet" href="/css/quill.snow.css">
+    <link rel="stylesheet" href="/editor/editor.css">
 </head>
 <body>
 
 <!--
  This is always supposed to be embedded in an iframe.
-
  -->
 
 <div id="editor">
 
-    <!-- A row for buttons to edit the markdown -->
-    <div class="row">
-        <div class="col s12"></div>
-    </div>
-
-    <!-- Tabs for markdown editor and preview -->
-    <div class="row">
-        <div class="col s12">
-            <ul class="tabs tabs-fixed-width">
-                <li class="tab col s6"><a href="#markdown-tab">Markdown</a></li>
-                <li class="tab col s6"><a href="#preview-tab">Preview</a></li>
-            </ul>
-        </div>
-
-        <!-- The markdown editor tab -->
-        <div id="markdown-tab" class="col s12">
-            <div class="row">
-                <div class="col s12 input-field" style="margin-top: 20px">
-                    <textarea id="markdown" style="min-height: 250px" class="materialize-textarea" title="Markdown-Editor" placeholder="Write here using Markdown"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- The preview tab -->
-        <div id="preview-tab" class="col s12">
-            <div class="row">
-                <div class="col s12 flow-text" id="preview"></div>
-            </div>
-        </div>
-
-    </div>
-
 </div>
 
 <script src="/js/jquery.min.js"></script>
-<script src="/js/materialize.min.js"></script>
-<script src="/js/showdown.min.js"></script>
+<script src="/js/materialize.js"></script>
+<script src="/js/highlightjs.min.js"></script>
+<script src="/js/katex.min.js"></script>
+<script src="/js/quill.min.js"></script>
 
-<script src="editor.js"></script>
+<script src="editor.min.js"></script>
 
 </body>
 </html>

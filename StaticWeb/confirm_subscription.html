@@ -37,7 +37,7 @@
                     <div class="col s12">
                         <p class="flow-text">
                             You subscription to ZNews has been confirmed.
-                            Use the button below to return to the main page.
+                            Use the buttons below to return to the main page or edit your subscription.
                         </p>
                     </div>
                 </div>
@@ -45,6 +45,7 @@
                 <div class="row">
                     <div class="col s12">
                         <a class="btn waves-effect waves-light" href="/">Go to main page</a>
+                        <a class="btn waves-effect waves-light" id="edit-sub-btn">Edit subscription</a>
                     </div>
                 </div>
 
@@ -58,6 +59,27 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/materialize.min.js"></script>
 <script src="/js/main-aesthetics.js"></script>
+
+<script>
+    // TODO: Duplicate code
+    function getQueryParamByName(name, url = window.location.href)
+    {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results)
+            return null;
+        if (!results[2])
+            return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    jQuery(function($)
+    {
+        let email = getQueryParamByName('email');
+        $('#edit-sub-btn').attr('href', `/edit_subscription${email ? '?email=' + email : ''}`);
+    });
+</script>
 
 </body>
 </html>

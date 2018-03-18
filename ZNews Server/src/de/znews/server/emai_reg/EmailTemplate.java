@@ -1,7 +1,5 @@
 package de.znews.server.emai_reg;
 
-import de.znews.server.util.Str;
-
 import java.util.Objects;
 
 public abstract class EmailTemplate
@@ -16,10 +14,14 @@ public abstract class EmailTemplate
     public String getPlaintext(Object... parameters)
     {
         assert parameters.length % 2 == 0;
-        Str plaintext = new Str(getPlaintext());
+        String plaintext = getPlaintext();
+        for (int i = 0; i < parameters.length; i += 2)
+            plaintext = plaintext.replace(Objects.toString(parameters[i]), Objects.toString(parameters[i + 1]));
+        return plaintext;
+        /*Str plaintext = new Str(getPlaintext());
         for (int i = 0; i < parameters.length; i += 2)
             plaintext.replace(Objects.toString(parameters[i]), Objects.toString(parameters[i + 1]));
-        return plaintext.toString();
+        return plaintext.toString();*/
     }
     
     public String getHtml(Object... parameters)
@@ -28,10 +30,13 @@ public abstract class EmailTemplate
         String baseHtml = getHtml();
         if (baseHtml == null)
             return null;
-        Str html = new Str(baseHtml);
+        for (int i = 0; i < parameters.length; i += 2)
+            baseHtml = baseHtml.replace(Objects.toString(parameters[i]), Objects.toString(parameters[i + 1]));
+        return baseHtml;
+        /*Str html = new Str(baseHtml);
         for (int i = 0; i < parameters.length; i += 2)
             html.replace(Objects.toString(parameters[i]), Objects.toString(parameters[i + 1]));
-        return html.toString();
+        return html.toString();*/
     }
     
 }

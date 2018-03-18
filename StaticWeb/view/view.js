@@ -28,27 +28,7 @@ jQuery(function($)
 
     function renderText(text)
     {
-
-        showdown.setFlavor('github');
-
-        let mkToHtmlConverter = new showdown.Converter({
-            noHeaderId: true,
-            simplifiedAutoLink: true,
-            excludeTrailingPunctuationFromURLs: true,
-            tables: true,
-            headerLevelStart: 4
-        });
-
-        // TODO: this is duplicate code, see /index/index.js
-        // Convert markdown to html (currently using Showdown)
-        let html = mkToHtmlConverter.makeHtml(text);
-        // Wrap generated html in temporary div
-        let $html = $('<div></div>').append($(html));
-        // FINDME: Make elements negatively affected by Materialize browser-default
-        $html.find('ul').addClass('browser-default');
-
-        return $html;
-
+        return DeltaRenderer.renderToHTML(text);
     }
 
     $.ajax('/admin/api/view', {
@@ -56,7 +36,7 @@ jQuery(function($)
     })
      .then(data =>
      {
-         data = JSON.parse(data);
+         data = /*JSON.parse*/(data);
 
          let article = data.data;
 
@@ -65,7 +45,7 @@ jQuery(function($)
 
          $('#main-article-headline').text(article.title);
          $('#title').text(article.title + ' | ZNews');
-         $('#main-container').append(renderText(article.text));
+         $('#main-container').append($(renderText(article.the_delta)));
 
          if (article.publisher)
              $('#description').html(`Published by ${article.publisher} on ${formatDate(article.datePublished)}. <a class="go-back-link" href="javascript:window.history.back()">Go back</a>`);

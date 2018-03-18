@@ -59,6 +59,9 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/flexmark-profile-pegdown-0.28.24.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/flexmark-util-0.28.24.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/flexmark-youtrack-converter-0.28.24.jar" path-in-jar="/" />
+      <element id="directory" name="static_web">
+        <element id="dir-copy" path="$PROJECT_DIR$/StaticWeb" />
+      </element>
     </root>
   </artifact>
 </component>

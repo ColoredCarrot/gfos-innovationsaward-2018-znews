@@ -3,6 +3,7 @@ package de.znews.server.netty;
 import de.znews.server.Log;
 import de.znews.server.ZNews;
 import de.znews.server.resources.*;
+import de.znews.server.resources.admin.AdminEditRegistrationResource;
 import de.znews.server.resources.admin.ChangePasswordResource;
 import de.znews.server.resources.admin.GetTokenResource;
 import de.znews.server.resources.admin.LogoutResource;
@@ -33,7 +34,23 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
         // FINDME: Register resources here
         // TODO: Friggin make this dynamic...
         resources.addAll(Arrays
-                .asList(new CancelSubscriptionResource(znews), new RandomArticleResource(znews), new ChangePasswordResource(znews), new LogoutResource(znews), new ConfirmSubscriptionResource(znews), new ViewResource(znews), new PublishResource(znews), new DeleteResource(znews), new ByNidResource(znews), new SubscribeResource(znews), new GetTokenResource(znews), new SaveNewsletterResource(znews), new GetNewslettersResource(znews)));
+                .asList(new StatisticsResource(znews),
+                        new AdminEditRegistrationResource(znews),
+                        new EditSubscriptionDataResource(znews),
+                        new ListTagsResource(znews),
+                        new CancelSubscriptionResource(znews),
+                        new RandomArticleResource(znews),
+                        new ChangePasswordResource(znews),
+                        new LogoutResource(znews),
+                        new ConfirmSubscriptionResource(znews),
+                        new ViewResource(znews),
+                        new PublishResource(znews),
+                        new DeleteResource(znews),
+                        new ByNidResource(znews),
+                        new SubscribeResource(znews),
+                        new GetTokenResource(znews),
+                        new SaveNewsletterResource(znews),
+                        new GetNewslettersResource(znews)));
         this.staticWeb = znews.staticWeb;
     }
     
@@ -56,6 +73,7 @@ public class ResourceProviderHandler extends SimpleChannelInboundHandler<NettyRe
                     
                     // Convert post-data ByteBuf to Params
                     // We utilize URIQuery because the post data is also x-www-form-urlencoded
+                    // TODO: We shouldn't assume the below conversion will work. Add checks.
                     Params postParams = URIQuery.fromString(request.getPost().toString(StandardCharsets.UTF_8)).toParams().withURLDecodedValues();
                     
                     // URL params (/api/{version})

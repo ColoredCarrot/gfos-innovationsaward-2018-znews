@@ -22,7 +22,10 @@ public class HttpException extends Exception
 	
 	public RequestResponse toResponse()
 	{
-		return new RequestResponse(getStatus(), getMessage().getBytes(StandardCharsets.UTF_8));
+		String m = getMessage();
+		if (m == null)
+		    m = "Not Found";
+		return new RequestResponse(getStatus(), m.getBytes(StandardCharsets.UTF_8));
 	}
 	
 }

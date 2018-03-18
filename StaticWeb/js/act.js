@@ -114,7 +114,7 @@ var act = (function(act)
             {
                 if (typeof data === typeof undefined)
                     return;
-                data = JSON.parse(data);
+                data = /*JSON.parse*/(data);
 
                 function handleSuccess()
                 {
@@ -132,7 +132,7 @@ var act = (function(act)
                         .then(doForceDelete => doForceDelete ? ajaxDelete(nid, undefined, true) : $.Deferred().reject('Cancelled'))
                         .then(data =>
                         {
-                            data = JSON.parse(data);
+                            data = /*JSON.parse*/(data);
 
                             if (!data.success)
                             {

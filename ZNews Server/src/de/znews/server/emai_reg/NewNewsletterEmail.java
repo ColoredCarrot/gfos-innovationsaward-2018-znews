@@ -13,7 +13,7 @@ public class NewNewsletterEmail extends Email
     @Getter(AccessLevel.NONE)
     private final EmailTemplate template;
     
-    private String title, withHtml, withoutHtml, registeredEmail, nid;
+    private String title, registeredEmail, nid;
     
     public NewNewsletterEmail(ZNews znews)
     {
@@ -30,8 +30,7 @@ public class NewNewsletterEmail extends Email
     {
         return new Object[] {
                 "{{title}}", title,
-                "{{html}}", withHtml,
-                "{{markdown}}", withoutHtml,
+                "{{full_address}}", znews.config.getFullExternalAddress(),
                 "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')),
                 "{{registered_email}}", registeredEmail,
                 "{{nid}}", nid

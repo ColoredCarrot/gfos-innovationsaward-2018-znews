@@ -5,11 +5,14 @@ import de.znews.server.auth.Authenticator;
 import de.znews.server.config.ZNewsConfiguration;
 import de.znews.server.emai_reg.EmailSender;
 import de.znews.server.emai_reg.EmailTemplates;
+import de.znews.server.lib.FileSizeUtil;
+import de.znews.server.lib.JarExtractionUtil;
 import de.znews.server.netty.ZNewsNettyServer;
 import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.RegistrationList;
 import de.znews.server.sessions.SessionManager;
 import de.znews.server.static_web.StaticWeb;
+import de.znews.server.tags.TagsList;
 import io.netty.util.ThreadDeathWatcher;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
@@ -34,11 +37,12 @@ public class ZNews
     public final StaticWeb          staticWeb;
     public final EmailSender        emailSender;
     public final EmailTemplates     emailTemplates;
+    public final TagsList           tagsList;
     
     public volatile ZNewsNettyServer server;
     
     private volatile CountDownLatch stopServerLatch = new CountDownLatch(0);
-    private volatile CountDownLatch shutdownLatch = new CountDownLatch(0);
+    private volatile CountDownLatch shutdownLatch   = new CountDownLatch(0);
     
     private boolean valid;
     
@@ -74,12 +78,17 @@ public class ZNews
         authenticator = config.getDataAccessConfig().access().queryAuthenticator();
         
         sessionManager = new SessionManager(this, authenticator);
-        
-        staticWeb = new StaticWeb(new File("static_web"), config.getStaticWebConfig());
+    
+        File staticWebFolder = new File("static_web");
+        if (!staticWebFolder.exists())
+            unpackStaticWebFolder(staticWebFolder);
+        staticWeb = new StaticWeb(staticWebFolder, config.getStaticWebConfig());
         
         emailSender = new EmailSender(this);
         emailTemplates = new EmailTemplates(this);
     
+        tagsList = new TagsList(this);
+        
         valid = true;
     }
     
@@ -157,6 +166,7 @@ public class ZNews
                 config.getDataAccessConfig().access().storeRegistrationList(registrationList);
                 config.getDataAccessConfig().access().storeAuthenticator(authenticator);
                 config.getDataAccessConfig().access().storeNewsletterManager(newsletterManager);
+                tagsList.save();
             }
             catch (IOException e)
             {
@@ -214,6 +224,19 @@ public class ZNews
             {
                 // Occurs when there was no globalEventExecutor thread
             }
+        }
+    }
+    
+    private void unpackStaticWebFolder(File folder)
+    {
+        try
+        {
+            long bytesUnpacked = JarExtractionUtil.extractDirectory("static_web", folder.toPath());
+            Log.out("Unpacked static_web (" + FileSizeUtil.displaySize(bytesUnpacked) + ")");
+        }
+        catch (IOException e)
+        {
+            Log.warn("Failed to unpack static_web folder", e);
         }
     }
     

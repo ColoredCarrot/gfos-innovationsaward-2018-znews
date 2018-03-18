@@ -1,7 +1,8 @@
 Hey {{registered_email_name}}!
 
 A newsletter has just been published on ZNews.
-View it on 127.0.0.1:8080/view?nid={{nid}}
+View it on {{full_address}}/view?nid={{nid}}
 
 You are receiving this email because you have subscribed to ZNews.
-To unsubscribe, follow this link: 127.0.0.1:8080/unsubscribe?email={{registered_email}}.
+To unsubscribe, follow this link: {{full_address}}/cancel_subscription?email={{registered_email}}.
+To change which topics interest you, use this page: {{full_address}}/edit_subscription?email={{registered_email}}.

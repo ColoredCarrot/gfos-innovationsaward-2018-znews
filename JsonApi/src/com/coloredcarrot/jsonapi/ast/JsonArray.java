@@ -6,6 +6,7 @@ import com.coloredcarrot.jsonapi.reflect.JsonSerializer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -140,6 +141,24 @@ public class JsonArray extends JsonContainer
         public Builder add(char value)
         {
             return a(Json.serialize(value));
+        }
+    
+        public Builder addAll(Iterable<?> it)
+        {
+            return addAll(it.iterator());
+        }
+    
+        public Builder addAll(Iterator<?> it)
+        {
+            it.forEachRemaining(this::add);
+            return this;
+        }
+    
+        public Builder addAll(Object... arr)
+        {
+            for (Object e : arr)
+                add(e);
+            return this;
         }
         
         public <T> T get(int index, Class<T> clazz)
