@@ -185,6 +185,7 @@ var Statistics = (function(s)
                      title: pub.title,
                      nid: pub.nid,
                      attrs: {
+                         "Views": pub.views,
                          "ID": pub.nid
                      },
                      buttons: [

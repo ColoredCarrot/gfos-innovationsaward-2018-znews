@@ -40,7 +40,7 @@ public class StatisticsResource extends JSONResource
                                  .map(n -> JsonObject.createBuilder()
                                                      .add("nid", n.getId())
                                                      .add("title", n.getTitle())
-                                                     // TODO: views statistics
+                                                     .add("views", n.getViews())
                                                      .build())
                                  .reduce(JsonArray.createBuilder(), JsonArray.Builder::add, (b1, b2) -> b1.addAll(b2.get().getContents()))
                                  .build())
@@ -77,7 +77,7 @@ public class StatisticsResource extends JSONResource
                          .add("tags", n.getTags())
                          .add("published", n.getDatePublished())
                          .add("publisher", n.getPublisherName(znews))
-                         // TODO: Collect views statistics
+                         .add("views", n.getViews())
                          .build();
     }
     
