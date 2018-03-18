@@ -35,10 +35,10 @@ jQuery(function($)
     {
         if (typeof filter === typeof '')
         {
-            let origFilter = filter, filterString = filter.toLowerCase();
+            let filterStrings = filter.toLowerCase().split(' ');
             filter = {
-                matchRegistration: reg => reg.email.toLowerCase().includes(filterString),
-                matchPublication: pub => pub.title.toLowerCase().includes(filterString)
+                matchRegistration: reg => filterStrings.every(filterString => reg.email.toLowerCase().includes(filterString)),
+                matchPublication: pub => filterStrings.every(filterString => pub.title.toLowerCase().includes(filterString))
             };
         }
         $('#col-regs').find('li[data-title]').each((idx, e) =>
