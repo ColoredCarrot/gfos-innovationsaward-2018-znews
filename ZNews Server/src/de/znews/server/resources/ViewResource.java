@@ -33,7 +33,8 @@ public class ViewResource extends JSONResource
             // If not published, treat as if the newsletter didn't exist IF user is not logged in
             if (!n.isPublished() && !znews.sessionManager.authenticate(ctx.getStringCookieParam("znews_auth")).isPresent())
                 throw new Http400BadRequestException("Invalid Newsletter ID");
-            
+    
+            n.incrementViews();
             
             JsonObject.Builder dataJson = JsonObject.createBuilder();
             dataJson.add("title", n.getTitle())
