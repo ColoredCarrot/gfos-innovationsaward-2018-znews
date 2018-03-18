@@ -1,6 +1,6 @@
 Hey {{registered_email_name}}!
 
-To confirm your subscription to ZNews, please visit 127.0.0.1:8080/confirm_subscription?email={{registered_email}}.
+To confirm your subscription to ZNews, please visit {{full_address}}/confirm_subscription?email={{registered_email}}.
 
 If that wasn't you, you can ignore this email; you won't be receiving any more.
 
