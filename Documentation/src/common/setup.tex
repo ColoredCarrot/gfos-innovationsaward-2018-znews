@@ -2,16 +2,24 @@
 
 \input{../common/setup_packages.tex}
 
-\newcommand{\Begin}{%
+% Make \input search ./ and ../common/
+\makeatletter
+\def\input@path{{./}{../common/}}
+%or: \def\input@path{{/path/to/folder/}{/path/to/other/folder/}}
+\makeatother
+
+% Define \Begin command
+\newcommand{\Begin}{
 \begin{document}
 
-\input{../common/titlepage.tex}%
+\input{titlepage.tex}
+
+\newpage
+\tableofcontents
+\newpage
 }
 
+% Define \End command
 \newcommand{\End}{%
 \end{document}%
 }
-
-%\begin{document}
-
-%\input{../common/titlepage.tex}
