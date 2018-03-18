@@ -4,4 +4,4 @@ A newsletter has just been published on ZNews.
 View it on {{full_address}}/view?nid={{nid}}
 
 You are receiving this email because you have subscribed to ZNews.
-To unsubscribe, follow this link: {{full_address}}/unsubscribe?email={{registered_email}}.
+To unsubscribe, follow this link: {{full_address}}/cancel_subscription?email={{registered_email}}.
