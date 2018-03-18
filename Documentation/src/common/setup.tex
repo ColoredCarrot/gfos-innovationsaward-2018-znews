@@ -8,6 +8,30 @@
 %or: \def\input@path{{/path/to/folder/}{/path/to/other/folder/}}
 \makeatother
 
+\newenvironment{fig}[1][htb]
+{
+\begin{figure}[#1]
+\centering
+}
+{
+\end{figure}
+}
+
+\newcommand{\img}[4][]{
+\begin{fig}
+\includegraphics[#1]{#2}
+\caption{#3}
+\label{img:#4}
+\end{fig}
+}
+
+%\newcommand{\img}[2][htb]{%
+%\begin{figure}[#1]
+%    \centering
+%    \includegraphics{#2}
+%\end{figure}%
+%}
+
 % Define \Begin command
 \newcommand{\Begin}{
 \begin{document}
