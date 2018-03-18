@@ -3,6 +3,8 @@ jQuery(function($)
 
     Statistics.init();
 
+    $('#btn-refresh').on('click', () => Statistics.init(() => Materialize.toast("Statistics refreshed", 4000)));
+
 });
 
 var Statistics = (function(s)
@@ -22,7 +24,7 @@ var Statistics = (function(s)
         }
     });
 
-    let init = s.init = function()
+    let init = s.init = function(successCallback)
     {
         $.ajax('/admin/api/statistics', {
             cache: false,
@@ -111,6 +113,7 @@ var Statistics = (function(s)
 
                                  // Replace old with new email in $entry
                                  $entry.find(':contains("' + data.oldemail + '")').text((idx, oldText) => oldText.replace(data.oldemail, data.newemail));
+                                 $entry.attr('data-title', data.newemail);
 
                                  swal.stopLoading();
                                  swal.close();
@@ -185,6 +188,7 @@ var Statistics = (function(s)
                      title: pub.title,
                      nid: pub.nid,
                      attrs: {
+                         "Views": pub.views,
                          "ID": pub.nid
                      },
                      buttons: [
@@ -217,6 +221,8 @@ var Statistics = (function(s)
              };
 
              s.columns = ([registrationsColumn, publicationsColumn]);
+             if (successCallback)
+                 successCallback();
 
          }, function error(error)
          {
@@ -268,7 +274,7 @@ var Statistics = (function(s)
 
             $column.append($(`<li><h5 style="margin-left: 10px">${column.title}</h5></li>`));
 
-            let entryTemplate = '<li><div class="collapsible-header">{{TITLE}}</div><div class="collapsible-body">{{BODY}}</div></li>';
+            let entryTemplate = '<li data-title="{{TITLE}}"><div class="collapsible-header">{{TITLE}}</div><div class="collapsible-body">{{BODY}}</div></li>';
 
             column.entries
                   /*.map(entry => Object.keys(ENTRY_TEMPLATE_VARIABLES)
@@ -281,7 +287,7 @@ var Statistics = (function(s)
                       let $e = $(Object.keys(ENTRY_TEMPLATE_VARIABLES)
                                        .map(key => [key, ENTRY_TEMPLATE_VARIABLES[key]])
                                        .map(e => [e[0], e[1](entry)])
-                                       .reduce((res, e) => res.replace(e[0], e[1]), entryTemplate));
+                                       .reduce((res, e) => res.split(e[0]).join(e[1]), entryTemplate));
                       let $eBody = $e.find('div.collapsible-body');
                       if (entry.buttons)
                           entry.buttons
@@ -320,27 +326,6 @@ var Statistics = (function(s)
         $('.collapsible').collapsible();
 
     };
-
-    s.setColumns = function(columns = [])
-    {
-
-        /*
-        column.
-            domId: string
-            title: string
-            entries: [
-                entry.
-                    title: string
-                    attrs: { attrName1: attrVal1, attrName2: attrVal2 }
-            ]
-            callbacks.
-                insert: function($column, column)    // pre  column insertion
-                inserted: function($column, column)  // post column insertion
-
-         */
-
-    };
-
 
     return s;
 })(Statistics || {

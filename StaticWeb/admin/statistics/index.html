@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/materialize.min.css">
 
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/red_banner.css">
 
 </head>
 <body>
@@ -26,6 +27,16 @@
         <div class="row">
             <div class="col s12">
                 <h4 class="red-text text-lighten-1 article-headline" id="main-article-headline">Statistics</h4>
+            </div>
+        </div>
+
+        <!-- Red row -->
+        <div class="row red darken-1 valign-wrapper red-banner">
+            <div class="col s8 btn-container" id="act-btn-container">
+                <a class="waves-effect waves-red white-text btn-flat" id="btn-refresh">Refresh</a>
+            </div>
+            <div class="col s4 input-field">
+                <input type="text" class="white-text filter" id="filter" placeholder="Filter">
             </div>
         </div>
 
@@ -48,6 +59,7 @@
 
 <script src="/js/main-aesthetics.min.js"></script>
 <script src="/admin/statistics/statistics.min.js"></script>
+<script src="/admin/statistics/statistics_red_banner.min.js"></script>
 
 </body>
 </html>

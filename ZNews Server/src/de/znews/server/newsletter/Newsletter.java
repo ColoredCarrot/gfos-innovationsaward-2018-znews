@@ -35,6 +35,7 @@ public class Newsletter implements Serializable, JsonSerializable
     @Nullable
     private Date         datePublished;
     private UUID         publisher;
+    private long         views;
     
     public Newsletter(String title, JsonArray content, UUID publisher)
     {
@@ -56,6 +57,11 @@ public class Newsletter implements Serializable, JsonSerializable
     public String[] getTags()
     {
         return tags != null ? tags.toArray(new String[0]) : new String[0];
+    }
+    
+    public synchronized long incrementViews()
+    {
+        return ++views;
     }
     
 }
