@@ -1,0 +1,50 @@
+.red-banner input.filter
+{
+    border-bottom: 1px solid #fff !important;
+}
+
+.red-banner input.filter:focus
+{
+    box-shadow: none !important;
+}
+
+.red-banner input.filter::-webkit-input-placeholder
+{
+    color: #ededed;
+}
+
+.red-banner input.filter:-moz-placeholder
+{
+    color: #ededed;
+}
+
+.red-banner input.filter::-moz-placeholder
+{
+    color: #ededed;
+}
+
+.red-banner input.filter:-ms-input-placeholder
+{
+    color: #ededed;
+}
+
+.red-banner input.filter::-ms-input-placeholder
+{
+    color: #ededed;
+}
+
+.red-banner input.filter::placeholder
+{
+    color: #ededed;
+}
+
+.red-banner .btn-container .btn-flat
+{
+    transition: background-color .5s, color .6s;
+}
+
+.red-banner .btn-container .btn-flat:hover, .red-banner .btn-container .btn-flat:focus
+{
+    color: #e53935 !important;
+    background-color: #ffffffed !important;
+}
