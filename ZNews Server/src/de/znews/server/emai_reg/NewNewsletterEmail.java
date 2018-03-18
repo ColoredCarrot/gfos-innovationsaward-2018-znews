@@ -30,6 +30,7 @@ public class NewNewsletterEmail extends Email
     {
         return new Object[] {
                 "{{title}}", title,
+                "{{full_address}}", znews.config.getFullExternalAddress(),
                 "{{registered_email_name}}", registeredEmail.substring(0, registeredEmail.indexOf('@')),
                 "{{registered_email}}", registeredEmail,
                 "{{nid}}", nid
