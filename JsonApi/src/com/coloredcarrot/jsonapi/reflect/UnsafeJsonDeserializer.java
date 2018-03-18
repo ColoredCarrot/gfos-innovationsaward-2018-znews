@@ -4,6 +4,7 @@ import com.coloredcarrot.jsonapi.ast.JsonNode;
 import com.coloredcarrot.jsonapi.ast.JsonObject;
 import sun.misc.Unsafe;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +35,10 @@ public class UnsafeJsonDeserializer<T>
             if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()))
             {
                 field.setAccessible(true);
-                field.set(instance, deserializerFunction.apply(field.getType(), json.getOrNull(field.getName())));
+                Object value = deserializerFunction.apply(field.getType(), json.getOrNull(field.getName()));
+                if (value == null && field.getType().isPrimitive())
+                    value = Array.get(Array.newInstance(field.getType(), 1), 0);  // get default value for primitive field
+                field.set(instance, value);
             }
         
         return instance;
