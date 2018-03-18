@@ -3,6 +3,8 @@ jQuery(function($)
 
     Statistics.init();
 
+    $('#btn-refresh').on('click', () => Statistics.init(() => Materialize.toast("Statistics refreshed", 4000)));
+
 });
 
 var Statistics = (function(s)
@@ -22,7 +24,7 @@ var Statistics = (function(s)
         }
     });
 
-    let init = s.init = function()
+    let init = s.init = function(successCallback)
     {
         $.ajax('/admin/api/statistics', {
             cache: false,
@@ -219,6 +221,8 @@ var Statistics = (function(s)
              };
 
              s.columns = ([registrationsColumn, publicationsColumn]);
+             if (successCallback)
+                 successCallback();
 
          }, function error(error)
          {

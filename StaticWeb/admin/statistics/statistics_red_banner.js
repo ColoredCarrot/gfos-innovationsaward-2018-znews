@@ -3,28 +3,6 @@ jQuery(function($)
 
     function initButtons()
     {
-        $('.edit-btn').click(function()
-        {
-            // Edit article (using /admin/edit_newsletter)
-            let $card = $(this).parents('.article-card');
-            act.cfg.useAttrs($card);
-            act.onBtnEdit();
-        });
-        $('.delete-btn').click(function()
-        {
-            // Delete article
-            let $card = $(this).parents('.article-card');
-            act.cfg.useAttrs($card);
-            act.onBtnDelete({ callback: () => $card.remove() });
-        });
-        $('.publish-btn').click(function()
-        {
-            // Publish article
-            let $card = $(this).parents('.article-card');
-            act.cfg.useAttrs($card);
-            act.onBtnPublish({ callback: () => $card.find('.publish-btn').remove() });
-        });
-
         $('#filter').on('input', function()
         {
             onFilterUpdate($(this).val());
