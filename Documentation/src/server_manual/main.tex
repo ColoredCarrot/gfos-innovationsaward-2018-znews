@@ -1,0 +1,290 @@
+\input{../common/setup.tex}
+
+\Begin
+
+%% We don't need an abstract in this page
+%% We'll add that to Dokumentation.pdf
+%\begin{abstract}
+%    ZNews besteht weitestgehend aus zwei sich gegen"uberstehenden
+%    Komponenten: dem Server und dem Webinterface.
+%    In diesem Dokument wird die Funktionsweise des Servers
+%    dargestellt und erl"autert.
+%\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Installation}
+
+ZNews Server wird als archivierte Datei geliefert.
+Nach deren Download kann sie mit einem Archivierungsprogramm
+wie WinRAR oder 7-Zip ausgepackt werden.
+
+\begin{enumerate}
+    \item Extrahieren Sie nach deren Download die Datei \emph{ZNews.zip}.
+    Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1} dargestellt.
+    \item Starten Sie den Server mit dem Startskript\footnote{%
+    Windows: \emph{start.bat}, Mac: \emph{start.command}}.
+    \item Nach Erscheinen der Nachricht ``Server started'' (o."a.),
+    Schreiben Sie ``end'' und dr"ucken Sie \meta{Enter}.
+    \item Nach Beenden des Programms sind die in Abb.~\ref{fig:dirtree2}
+    gezeigten Dateien und Ordner neu erstellt worden.
+    Konfigurieren Sie den Server wie in Abschnitt~\ref{sec:config} ``\nameref{sec:config}'' beschrieben.
+    \item Sie k"onnen nun jederzeit den Server mit dem Startskript starten.
+\end{enumerate}
+
+\begin{figure}[htb]
+    \dirtree{%
+    .1 /.
+    .2 server.jar.
+    .2 start.bat.
+    .2 start.command.
+    .2 docs/.
+    .3 de/.
+    .4 Bedienungsanleitung.pdf.
+    .4 Server Bedienungsanleitung.pdf.
+    .4 Dokumentation.pdf.
+    }
+    \caption{\label{fig:dirtree1}Aufbau des heruntergeladenen Archivs}
+\end{figure}
+
+\begin{figure}[htb]
+    \dirtree{%
+    .1 /.
+    .2 logs/.
+    .2 static\textunderscore web/.
+    .2 auth.json.
+    .2 config.properties.
+    .2 newsletters.json.
+    .2 registrations.json.
+    .2 \ldots.
+    }
+    \caption{\label{fig:dirtree2}Neu erstellte Dateien und Ordner}
+\end{figure}
+
+\pagebreak
+\section{Konfiguration}%
+\label{sec:config}
+
+ZNews Server beinhaltet viele Konfigurationsm"oglichkeiten,
+allesamt in \emph{config.properties}.
+Dieser Abschnitt zeigt die wichtigsten Konfigurationen
+und bietet au"serdem eine vollst"andige Referenz am Ende.
+
+\subsection{Wichtige Konfigurationsschl"ussel}
+
+\subsubsection{Der Port} \label{sec:config:port}
+
+\begin{align*}
+    \emph{Schl"ussel: } & \lstinline{port}\\
+    \emph{Standardwert: } & \lstinline{8080}
+\end{align*}
+%% Consider this other, non-centered version:
+%\hspace*{2cm}\emph{Schl"ussel: } \lstinline{port}\\
+%\hspace*{2cm}\emph{Standardwert: } \lstinline{8080}
+%\vspace*{0.2cm}
+
+ZNews Server beansprucht einen Port, um eingehende
+Anfragen bearbeiten zu k"onnen. Standardm"a"sig ist
+\emph{8080} eingestellt, jedoch ist es empfohlen,
+diesen Wert zu "andern.
+
+\subsubsection{Email-Einstellungen}
+
+ZNews Server muss dazu in der Lage sein, E-Mails
+zu versenden. Dazu muss z.B. ein SMTP-Server eingestellt
+werden, durch welchen die E-Mails geschickt werden.
+
+Im Folgenden wird ein Gmail-Account mit der
+E-Mail-Adresse \emph{john.smith@gmail.com} und
+dem Passwort \emph{12345} verwendet:
+
+\begin{lstlisting}[]%@formatter:off
+email.protocol=smtp
+email.port=465
+email.host=smtp.gmail.com
+email.auth=true
+email.auth.usr=john.smith@gmail.com
+email.auth.pw=12345
+\end{lstlisting}%@formatter:on
+
+F"ur die Verwendung von anderen Servern, konsultieren Sie
+bitte deren spezifischen Anleitungen.
+
+\subsubsection{Log-Level}
+
+\begin{align*}
+    \emph{Schl"ussel: } & \lstinline{log.filter}\\
+    \emph{Standardwert: } & \lstinline{out}\\
+    \emph{M"ogliche Werte: } & \lstinline{dev|debug|out|warn|err|fatal}
+\end{align*}
+
+Das Log-Level spezifiziert, welche Logging-Ausgaben tats"achlich
+ausgegeben werden. Zum Beispiel werden bei \lstinline{warn}
+nur Warnungen, Fehler (\lstinline{err}) und schwerwiegende Fehler
+(\lstinline{fatal}) ausgegeben.
+
+\subsection{Referenz}
+
+Eine vollst"andige Referenz der Konfiguration
+findet sich Tabelle~\ref{table:config-ref}
+und Abbildung~\ref{fig:config-std}.
+
+\section{Befehle}
+
+ZNews Server unterst"utzt eine Reihe von Befehlen,
+die in die Konsole eingegeben werden k"onnen.
+Um einen Befehl auszuf"uhren, schreiben Sie ihn
+in die Eingabeaufforderung und best"atigen Sie
+mit \meta{Enter}.
+
+\subsection{Befehlsreferenz}
+
+\subsubsection{end}
+
+\hspace*{2cm}\emph{Syntax: } \lstinline{end}
+\vspace*{0.2cm}
+
+\emph{end} stoppt den Server, speichert alle Daten
+und komprimiert die Log-Datei in einer Gzip-Datei.
+
+Das Beenden des Servers kann einige Augenblicke
+in Anspruch nehmen; die letzte Zeile in der
+Konsole sollte ``(End)'' zeigen.
+
+\subsubsection{restart}
+
+\hspace*{2cm}\emph{Syntax: } \lstinline{restart}
+\vspace*{0.2cm}
+
+Startet den Server neu. "Ahnlich zu \emph{end}
+werden alle Daten gespeichert, jedoch wird
+das Logging-System nicht beendet, we"shalb
+die Log-Datei nicht komprimiert wird.
+
+\subsubsection{reset caches}
+
+\hspace*{2cm}\emph{Syntax: } \lstinline{reset caches} oder \lstinline{rs}
+\vspace*{0.2cm}
+
+Leert (\emph{purge}) den Cache, sofern dieser
+in der Konfiguration eingeschaltet ist.
+
+\subsubsection{addadmin}
+
+\hspace*{2cm}\emph{Syntax: } \lstinline{addadmin} \meta{email} \meta{name} \meta{password}
+\vspace*{0.2cm}
+
+Erstellt einen neuen Administrator-Account mit
+der E-Mail Adresse \meta{email}, dem Namen \meta{name}
+und dem Passwort \meta{password}.
+
+
+\section{Troubleshooting}
+
+\subsection[``Failed to bind port'']{Beim Starten des Servers erscheint die Nachricht ``Failed to bind port'' mit zugehörigem StackTrace.}
+\begin{enumerate}
+    \item Überprüfen Sie, ob der Server noch an einer anderen Stelle gestartet ist. Nutzen Sie zur Not
+    einen Task Manager, um eine zweite Server-Instanz zu finden, oder starten Sie den PC / die
+    virtuelle Maschine neu.
+
+    \emph{Hinweis: Es ist möglich, mehrere Server-Instanzen gleichzeitig laufen zu lassen, ändern Sie
+    dafür den Port in der Konfigurationsdatei eines der Server.}
+    \item Läuft keine zweite Server-Instanz, so ist davon auszugehen, dass ein anderes Programm den
+    von Feedback Server genutzten Port bereits belegt. Ist dies der Fall, haben Sie drei
+    Möglichkeiten:
+    \begin{enumerate}
+        \item Schließen Sie das Programm und stellen Sie sicher, dass es nicht automatisch wieder gestartet wird.
+        \item Konfigurieren Sie das Programm so, einen anderen Port zu nutzen. Konsultieren Sie ggf. das dem Programm zugehörige Benutzerhandbuch
+        \item Konfigurieren Sie Feedback Server so, einen anderen Port zu nutzen\footnote{Siehe Abschnitt~\ref{sec:config:port}, ``\nameref{sec:config:port}''}.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection[Mac: Fehler beim Ausf"uhren von start.command]{(Mac) Ich kann die start.command-Datei nicht ausführen (keine Berechtigung).}
+\begin{enumerate}
+    \item Melden Sie sich mit administrativen Rechten an.
+    \item Sollte das nicht funktionieren, öffnen Sie Terminal, navigieren Sie mit Hilfe des Kommandos
+    \emph{cd} in den Ordner der Datei (konsultieren Sie ggf. das Internet) und schreiben Sie \emph{sudo sh
+    start.command}. Bei Bestätigung mit Enter sollte sich der Server starten. Unter Umständen werden Sie
+    vorher nach Ihrem Passwort gefragt.
+\end{enumerate}
+
+
+\begin{table}[p]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+        \hline
+        \textbf{Schl"ussel} = Standard & M"ogliche Werte & Beschreibung\\ \hline
+        \textbf{port} = 8080 & 1-65535 & Der von ZNews Server genutzte Port\\ \hline
+        \textbf{err\textunderscore docs.404} = error/ 404notfound.html & any file path & Das Dokument, dass bei Anfragen, die mit 404 beantwortet werden, gesendet wird\\ \hline
+        \textbf{data.method} = file & file|mysql & Die Methode, mit welcher Daten gespeichert werden\\ \hline
+        \textbf{cache.enabled} = true & true|false & Ob der Cache von \emph{static\textunderscore web/} aktiviert werden soll\\ \hline
+        \textbf{cache.size} = 32 & $\in\mathbb{N}$ & Die maximale Gr"o"se des Caches\\ \hline
+        \textbf{pretty-print-json} = false & true|false & Erh"oht die Lesbarkeit der JSON-Dateien\\ \hline
+        \textbf{email.protocol} = smtp & smtp|smtps|tls & Das Email-Server-Protokoll\\ \hline
+        \textbf{email.port} = 465 & 1-65535 & Der Email-Server-Port\\ \hline
+        \textbf{email.host} = smtp.gmail.com & Die Email-Server-Adresse\\ \hline
+        \textbf{email.from} = noreply@ znews.de & E-Mail Adresse & Die E-Mail Adresse, von welcher alle E-Mails versendet werden\\ \hline
+        \textbf{email.auth} = true & true|false & Ob sich ZNews Server beim Email-Server authentifizieren muss\\ \hline
+        \textbf{email.auth.usr} & String & Beim Email-Server g"ultiger Login\\ \hline
+        \textbf{email.auth.pw} & String & Beim Email-Server g"ultiges Password\\ \hline
+        \textbf{email.debug} = false & true|false & Ob Debug-Output beim Email-Versenden eingeschaltet werden soll\\ \hline
+        % TODO: Add all config values to reference
+    \end{tabularx}
+    \caption{\label{table:config-ref}Konfigurationsreferenz}
+\end{table}
+
+\begin{figure}[p]
+    \centering
+    \begin{lstlisting}[frame=single,language=incomplete-Ini]%formatter:off
+
+port=8080
+
+err_docs.404=error/404notfound.html
+
+data.method=file
+
+cache.enabled=true
+cache.size=32
+
+pretty-print-json=false
+
+email.protocol=smtp
+email.port=465
+email.host=smtp.gmail.com
+email.from=noreply@znews.de
+email.auth=true
+email.auth.usr={ACCOUNT_LOGIN}
+email.auth.pw={ACCOUNT_PASSWORD}
+email.debug=false
+
+email.templates.double-opt-in=email_templates/\
+        double_opt_in
+email.templates.new-newsletter=email_templates/\
+        new_newsletter
+
+log.filter=out
+log.format.dev=[{date}] [{threadName}:{threadId}\
+        /{level} @ {methodName}/{typeSimpleName}/\
+        {fileName}:{line}] {msg}
+log.format.dev.date-format=HH:mm:ss:SSS
+log.format.debug=[{date}] [{threadName}:{threadId}\
+        /{level}] {msg}
+log.format.fatal=FATAL [{date}] [{threadName}:\
+        {threadId}/{level} @ {methodName}/{typeName}\
+        /{fileName}:{line}] {msg}
+log.out.files-gzip.dir=logs/
+log.out.files-gzip.auto-flush=true
+log.separate-thread=true
+    \end{lstlisting}%formatter:on
+    \caption{\label{fig:config-std}Standard Konfigurationsdatei}
+\end{figure}
+
+
+%Comments can be added to the margins of the document using the \t%odo{Here's a comment in the margin!} tod%o command, as shown in the example on the right. You can also add inline comments too:
+%
+%\to%do[inline, color=green!40]{This is an inline comment.}
+
+
+\End

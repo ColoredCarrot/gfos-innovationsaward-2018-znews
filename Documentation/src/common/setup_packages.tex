@@ -1,0 +1,32 @@
+\usepackage[german]{babel}
+\usepackage[T1]{fontenc} % for typewriter braces
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+% Simple directory trees
+\usepackage{dirtree}
+\usepackage{nameref}
+\usepackage{listings}
+\usepackage{tabularx}
+
+% \meta command
+\usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\providecommand\meta[1]{\textlangle{\itshape #1\/}\textrangle}
+
+\lstdefinelanguage{incomplete-Ini}
+{
+basicstyle=\ttfamily\small,
+columns=fullflexible,
+%morecomment=[s][\color{Orchid}\bfseries]{[}{]},
+morecomment=[l]{\#},
+morecomment=[l]{;},
+commentstyle=\color{gray}\ttfamily,
+morekeywords={},
+otherkeywords={=},
+keywordstyle={\color{green}\bfseries}
+}
+
+\graphicspath{ {../common/} }
