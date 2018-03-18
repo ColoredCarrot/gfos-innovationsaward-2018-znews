@@ -44,6 +44,10 @@ jQuery(function($)
                         <i class="material-icons left nav-link-bullet">keyboard_arrow_right</i>
                     </li>
                     <li>
+                        <a class="grey-text text-lighten-3" href="/edit_subscription">Edit Subscription</a>
+                        <i class="material-icons left nav-link-bullet">keyboard_arrow_right</i>
+                    </li>
+                    <li>
                         <a class="grey-text text-lighten-3" href="/admin/dashboard">Administrator Login</a>
                         <i class="material-icons left nav-link-bullet">keyboard_arrow_right</i>
                     </li>
