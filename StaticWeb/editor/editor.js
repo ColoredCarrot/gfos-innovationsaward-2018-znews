@@ -12,6 +12,10 @@ jQuery(function($)
         [ 'clean' ]
     ];
 
+    let BoldBlot = Quill.import('formats/bold');
+    BoldBlot.tagName = 'B';   // Quill uses <strong> by default
+    Quill.register(BoldBlot, true);
+
     quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
