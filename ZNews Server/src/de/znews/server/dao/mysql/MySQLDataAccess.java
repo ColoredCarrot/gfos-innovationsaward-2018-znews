@@ -2,9 +2,7 @@ package de.znews.server.dao.mysql;
 
 import com.coloredcarrot.jsonapi.Json;
 import com.coloredcarrot.jsonapi.ast.JsonArray;
-import com.coloredcarrot.jsonapi.generation.JsonOutput;
-import com.coloredcarrot.jsonapi.parsing.JsonInput;
-import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
+import com.coloredcarrot.jsonapi.ast.JsonObject;
 import de.znews.server.ZNews;
 import de.znews.server.auth.Admin;
 import de.znews.server.auth.Authenticator;
@@ -16,7 +14,8 @@ import de.znews.server.newsletter.RegistrationList;
 import de.znews.server.stat.NewsletterPublicationResult;
 import lombok.SneakyThrows;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -31,7 +30,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class MySQLDataAccess extends DataAccess
 {
@@ -57,6 +55,10 @@ public class MySQLDataAccess extends DataAccess
                     "views MEDIUMINT UNSIGNED, " +
                     "tags TEXT, " +
                     "content MEDIUMTEXT");
+    
+    private static final TableSpec TABLE_PUB_RESULTS = new TableSpec("pub_results",
+            "successes MEDIUMTEXT, " +
+                    "failures JSON");
     
     private static final DateFormat nprDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ss.SSSZ");
     
@@ -351,7 +353,7 @@ public class MySQLDataAccess extends DataAccess
                     JsonArray content       = (JsonArray) Json.getInputStream(new StringReader(res.getString("content"))).next();
     
                     nm.addNewsletter(new Newsletter(nid, title, content, new ArrayList<>(Arrays.asList(tags)), datePublished != null, datePublished != null ? new Date(datePublished.getTime()) : null, publisher != null ? UUID
-                            .fromString(publisher) : null, views));<
+                            .fromString(publisher) : null, views));
                     
                 }
             }
@@ -373,54 +375,28 @@ public class MySQLDataAccess extends DataAccess
     @Override
     public void storeNewNewsletterPublicationResult(NewsletterPublicationResult res) throws IOException
     {
-        File f;
-        synchronized (nprDateFormat)  // SimpleDateFormat provides no internal synchronization
-        {
-            f = new File(nprFolder, nprDateFormat.format(new Date()) + ".json");
-        }
-        nprFolder.mkdirs();
-        storeJsonSerializable(res, f);
-    }
     
-    private void storeJsonSerializable(JsonSerializable serializable, File file) throws IOException
-    {
-        try (JsonOutput out = new JsonOutput(Json.getOutputStream(new BufferedOutputStream(new FileOutputStream(file)), getZNews().config.getEnableJSONPrettyPrinting())))
+        try
         {
-            out.write(serializable);
+            ensureTable(TABLE_PUB_RESULTS);
         }
-    }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
     
-    private <T extends JsonSerializable> T queryJsonSerializable(File file, Supplier<T> ifNotExistsGet, Class<T> clazz) throws IOException
-    {
-        if (!file.exists())
-            return ifNotExistsGet.get();
-        try (JsonInput<T> in = new JsonInput<>(Json.getInputStream(new BufferedInputStream(new FileInputStream(file))), clazz))
+        try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_PUB_RESULTS.name + " VALUES (?, ?)"))
         {
-            return in.read();
+            stmt.setString(1, String.join(";;", res.getSuccesses()));
+            stmt.setString(2, Json.toString(((JsonObject) res.serialize()).get("failures")));
+            
+            stmt.execute();
         }
-    }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
     
-    private void storeSerializable(Serializable serializable, File file) throws IOException
-    {
-        try (ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file))))
-        {
-            out.writeObject(serializable);
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-    private <T extends Serializable> T querySerializable(File file, Supplier<T> ifNotExistsGet) throws IOException
-    {
-        if (!file.exists())
-            return ifNotExistsGet.get();
-        try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file))))
-        {
-            return (T) in.readObject();
-        }
-        catch (ClassNotFoundException e)
-        {
-            throw new IOException("Corrupted file: " + file.getAbsolutePath(), e);
-        }
     }
     
     @Override
