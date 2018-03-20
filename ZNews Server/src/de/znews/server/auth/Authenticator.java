@@ -8,6 +8,7 @@ import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializer;
 import de.znews.server.ZNews;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +40,11 @@ public class Authenticator implements JsonSerializable
         return admin;
     }
     
+    public void addAdmin0(Admin admin)
+    {
+        admins.put(admin.getUniqueId(), admin);
+    }
+    
     public Optional<Admin> authenticate(String email, String password)
     {
         return getPossibleAdmin(email).filter(admin -> admin.checkPassword(password));
@@ -47,6 +53,11 @@ public class Authenticator implements JsonSerializable
     public Optional<Admin> getAdmin(UUID uniqueId)
     {
         return Optional.ofNullable(admins.get(uniqueId));
+    }
+    
+    public Collection<Admin> getAllAdmins()
+    {
+        return admins.values();
     }
     
     /*public Session requireHttpAuthentication(RequestContext ctx) throws HttpException

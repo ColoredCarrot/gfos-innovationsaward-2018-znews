@@ -59,6 +59,11 @@ public class RegistrationList implements Serializable, JsonSerializable, Iterabl
         return registeredEmails.values().stream();
     }
     
+    public void addRegistration(Registration reg)
+    {
+        registeredEmails.put(reg.getEmail(), reg);
+    }
+    
     @JsonDeserializer
     static RegistrationList deserializeJson(JsonObject json)
     {

@@ -69,7 +69,7 @@ public class NewsletterPublicationResult implements JsonSerializable
     }
     
     @JsonSerializer
-    JsonNode serialize()
+    public JsonNode serialize()
     {
         JsonObject.Builder res = JsonObject.createBuilder();
         res.add("numSuccesses", getNumSuccesses());
