@@ -11,20 +11,14 @@ public class MySQLDataAccessConfiguration extends DataAccessConfiguration
     
     private final ZNews znews;
     
-    final String host;
-    final String port;
-    final String usr;
-    final String pw;
+    private String host;
+    private String port;
+    private String usr;
+    private String pw;
     
     public MySQLDataAccessConfiguration(ZNews znews)
     {
         this.znews = znews;
-        
-        Properties cfg = znews.config.props();
-        host = cfg.getProperty("data.mysql.host");
-        port = cfg.getProperty("data.mysql.port");
-        usr = cfg.getProperty("data.mysql.usr");
-        pw = cfg.getProperty("data.mysql.pw");
     }
     
     public MySQLDataAccessConfiguration(ZNews znews, String host, String port, String usr, String pw)
@@ -36,10 +30,47 @@ public class MySQLDataAccessConfiguration extends DataAccessConfiguration
         this.pw = pw;
     }
     
+    private void loadConfig()
+    {
+        Properties cfg = znews.config.props();
+        host = cfg.getProperty("data.mysql.host");
+        port = cfg.getProperty("data.mysql.port");
+        usr = cfg.getProperty("data.mysql.usr");
+        pw = cfg.getProperty("data.mysql.pw");
+    }
+    
+    public String getHost()
+    {
+        if (host == null)
+            loadConfig();
+        return host;
+    }
+    
+    public String getPort()
+    {
+        if (port == null)
+            loadConfig();
+        return port;
+    }
+    
+    public String getUsr()
+    {
+        if (usr == null)
+            loadConfig();
+        return usr;
+    }
+    
+    public String getPw()
+    {
+        if (pw == null)
+            loadConfig();
+        return pw;
+    }
+    
     @Override
     protected DataAccess newDataAccess()
     {
-        return null;
+        return new MySQLDataAccess(znews, this);
     }
     
 }
