@@ -5,6 +5,7 @@ import com.coloredcarrot.jsonapi.generation.JsonOutput;
 import com.coloredcarrot.jsonapi.parsing.JsonInput;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
 import de.znews.server.ZNews;
+import de.znews.server.auth.Admin;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.dao.DataAccess;
 import de.znews.server.newsletter.NewsletterManager;
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class MySQLDataAccess extends DataAccess
@@ -43,7 +45,7 @@ public class MySQLDataAccess extends DataAccess
     private static final TableSpec TABLE_AUTH = new TableSpec("auth",
             "uid CHAR(36) NOT NULL UNIQUE, " +
                     "email VARCHAR(128) NOT NULL, " +
-                    "name VARCHAR(64) NOT NULL, " +
+                    "`name` VARCHAR(64) NOT NULL, " +
                     "pw_hash CHAR(60) NOT NULL");
     
     private static final TableSpec TABLE_REGISTRATIONS = new TableSpec("registrations",
@@ -211,17 +213,77 @@ public class MySQLDataAccess extends DataAccess
     @Override
     public void storeAuthenticator(Authenticator authenticator) throws IOException
     {
-        storeJsonSerializable(authenticator, authFile);
+        try
+        {
+            ensureTable(TABLE_AUTH);
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+    
+        try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_AUTH.name + " VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE email=email, `name`=`name`, pw_hash=pw_hash"))
+        {
+    
+            for (Admin admin : authenticator.getAllAdmins())
+            {
+                stmt.setString(1, admin.getUniqueId().toString());
+                stmt.setString(2, admin.getEmail());
+                stmt.setString(3, admin.getName());
+                stmt.setString(4, admin.getPasswordHash());
+                stmt.addBatch();
+            }
+    
+            stmt.executeBatch();
+            
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+    
     }
     
     @Override
     public Authenticator queryAuthenticator() throws IOException
     {
-        Authenticator r = queryJsonSerializable(authFile, Authenticator::new, Authenticator.class);
+        Authenticator auth = new Authenticator();
+    
+        try
+        {
+            ensureTable(TABLE_AUTH);
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+    
+        try (PreparedStatement stmt = prepareStatement("SELECT * FROM " + TABLE_AUTH.name))
+        {
+            try (ResultSet res = stmt.executeQuery())
+            {
+                while (res.next())
+                {
+    
+                    UUID id = UUID.fromString(res.getString("uid"));
+                    String email = res.getString("email");
+                    String name = res.getString("name");
+                    String pwHash = res.getString("pw_hash");
+    
+                    auth.addAdmin0(new Admin(id, email, name, pwHash));
+                    
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+        
         // this needs to be here because, when read from JSON,
         // the znews attribute is null
-        r.setZNewsInstance(getZNews());
-        return r;
+        auth.setZNewsInstance(getZNews());
+        return auth;
     }
     
     @Override
