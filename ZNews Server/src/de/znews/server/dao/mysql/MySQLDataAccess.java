@@ -50,6 +50,7 @@ public class MySQLDataAccess extends DataAccess
     private static final TableSpec TABLE_NEWSLETTERS = new TableSpec("newsletters",
             "nid CHAR(36) NOT NULL UNIQUE, " +
                     "title VARCHAR(128) NOT NULL, " +
+                    "published BOOL NOT NULL, " +
                     "publisher CHAR(36), " +
                     "date_published TIMESTAMP, " +
                     "views MEDIUMINT UNSIGNED, " +
@@ -69,7 +70,7 @@ public class MySQLDataAccess extends DataAccess
     {
         super(znews);
         this.cfg = cfg;
-    
+        
         initConnection();
     }
     
@@ -299,18 +300,19 @@ public class MySQLDataAccess extends DataAccess
             throw new IOException(e);
         }
         
-        try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_NEWSLETTERS.name + " VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=title, publisher=publisher, date_published=date_published, views=views, tags=tags, content=content"))
+        try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_NEWSLETTERS.name + " VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=title, published=published, publisher=publisher, date_published=date_published, views=views, tags=tags, content=content"))
         {
             
             for (Newsletter n : toIterable(nm.getLatestNewsletters().iterator()))
             {
                 stmt.setString(1, n.getId());
                 stmt.setString(2, n.getTitle());
-                stmt.setString(3, n.getPublisher() != null ? n.getPublisher().toString() : null);
-                stmt.setTimestamp(4, n.getDatePublished() != null ? new Timestamp(n.getDatePublished().getTime()) : null);
-                stmt.setInt(5, (int) n.getViews());
-                stmt.setString(6, String.join(";;", n.getTags()));
-                stmt.setString(7, Json.toString(n.getContent()));
+                stmt.setBoolean(3, n.isPublished());
+                stmt.setString(4, n.getPublisher() != null ? n.getPublisher().toString() : null);
+                stmt.setTimestamp(5, n.getDatePublished() != null ? new Timestamp(n.getDatePublished().getTime()) : null);
+                stmt.setInt(6, (int) n.getViews());
+                stmt.setString(7, String.join(";;", n.getTags()));
+                stmt.setString(8, Json.toString(n.getContent()));
                 stmt.addBatch();
             }
             
@@ -348,13 +350,14 @@ public class MySQLDataAccess extends DataAccess
                     
                     String    nid           = res.getString("nid");
                     String    title         = res.getString("title");
+                    boolean   published     = res.getBoolean("published");
                     String    publisher     = res.getString("publisher");
                     Timestamp datePublished = res.getTimestamp("date_published");
                     int       views         = res.getInt("views");
                     String[]  tags          = res.getString("tags").split(";;");
                     JsonArray content       = (JsonArray) Json.getInputStream(new StringReader(res.getString("content"))).next();
-    
-                    nm.addNewsletter(new Newsletter(nid, title, content, new ArrayList<>(Arrays.asList(tags)), datePublished != null, datePublished != null ? new Date(datePublished.getTime()) : null, publisher != null ? UUID
+                    
+                    nm.addNewsletter(new Newsletter(nid, title, content, new ArrayList<>(Arrays.asList(tags)), published, datePublished != null ? new Date(datePublished.getTime()) : null, publisher != null ? UUID
                             .fromString(publisher) : null, views));
                     
                 }
@@ -377,7 +380,7 @@ public class MySQLDataAccess extends DataAccess
     @Override
     public void storeNewNewsletterPublicationResult(NewsletterPublicationResult res) throws IOException
     {
-    
+        
         try
         {
             ensureTable(TABLE_PUB_RESULTS);
@@ -386,7 +389,7 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
         try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_PUB_RESULTS.name + " VALUES (?, ?)"))
         {
             stmt.setString(1, String.join(";;", res.getSuccesses()));
@@ -398,7 +401,7 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
     }
     
     @Override
