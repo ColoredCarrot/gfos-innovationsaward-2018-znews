@@ -4,6 +4,7 @@ import de.znews.server.Log;
 import de.znews.server.ZNews;
 import de.znews.server.dao.DataAccessConfiguration;
 import de.znews.server.dao.file.FileDataAccessConfiguration;
+import de.znews.server.dao.mysql.MySQLDataAccessConfiguration;
 import de.znews.server.emai_reg.EmailConfig;
 import de.znews.server.static_web.StaticWeb;
 import lombok.AccessLevel;
@@ -41,6 +42,9 @@ public class ZNewsConfiguration
         {
         case "file":
             dataAccessConfig = new FileDataAccessConfiguration(znews);
+            break;
+        case "mysql":
+            dataAccessConfig = new MySQLDataAccessConfiguration(znews);
             break;
         default:
             throw new IllegalArgumentException("Unknown data storage method: " + props.getProperty("data.method"));
