@@ -1,6 +1,7 @@
 package de.znews.server.dao.mysql;
 
 import com.coloredcarrot.jsonapi.Json;
+import com.coloredcarrot.jsonapi.ast.JsonArray;
 import com.coloredcarrot.jsonapi.generation.JsonOutput;
 import com.coloredcarrot.jsonapi.parsing.JsonInput;
 import com.coloredcarrot.jsonapi.reflect.JsonSerializable;
@@ -8,21 +9,14 @@ import de.znews.server.ZNews;
 import de.znews.server.auth.Admin;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.dao.DataAccess;
+import de.znews.server.newsletter.Newsletter;
 import de.znews.server.newsletter.NewsletterManager;
 import de.znews.server.newsletter.Registration;
 import de.znews.server.newsletter.RegistrationList;
 import de.znews.server.stat.NewsletterPublicationResult;
 import lombok.SneakyThrows;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -31,9 +25,11 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -148,7 +144,7 @@ public class MySQLDataAccess extends DataAccess
                     
                     stmt.addBatch();
                 }
-    
+                
                 stmt.executeBatch();
             }
             
@@ -175,7 +171,7 @@ public class MySQLDataAccess extends DataAccess
     {
         
         RegistrationList list = new RegistrationList();
-    
+        
         try
         {
             ensureTable(TABLE_REGISTRATIONS);
@@ -184,20 +180,20 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
         try (PreparedStatement stmt = prepareStatement("SELECT * FROM " + TABLE_REGISTRATIONS.name))
         {
             try (ResultSet res = stmt.executeQuery())
             {
                 while (res.next())
                 {
-    
-                    String email = res.getString("email");
-                    String tags = res.getString("subbed_tags");
-                    Date dateRegistered = new Date(res.getTimestamp("date_subbed").getTime());
-    
+                    
+                    String email          = res.getString("email");
+                    String tags           = res.getString("subbed_tags");
+                    Date   dateRegistered = new Date(res.getTimestamp("date_subbed").getTime());
+                    
                     list.addRegistration(new Registration(email, tags != null ? new HashSet<>(Arrays.asList(tags.split(";;"))) : null, dateRegistered));
-                
+                    
                 }
             }
         }
@@ -205,7 +201,7 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
         return list;
         
     }
@@ -221,10 +217,10 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
         try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_AUTH.name + " VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE email=email, `name`=`name`, pw_hash=pw_hash"))
         {
-    
+            
             for (Admin admin : authenticator.getAllAdmins())
             {
                 stmt.setString(1, admin.getUniqueId().toString());
@@ -233,7 +229,7 @@ public class MySQLDataAccess extends DataAccess
                 stmt.setString(4, admin.getPasswordHash());
                 stmt.addBatch();
             }
-    
+            
             stmt.executeBatch();
             
         }
@@ -241,14 +237,14 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
     }
     
     @Override
     public Authenticator queryAuthenticator() throws IOException
     {
         Authenticator auth = new Authenticator();
-    
+        
         try
         {
             ensureTable(TABLE_AUTH);
@@ -257,19 +253,19 @@ public class MySQLDataAccess extends DataAccess
         {
             throw new IOException(e);
         }
-    
+        
         try (PreparedStatement stmt = prepareStatement("SELECT * FROM " + TABLE_AUTH.name))
         {
             try (ResultSet res = stmt.executeQuery())
             {
                 while (res.next())
                 {
-    
-                    UUID id = UUID.fromString(res.getString("uid"));
-                    String email = res.getString("email");
-                    String name = res.getString("name");
+                    
+                    UUID   id     = UUID.fromString(res.getString("uid"));
+                    String email  = res.getString("email");
+                    String name   = res.getString("name");
                     String pwHash = res.getString("pw_hash");
-    
+                    
                     auth.addAdmin0(new Admin(id, email, name, pwHash));
                     
                 }
@@ -287,15 +283,91 @@ public class MySQLDataAccess extends DataAccess
     }
     
     @Override
-    public void storeNewsletterManager(NewsletterManager newsletterManager) throws IOException
+    public void storeNewsletterManager(NewsletterManager nm) throws IOException
     {
-        storeJsonSerializable(newsletterManager, newslettersFile);
+        
+        try
+        {
+            ensureTable(TABLE_NEWSLETTERS);
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+        
+        try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_NEWSLETTERS.name + " VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=title, publisher=publisher, date_published=date_published, views=views, tags=tags, content=content"))
+        {
+            
+            for (Newsletter n : toIterable(nm.getLatestNewsletters().iterator()))
+            {
+                stmt.setString(1, n.getId());
+                stmt.setString(2, n.getTitle());
+                stmt.setString(3, n.getPublisher() != null ? n.getPublisher().toString() : null);
+                stmt.setTimestamp(4, n.getDatePublished() != null ? new Timestamp(n.getDatePublished().getTime()) : null);
+                stmt.setInt(5, (int) n.getViews());
+                stmt.setString(6, String.join(";;", n.getTags()));
+                stmt.setString(7, Json.toString(n.getContent()));
+                stmt.addBatch();
+            }
+            
+            stmt.executeBatch();
+            
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+        
     }
     
     @Override
     public NewsletterManager queryNewsletterManager() throws IOException
     {
-        return queryJsonSerializable(newslettersFile, NewsletterManager::new, NewsletterManager.class);
+        
+        try
+        {
+            ensureTable(TABLE_NEWSLETTERS);
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+        
+        NewsletterManager nm = new NewsletterManager();
+        
+        try (PreparedStatement stmt = prepareStatement("SELECT * FROM " + TABLE_NEWSLETTERS.name))
+        {
+            try (ResultSet res = stmt.executeQuery())
+            {
+                while (res.next())
+                {
+                    
+                    String    nid           = res.getString("nid");
+                    String    title         = res.getString("title");
+                    String    publisher     = res.getString("publisher");
+                    Timestamp datePublished = res.getTimestamp("date_published");
+                    int       views         = res.getInt("views");
+                    String[]  tags          = res.getString("tags").split(";;");
+                    JsonArray content       = (JsonArray) Json.getInputStream(new StringReader(res.getString("content"))).next();
+    
+                    nm.addNewsletter(new Newsletter(nid, title, content, new ArrayList<>(Arrays.asList(tags)), datePublished != null, datePublished != null ? new Date(datePublished.getTime()) : null, publisher != null ? UUID
+                            .fromString(publisher) : null, views));<
+                    
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+        
+        return nm;
+        
+    }
+    
+    private <T> Iterable<T> toIterable(Iterator<T> it)
+    {
+        return () -> it;
     }
     
     @Override
