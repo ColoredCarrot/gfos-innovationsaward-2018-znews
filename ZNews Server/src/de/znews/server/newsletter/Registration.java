@@ -33,6 +33,13 @@ public class Registration implements Serializable, JsonSerializable
     {
     }
     
+    public Registration(String email, Set<String> subscribedTags, Date dateRegistered)
+    {
+        this.email = email;
+        this.subscribedTags = subscribedTags;
+        this.dateRegistered = dateRegistered;
+    }
+    
     public void setSubscribedTags(Set<String> subscribedTags)
     {
         this.subscribedTags = subscribedTags;

@@ -8,6 +8,7 @@ import de.znews.server.ZNews;
 import de.znews.server.auth.Authenticator;
 import de.znews.server.dao.DataAccess;
 import de.znews.server.newsletter.NewsletterManager;
+import de.znews.server.newsletter.Registration;
 import de.znews.server.newsletter.RegistrationList;
 import de.znews.server.stat.NewsletterPublicationResult;
 import lombok.SneakyThrows;
@@ -23,13 +24,41 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.function.Supplier;
 
 public class MySQLDataAccess extends DataAccess
 {
+    
+    private static final String DB_NAME = "znews_user_data";
+    
+    private static final TableSpec TABLE_AUTH = new TableSpec("auth",
+            "uid CHAR(36) NOT NULL UNIQUE, " +
+                    "email VARCHAR(128) NOT NULL, " +
+                    "name VARCHAR(64) NOT NULL, " +
+                    "pw_hash CHAR(60) NOT NULL");
+    
+    private static final TableSpec TABLE_REGISTRATIONS = new TableSpec("registrations",
+            "email VARCHAR(128) NOT NULL UNIQUE, " +
+                    "subbed_tags TEXT, " +
+                    "date_subbed TIMESTAMP NOT NULL");
+    
+    private static final TableSpec TABLE_NEWSLETTERS = new TableSpec("newsletters",
+            "nid CHAR(36) NOT NULL UNIQUE, " +
+                    "title VARCHAR(128) NOT NULL, " +
+                    "publisher CHAR(36), " +
+                    "date_published TIMESTAMP, " +
+                    "views MEDIUMINT UNSIGNED, " +
+                    "tags TEXT, " +
+                    "content MEDIUMTEXT");
     
     private static final DateFormat nprDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ss.SSSZ");
     
@@ -57,20 +86,126 @@ public class MySQLDataAccess extends DataAccess
         
         connection = DriverManager.getConnection("jdbc:mysql://" + cfg.host + ":" + cfg.port + "/?user=" + cfg.usr + "&password=" + cfg.pw + "&useSSL=false");
         
+        try (PreparedStatement stmt = prepareStatement("CREATE DATABASE IF NOT EXISTS `" + DB_NAME + "`"))
+        {
+            stmt.execute();
+        }
+        try (PreparedStatement stmt = prepareStatement("USE `" + DB_NAME + "`"))
+        {
+            stmt.execute();
+        }
         
-        
+    }
+    
+    public PreparedStatement prepareStatement(String format) throws SQLException
+    {
+        return connection.prepareStatement(format);
+    }
+    
+    public void ensureTable(TableSpec tableSpec) throws SQLException
+    {
+        try (PreparedStatement stmt = prepareStatement("CREATE TABLE IF NOT EXISTS " + tableSpec.name + " (" + tableSpec.structure + ")"))
+        {
+            stmt.execute();
+        }
     }
     
     @Override
     public void storeRegistrationList(RegistrationList list) throws IOException
     {
-        storeJsonSerializable(list, registrationsFile);
+        try
+        {
+            ensureTable(TABLE_REGISTRATIONS);
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+        
+        try
+        {
+            connection.setAutoCommit(false);
+            
+            ensureTable(TABLE_REGISTRATIONS);
+            
+            try (PreparedStatement stmt = prepareStatement("DELETE FROM " + TABLE_REGISTRATIONS.name))
+            {
+                stmt.execute();
+            }
+            
+            try (PreparedStatement stmt = prepareStatement("INSERT INTO " + TABLE_REGISTRATIONS.name + " VALUES (?, ?, ?)"))
+            {
+                for (Registration reg : list.snapshot())
+                {
+                    stmt.setString(1, reg.getEmail());
+                    if (reg.getSubscribedTags() != null)
+                        stmt.setString(2, String.join(";;", reg.getSubscribedTags()));
+                    else
+                        stmt.setString(2, null);
+                    stmt.setTimestamp(3, new Timestamp(reg.getDateRegistered().getTime()));
+                    
+                    stmt.addBatch();
+                }
+    
+                stmt.executeBatch();
+            }
+            
+            connection.commit();
+            connection.setAutoCommit(true);
+        }
+        catch (SQLException e)
+        {
+            try
+            {
+                connection.rollback();
+            }
+            catch (SQLException e1)
+            {
+                e1.addSuppressed(e);
+                e = e1;
+            }
+            throw new IOException(e);
+        }
     }
     
     @Override
     public RegistrationList queryRegistrationList() throws IOException
     {
-        return queryJsonSerializable(registrationsFile, RegistrationList::new, RegistrationList.class);
+        
+        RegistrationList list = new RegistrationList();
+    
+        try
+        {
+            ensureTable(TABLE_REGISTRATIONS);
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+    
+        try (PreparedStatement stmt = prepareStatement("SELECT * FROM " + TABLE_REGISTRATIONS.name))
+        {
+            try (ResultSet res = stmt.executeQuery())
+            {
+                while (res.next())
+                {
+    
+                    String email = res.getString("email");
+                    String tags = res.getString("subbed_tags");
+                    Date dateRegistered = new Date(res.getTimestamp("date_subbed").getTime());
+    
+                    list.addRegistration(new Registration(email, tags != null ? new HashSet<>(Arrays.asList(tags.split(";;"))) : null, dateRegistered));
+                
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new IOException(e);
+        }
+    
+        return list;
+        
     }
     
     @Override
