@@ -62,6 +62,7 @@
       <element id="directory" name="static_web">
         <element id="dir-copy" path="$PROJECT_DIR$/StaticWeb" />
       </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/ZNews Server/lib/mysql-connector-java-5.1.46-bin.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
