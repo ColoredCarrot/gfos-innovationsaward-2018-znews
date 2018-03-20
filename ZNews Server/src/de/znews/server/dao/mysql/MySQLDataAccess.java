@@ -69,6 +69,8 @@ public class MySQLDataAccess extends DataAccess
     {
         super(znews);
         this.cfg = cfg;
+    
+        initConnection();
     }
     
     @SneakyThrows
@@ -84,7 +86,7 @@ public class MySQLDataAccess extends DataAccess
             throw new IllegalStateException("Failed to find MySQL Driver: com.mysql.jdbc.Driver", e);
         }
         
-        connection = DriverManager.getConnection("jdbc:mysql://" + cfg.host + ":" + cfg.port + "/?user=" + cfg.usr + "&password=" + cfg.pw + "&useSSL=false");
+        connection = DriverManager.getConnection("jdbc:mysql://" + cfg.getHost() + ":" + cfg.getPort() + "/?user=" + cfg.getUsr() + "&password=" + cfg.getPw() + "&useSSL=false");
         
         try (PreparedStatement stmt = prepareStatement("CREATE DATABASE IF NOT EXISTS `" + DB_NAME + "`"))
         {
