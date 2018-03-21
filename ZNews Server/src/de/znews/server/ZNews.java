@@ -214,11 +214,11 @@ public class ZNews
         }
         finally
         {
-            timeoutNanos -= System.currentTimeMillis() - start;
+            timeoutNanos -= System.nanoTime() - start;
             start = 0L;
             try
             {
-                GlobalEventExecutor.INSTANCE.awaitInactivity(timeoutNanos, TimeUnit.MILLISECONDS);
+                GlobalEventExecutor.INSTANCE.awaitInactivity(timeoutNanos, TimeUnit.NANOSECONDS);
             }
             catch (IllegalStateException ignored)
             {
