@@ -25,7 +25,6 @@
     <orderEntry type="library" exported="" name="javax.mail:javax.mail-api:1.6.0" level="project" />
     <orderEntry type="library" exported="" name="com.sun.mail:javax.mail:1.6.0" level="project" />
     <orderEntry type="library" exported="" name="jBCrypt-0.4" level="project" />
-    <orderEntry type="library" name="com.vladsch.flexmark:flexmark-all:0.28.24" level="project" />
     <orderEntry type="module" module-name="LoggingApi" />
     <orderEntry type="library" name="mysql-connector-java-5.1.46-bin" level="project" />
   </component>
