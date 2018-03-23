@@ -14,3 +14,20 @@ a.go-back-link
 {
     margin-left: 10px;
 }
+
+.ql-editor pre.ql-syntax
+{
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible;
+}
+
+.ql-editor pre
+{
+    white-space: pre-wrap;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+}

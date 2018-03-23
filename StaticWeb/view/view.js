@@ -26,9 +26,9 @@ jQuery(function($)
         return;
     }
 
-    function renderText(text)
+    function renderText(text, $appendTo)
     {
-        return DeltaRenderer.renderToHTML(text);
+        return DeltaRenderer.renderToDOM(text, $appendTo[0], true);
     }
 
     $.ajax('/admin/api/view', {
@@ -45,7 +45,8 @@ jQuery(function($)
 
          $('#main-article-headline').text(article.title);
          $('#title').text(article.title + ' | ZNews');
-         $('#main-container').append($(renderText(article.the_delta)));
+         //$('#main-container').append($(renderText(article.the_delta)));
+         renderText(article.the_delta, $('#main-container'));
 
          if (article.publisher)
              $('#description').html(`Published by ${article.publisher} on ${formatDate(article.datePublished)}. <a class="go-back-link" href="javascript:window.history.back()">Go back</a>`);
