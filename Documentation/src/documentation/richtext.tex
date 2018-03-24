@@ -1,0 +1,23 @@
+\emph{Fair warning: In diesem Teil der Dokumentation nutzen wir Witze,
+um nicht aufgrund der Sensibilität des Themas unseren Kopf zu verlieren.}
+
+Die Aufgabenstellung verlangte \emph{``nur rudimentäre''} Möglichkeiten zur Bearbeitung der Artikel
+und nannte als Beispiel einen RichText-Editor.
+\emph{Hahaha. Haha. Ha.}
+
+Spaß beiseite,
+aber es ist tatsächlich unglaublich schwierig,
+einen ausreichend vielfältigen, robusten, dynamischen, kompatiblen
+Editor zu finden.
+Dies liegt nicht zuletzt DEM Horror des HTML5-Standards, \emph{contentEditable}.
+(siehe \href{https://medium.engineering/why-contenteditable-is-terrible-122d8a40e480}%
+{das erste relevante Suchergebnis auf Google}\footnote{\url{https://medium.engineering/why-contenteditable-is-terrible-122d8a40e480}}.)
+
+Zu Testzwecken und um zu prokrastinieren haben wir die Entscheidung erstmal verlegt
+und einen Markdown-Editor implementiert.
+Jedoch waren wir hiermit auf lange Sicht nicht zufrieden,
+weßhalb wir uns nach \emph{langer} Recherche für den RichText-Editor \emph{Quill} entschieden haben.,
+nicht zuletzt aufgrund dessen Entscheidung,
+das DOM ``links liegen zu lassen'' und stattdessen ein eigenes Modell,
+\emph{Parchment}\footnote{\url{https://quilljs.com/guides/cloning-medium-with-parchment/}},
+zu nutzen.
