@@ -1,0 +1,31 @@
+E-Mails zu versenden gehörte auch schon letztes Jahr zur Aufgabenstellung
+und hat uns dieses Jahr mindestens ebensoviele Kopfschmerzen bereitet.
+Einen Großteil der Zeit (bis zum 18.03.2018)
+wiesen alle E-Mails grobe Fehler auf,
+die wir uns nicht erklären konnten.
+
+Erst viel später haben wir bemerkt,
+dass das Problem nicht etwa bei der Nutzung der JavaMail API lag,
+sondern bei unserer internen \meta{Str}-Klasse,
+welche wir als mutablen,
+effizienter implementierten String vorgesehen hatten;
+ein Fehler fürte dazu,
+dass u.A. die \meta{replace}-Methode den String auf unvorhergesehene Weise verändert hat.
+
+Das beschriebene Problem bestand darin,
+dass die von \meta{replace} genutzte Methode \meta{shift},
+welche Charactere um eine Anzahl an ``Plätzen'' verschiebt,
+nicht die Länge des \meta{Str}s angepasst hat.
+
+Jedoch war dies nicht die einzige Schwierigkeit:
+das Generieren des HTML-Codes erwies sich als besonders kompliziert,
+da unser RichText-Editor die Bibliothek Quill nutzt,
+welche zum Speichern des Textes das hauseigene, JSON-basierte \emph{Delta}-Format nutzt.
+Dieses Format kann nur Quill selbst rendern,
+weshalb der Server diese Bibliothek hätte aufrufen müssen.
+Durch JavaScript-Script-Engines wie Nashorn wäre dies zwar möglich,
+jedoch,
+aufgrund der Dependency von Quill an jQuery und damit das DOM (Document Object Model),
+extrem zeitaufwendig und letzten Endes wahrscheinlich sinnlos.
+So haben wir uns schließlich entschieden,
+den Newsletter nicht in der E-Mail zu rendern und stattdessen einfach einen direkten Link einzufügen.
