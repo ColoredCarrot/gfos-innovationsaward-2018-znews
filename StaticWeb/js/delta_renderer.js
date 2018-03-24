@@ -1,17 +1,27 @@
 var DeltaRenderer = (function(dr)
 {
 
-    let virtContainer = $('<div class="ql-editor"/>').appendTo($('<div/>'))[0];  // Must wrap in two divs because of third-party bug (e.g. https://github.com/angular/angular.js/issues/13174)
-    let quill = new Quill(virtContainer, {
-        modules: dr.options.loadModules
-    });
-
-    dr.renderToHTML = function(delta)
+    dr.renderToDOM = function(delta, container, displayMode)  // display mode, not inline mode? Then, add .flow-text
     {
-        quill.setContents(Array.isArray(delta) ? { ops: delta } : delta);
-        let result = virtContainer.getElementsByClassName("ql-editor")[0].innerHTML;
-        quill.setContents([{ insert: '\n' }]);  // cleanup
-        return result;
+
+        let BoldBlot = Quill.import('formats/bold');
+        BoldBlot.tagName = 'B';   // Quill uses <strong> by default
+        Quill.register(BoldBlot, true);
+
+        let quill = new Quill(container, {
+            modules: dr.options.loadModules,
+            readOnly: true
+        });
+
+        quill.setContents(delta);
+
+        $(container).find('blockquote').attr('style', 'margin: 20px 0; padding-left: 1.5rem');
+
+        if (displayMode)
+            $(container).find('*').filter((idx, e) => $(e).is('p') || $(e).is('pre')).addClass('flow-text');
+
+        return container;
+
     };
 
     return dr;

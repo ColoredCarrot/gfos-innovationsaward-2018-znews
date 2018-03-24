@@ -11,11 +11,6 @@ jQuery(function($)
         return string.length > toCharacters ? string.substr(0, toCharacters - 1) + '…' : string;
     }
 
-    function renderText(text)
-    {
-        return DeltaRenderer.renderToHTML(text);
-    }
-
     ServerComm.doGetArticles(function(data)
     {
         // Callback: Articles retrieved
@@ -61,15 +56,18 @@ jQuery(function($)
             let { title, the_delta, nid } = n;
 
             let $article = $(articleTemplate);
-            let $html = $('<div/>').append($(renderText(the_delta)));
-            let articlePreview = trimString(stripHtmlTags($html.prop('outerHTML')));
+            $articlesContainer.append($article);
+
+            let $qlEditor = $('<span class="ql-editor"></span>')
+                .appendTo($article.find('.collapsible-body'));
+
+            DeltaRenderer.renderToDOM(the_delta, $qlEditor[0], false);
+
+            let articlePreview = trimString(stripHtmlTags($qlEditor.prop('innerHTML')));
 
             $article.find('.article-headline').html(title);
             $article.find('.article-preview').append($('<div/>').text(articlePreview).prop('innerHTML'));
             $article.find('a.view-article-btn').attr('href', '/view?nid=' + nid);
-            $article.find('.collapsible-body').append($('<span class="ql-editor"></span>').append($html.children()));
-
-            $articlesContainer.append($article);
 
         });
 

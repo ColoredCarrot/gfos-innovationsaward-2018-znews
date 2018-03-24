@@ -78,7 +78,7 @@ public class ZNews
         authenticator = config.getDataAccessConfig().access().queryAuthenticator();
         
         sessionManager = new SessionManager(this, authenticator);
-    
+        
         File staticWebFolder = new File("static_web");
         if (!staticWebFolder.exists())
             unpackStaticWebFolder(staticWebFolder);
@@ -86,7 +86,7 @@ public class ZNews
         
         emailSender = new EmailSender(this);
         emailTemplates = new EmailTemplates(this);
-    
+        
         tagsList = new TagsList(this);
         
         valid = true;
