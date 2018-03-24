@@ -1,0 +1,41 @@
+\begin{table}[p]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+        \hline
+        \textbf{Schl"ussel} = Standard & M"ogliche Werte & Beschreibung\\ \hline
+        \textbf{port} = 8080 & 1-65535 & Der von ZNews Server genutzte Port\\ \hline
+        \textbf{external-address} = http://127.0.0.1 & any valid address & Der in E-Mails genutzte Basislink für Links wie ``unsubscribe''\\ \hline
+        \textbf{external-address-add-port} = true & true|false & Ob der \meta{external-address} der Port hinzugefügt werden soll\\ \hline
+        \textbf{err\textunderscore docs.404} = error/ 404notfound.html & any file path & Das Dokument, dass bei Anfragen, die mit 404 beantwortet werden, gesendet wird\\ \hline
+        \textbf{data.method} = file & file|mysql & Die Methode, mit welcher Daten gespeichert werden\\ \hline
+        \textbf{data.mysql.host} = localhost & any valid address & Die Adresse des MySQL-Servers\\ \hline
+        \textbf{data.mysql.port} = 3306 & any valid port & Der Port des MySQL-Servers\\ \hline
+        \textbf{data.mysql.usr} = root & any & Der Nutzername, mit dem sich ZNews bei dem MySQL-Server anmeldet\\ \hline
+        \textbf{data.mysql.pw} = root & any & Das Passwort, mit dem sich ZNews bei dem MySQL-Server anmeldet\\ \hline
+        \textbf{cache.enabled} = true & true|false & Ob der Cache von \emph{static\textunderscore web/} aktiviert werden soll\\ \hline
+        \textbf{cache.size} = 32 & $\in\mathbb{N}$ & Die maximale Gr"o"se des Caches\\ \hline
+        \textbf{pretty-print-json} = false & true|false & Erh"oht die Lesbarkeit der JSON-Dateien\\ \hline
+    \end{tabularx}
+    \caption{\label{table:config-ref1}Konfigurationsreferenz (Teil 1)}
+\end{table}
+
+\begin{table}[p]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+        \hline
+        \textbf{Schl"ussel} = Standard & M"ogliche Werte & Beschreibung\\ \hline
+        \textbf{email.protocol} = smtps & smtp|smtps|tls & Das Email-Server-Protokoll\\ \hline
+        \textbf{email.port} = 465 & 1-65535 & Der Email-Server-Port\\ \hline
+        \textbf{email.host} = smtp.gmail.com & Die Email-Server-Adresse\\ \hline
+        \textbf{email.from} = noreply@ znews.de & E-Mail Adresse & Die E-Mail Adresse, von welcher alle E-Mails versendet werden\\ \hline
+        \textbf{email.auth} = true & true|false & Ob sich ZNews Server beim Email-Server authentifizieren muss\\ \hline
+        \textbf{email.auth.usr} & String & Beim Email-Server g"ultiger Login\\ \hline
+        \textbf{email.auth.pw} & String & Beim Email-Server g"ultiges Password\\ \hline
+        \textbf{email.debug} = false & true|false & Ob Debug-Output beim Email-Versenden eingeschaltet werden soll\\ \hline
+        \textbf{email.templates.double-opt-in} = email\textunderscore templates/double\textunderscore opt\textunderscore in & any file path & Der Pfad zu der Double-Opt-In-E-Mail\\ \hline
+        \textbf{email.templates.new-newsletter} = email\textunderscore templates/new\textunderscore newsletter & any file path & Der Pfad zu der New-Newsletter-E-Mail\\ \hline
+
+        % TODO: Add all config values to reference
+    \end{tabularx}
+    \caption{\label{table:config-ref2}Konfigurationsreferenz (Teil 2)}
+\end{table}

@@ -1,0 +1,45 @@
+ZNews Server wird als archivierte Datei ausgeliefert.
+Nach deren Download kann sie mit einem Archivierungsprogramm
+wie WinRAR oder 7-Zip ausgepackt werden.
+
+\begin{enumerate}
+    \item Extrahieren Sie nach deren Download die Datei \emph{ZNews.zip}.
+    Die Struktur des Hauptordners ist in Abb.~\ref{fig:dirtree1} dargestellt.
+    \item Starten Sie den Server mit dem Startskript\footnote{%
+    Windows: \emph{start.bat}, Mac: \emph{start.command}}.
+    \item Nach Erscheinen der Nachricht ``Server started'' (o."a.),
+    Schreiben Sie ``end'' und dr"ucken Sie \meta{Enter}.
+    \item Nach Beenden des Programms sind die in Abb.~\ref{fig:dirtree2}
+    gezeigten Dateien und Ordner neu erstellt worden.
+    Konfigurieren Sie den Server wie in Abschnitt~\ref{sec:config} ``\nameref{sec:config}'' beschrieben.
+    \item Sie k"onnen nun jederzeit den Server mit dem Startskript starten.
+\end{enumerate}
+
+\begin{figure}[htb]
+    \dirtree{%
+    .1 /.
+    .2 server.jar.
+    .2 start.bat.
+    .2 start.command.
+    .2 docs/.
+    .3 de/.
+    .4 Bedienungsanleitung.pdf.
+    .4 Server Bedienungsanleitung.pdf.
+    .4 Dokumentation.pdf.
+    }
+    \caption{\label{fig:dirtree1}Aufbau des heruntergeladenen Archivs}
+\end{figure}
+
+\begin{figure}[htb]
+    \dirtree{%
+    .1 /.
+    .2 logs/.
+    .2 static\textunderscore web/.
+    .2 auth.json.
+    .2 config.properties.
+    .2 newsletters.json.
+    .2 registrations.json.
+    .2 \ldots.
+    }
+    \caption{\label{fig:dirtree2}Neu erstellte Dateien und Ordner}
+\end{figure}

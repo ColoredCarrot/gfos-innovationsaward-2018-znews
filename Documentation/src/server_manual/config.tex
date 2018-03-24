@@ -1,0 +1,65 @@
+ZNews Server beinhaltet viele Konfigurationsm"oglichkeiten,
+allesamt in \emph{config.properties}.
+Dieser Abschnitt zeigt die wichtigsten Konfigurationen
+und bietet au"serdem eine vollst"andige Referenz am Ende.
+
+\subsection{Wichtige Konfigurationsschl"ussel}
+
+\subsubsection{Der Port} \label{sec:config:port}
+
+\begin{align*}
+    \emph{Schl"ussel: } & \lstinline{port}\\
+    \emph{Standardwert: } & \lstinline{8080}
+\end{align*}
+%% Consider this other, non-centered version:
+%\hspace*{2cm}\emph{Schl"ussel: } \lstinline{port}\\
+%\hspace*{2cm}\emph{Standardwert: } \lstinline{8080}
+%\vspace*{0.2cm}
+
+ZNews Server beansprucht einen Port, um eingehende
+Anfragen bearbeiten zu k"onnen. Standardm"a"sig ist
+\emph{8080} eingestellt, jedoch ist es empfohlen,
+diesen Wert zu "andern.
+
+\subsubsection{E-Mail-Einstellungen}
+
+ZNews Server muss dazu in der Lage sein, E-Mails
+zu versenden. Dazu muss z.B. ein SMTP-Server eingestellt
+werden, durch welchen die E-Mails geschickt werden.
+
+Im Folgenden wird ein Gmail-Account mit der
+E-Mail-Adresse \emph{john.smith@gmail.com} und
+dem Passwort \emph{12345} verwendet:
+
+\begin{lstlisting}[]%@formatter:off
+email.protocol=smtps
+email.port=465
+email.host=smtp.gmail.com
+email.auth=true
+email.auth.usr=john.smith@gmail.com
+email.auth.pw=12345
+\end{lstlisting}%@formatter:on
+
+F"ur die Verwendung von anderen Servern, konsultieren Sie
+bitte deren spezifischen Anleitungen.
+
+\subsubsection{Log-Level}
+
+\begin{align*}
+    \emph{Schl"ussel: } & \lstinline{log.filter}\\
+    \emph{Standardwert: } & \lstinline{out}\\
+    \emph{M"ogliche Werte: } & \lstinline{dev|debug|out|warn|err|fatal}
+\end{align*}
+
+Das Log-Level spezifiziert, welche Logging-Ausgaben tats"achlich
+ausgegeben werden. Zum Beispiel werden bei \lstinline{warn}
+nur Warnungen, Fehler (\lstinline{err}) und schwerwiegende Fehler
+(\lstinline{fatal}) ausgegeben.
+
+\subsection{Referenz}
+
+Eine vollst"andige Referenz der Konfiguration
+findet sich in Tabelle~\ref{table:config-ref}
+und Abbildung~\ref{fig:config-std}.
+
+\input{config_ref.tex}
