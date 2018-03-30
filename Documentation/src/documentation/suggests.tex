@@ -1,0 +1,12 @@
+Ein Problem, das ein \emph{hard limit} auf die Skalierungsfähigkeit von ZNews setzt,
+ist, dass in der aktuellen Version mit jedem Aufruf der Startseite der Client automatisch
+\emph{alle} Artikel herunterläd.
+Bei wenigen Newslettern ist dies zwar kaum bemerkbar,
+jedoch vergrößert dies die Ladezeit mit jedem neuen Artikel,
+speziell, wenn diese sehr lang sind oder Bilder beinhalten.
+
+Die Anzahl der herunterzuladenden Artikel zu begrenzen ist hier eine offensichtliche Option;
+ein ``Load More''-Button könnte weitere Artikel nachladen.
+Eine weitere Möglichkeit ist,
+jeden Artikel erst bei einem Klick auf die entsprechende Überschrift zu laden,
+jedoch würde dies die Reaktionszeit (``response time'') erheblich erhöhen.
