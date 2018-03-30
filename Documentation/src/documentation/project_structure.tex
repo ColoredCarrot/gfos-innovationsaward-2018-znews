@@ -1,0 +1,62 @@
+ZNews ist in fünf Hauptprojekte aufgeteilt,
+welche im Folgenden genannt und deren Funktion beschrieben werden.
+Die Namen der Unterprojekte sind von der Struktur des IntelliJ-Projektes übernommen.
+
+\begin{itemize}
+    \item \textbf{ZNews Server}
+    beinhaltet den Java-Code unseres Webservers,
+    der Ressourcen, die die API dessen bilden,
+    des Modells der Newsletter/Statistiken/etc.,
+    der Serialisierungsschnittstelle,
+    und weiterer Utility-Funktionen.
+
+    \item \textbf{StaticWeb}
+    umfasst die vom Server versendbaren Dateien,
+    inklusive aller HTML-, CSS- und JavaScript-Dateien und Bilder.
+    %Im Ordner \emph{admin} befinden sich die nur von Administratoren erreichbaren Ressourcen
+
+    \item \textbf{LoggingApi}
+    ist die von ZNews genutzte Logging-Schnittstelle,
+    welche wir vollständig selbst geschrieben haben.
+    Sie kann \meta{LogRecord}s,
+    welche den ausführenden Thread, den zugehörigen StackTrace,
+    die Nachricht selbst und weitere Informationen beinhaltet,
+    mit verschiedenen \meta{Logger}n bearbeiten.
+    Zum Beispiel ist der \meta{LevelFilterLogger} dafür verantwortlich,
+    Records, die ein bestimmtes \meta{LogRecord.Level} unterschreiten,
+    herauszufiltern;
+    der \meta{NewThreadLogger} delegiert alle Logging-Anfragen an einen weiteren Thread,
+    der \meta{StringFormatLogger} formatiert alle Nachrichten
+    (ersetzt Variablen wie ``{threadName}'' mit dem entsprechenden Wert);
+    und letztlich speichert der \meta{FilesGzipLogger} die Records in einer GZIP-komprimierten Datei.
+
+    \item \textbf{JsonApi}
+    schließt unsere JSON-Schnittstelle ein.
+    Die API erlaubt das Konvertieren von Text im JSON-Format
+    in einen AST (Abstract Syntax Tree, im Groben eine baum'sche Repräsentation der Daten)
+    und weiter in ein POJO (Plain Old Java Object).
+    Dazu nutzt sie unseren eigenen JSON-Parser,
+    welcher aus einem Character-Stream einen Stream von \meta{JsonToken}s,
+    also nützlicherer ``Stücke'' des Inputs
+    wie einer geöffneten Klammer oder eines in Anführungszeichen eingeschlossenen Strings,
+    generiert
+    und diesen in der Klasse \meta{JsonParser} in den bereits erwähnten AST übersetzt.
+
+    Um einen AST in ein Objekt umzuwandeln nutzen wir die Java Reflection API
+    und, sollten wir keinen passenden Konstruktor in der gewünschten Klasse finden,
+    die \emph{Unsafe}-Klasse, die es erlaubt,
+    einem Objekt Speicherplatz zuzuweisen,
+    ohne einen der Konstruktoren aufzurufen\footnote{%
+    Dies ist zwar \emph{dirty},
+    jedoch ermöglicht dies eine Nutzerfreundlichkeit,
+    die andernfalls nicht zu erreichen wäre
+    (so muss der Nutzer nicht explizit einen \emph{no-args}-Konstruktor für jede serialisierbare Klasse erstellen)}.
+
+    \item \textbf{Documentation}
+    beinhaltet die gesamte Dokumentation des Projekts
+    (ausschließlich der JavaDocs),
+    inklusive dieser Datei und der Bedienungsanleitungen des Servers und der Website.
+
+    \item \textbf{Licenses}
+    fast die Lizensen aller genutzten Bibliotheken auf.
+\end{itemize}

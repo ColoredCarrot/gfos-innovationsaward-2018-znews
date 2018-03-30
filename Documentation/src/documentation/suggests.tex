@@ -10,3 +10,14 @@ ein ``Load More''-Button könnte weitere Artikel nachladen.
 Eine weitere Möglichkeit ist,
 jeden Artikel erst bei einem Klick auf die entsprechende Überschrift zu laden,
 jedoch würde dies die Reaktionszeit (``response time'') erheblich erhöhen.
+
+Des Weiteren besitzt die JsonApi kein \emph{type-binding}-System\footnote{%
+Siehe \href{https://github.com/ColoredCarrot/gfos-innovationsaward-2018-znews/issues/19}{Issue #19 des GitHub-Projekts}},
+es besteht also keine Möglichkeit,
+Typen, deren Source-Code man nicht verändern kann,
+zu (de)serialisieren,
+sollte die eingebaute Reflection und Unsafe-gestützte Lösung nicht ausreichen.
+Zum Beispiel war es nötig,
+die Serialisierung von \emph{Date}s fest im Quellcode der API einzubinden,
+welche nur den Timestamp (die Anzahl der Millisekunden seit dem 01.01.1970, Mitternacht, UTC)
+benötigt.
