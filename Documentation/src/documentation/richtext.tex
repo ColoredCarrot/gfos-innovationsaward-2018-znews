@@ -5,21 +5,23 @@ und nannte als Beispiel einen RichText-Editor.
 Wie sich jedoch herausstellte,
 war diese als ``rudimentär'' bezeichnete Option
 alles andere als einfach.
-Wie jedem in dem Thema drinnen auffallen dürfte,
-ist es tatsächlich unglaublich schwierig,
+Jedem,
+der sich intensiv mit diesem Thema auseinandersetzt,
+fällt auf,
+dass es tatsächlich unglaublich schwierig ist,
 einen ausreichend vielfältigen, robusten, dynamischen, kompatiblen
 RichText-Editor zu finden.
-Dies liegt nicht zuletzt an \emph{contentEditable}, dem HTML5-Standard,
-welcher von fast allen Seiten als insuffizient
+Dies liegt nicht zuletzt an \emph{contentEditable}, dem einzigen hierfür verwendbaren HTML5-Standard,
+welcher jedoch von fast allen Seiten als insuffizient
 zur Implementierung eines simplen Editors gesehen wird.
 (siehe \href{https://medium.engineering/why-contenteditable-is-terrible-122d8a40e480}%
 {das erste relevante Suchergebnis auf Google}\footnote{\url{https://medium.engineering/why-contenteditable-is-terrible-122d8a40e480}}.)
 
-Zu Testzwecken und um zu prokrastinieren haben wir die Entscheidung erstmal verlegt
+Zu Testzwecken und um zu prokrastinieren haben wir die Entscheidung erstmal verschoben
 und einen Markdown-Editor implementiert.
 Jedoch waren wir hiermit auf lange Sicht nicht zufrieden,
-weshalb wir uns nach \emph{langer} Recherche für den RichText-Editor \emph{Quill} entschieden haben,
-nicht zuletzt aufgrund dessen Entscheidung,
-das DOM ``links liegen zu lassen'' und stattdessen ein eigenes Modell,
+weshalb wir uns nach intensiver Recherche für den RichText-Editor \emph{Quill} entschieden haben,
+nicht zuletzt, weil Quill
+das DOM ``links liegen lässt'' und stattdessen ein eigenes Modell,
 \emph{Parchment}\footnote{\url{https://quilljs.com/guides/cloning-medium-with-parchment/}},
-zu nutzen.
+nutzt.

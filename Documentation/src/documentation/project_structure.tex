@@ -1,5 +1,5 @@
 ZNews ist in fünf Hauptprojekte aufgeteilt,
-welche im Folgenden genannt und deren Funktion beschrieben werden.
+welche im Folgenden genannt und deren Funktionen beschrieben werden.
 Die Namen der Unterprojekte sind von der Struktur des IntelliJ-Projektes übernommen.
 
 \begin{itemize}
@@ -7,7 +7,7 @@ Die Namen der Unterprojekte sind von der Struktur des IntelliJ-Projektes überno
     beinhaltet den Java-Code unseres Webservers,
     der Ressourcen, die die API dessen bilden,
     des Modells der Newsletter/Statistiken/etc.,
-    der Serialisierungsschnittstelle,
+    der Serialisierungsschnittstelle
     und weiterer Utility-Funktionen.
 
     \item \textbf{StaticWeb}
@@ -20,7 +20,7 @@ Die Namen der Unterprojekte sind von der Struktur des IntelliJ-Projektes überno
     welche wir vollständig selbst geschrieben haben.
     Sie kann \meta{LogRecord}s,
     welche den ausführenden Thread, den zugehörigen StackTrace,
-    die Nachricht selbst und weitere Informationen beinhaltet,
+    die Nachricht selbst und weitere Informationen beinhalten,
     mit verschiedenen \meta{Logger}n bearbeiten.
     Zum Beispiel ist der \meta{LevelFilterLogger} dafür verantwortlich,
     Records, die ein bestimmtes \meta{LogRecord.Level} unterschreiten,
@@ -42,7 +42,8 @@ Die Namen der Unterprojekte sind von der Struktur des IntelliJ-Projektes überno
     generiert
     und diesen in der Klasse \meta{JsonParser} in den bereits erwähnten AST übersetzt.
 
-    Um einen AST in ein Objekt umzuwandeln nutzen wir die Java Reflection API
+    Um einen AST in ein Objekt umzuwandeln,
+    nutzen wir die Java Reflection API
     und, sollten wir keinen passenden Konstruktor in der gewünschten Klasse finden,
     die \emph{Unsafe}-Klasse, die es erlaubt,
     einem Objekt Speicherplatz zuzuweisen,
