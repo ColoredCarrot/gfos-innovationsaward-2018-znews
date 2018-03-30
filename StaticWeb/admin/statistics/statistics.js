@@ -95,6 +95,70 @@ var Statistics = (function(s)
                  });
              }
 
+             let makeDeleteButton = function(email)
+             {
+                 return {
+                     innerMarkup: '<i class="material-icons">delete_forever</i>',
+                     clickHandler: function handleClick(entry, $entry, column)
+                     {
+                         if (entry.title !== email)
+                         {
+                             console.warn(`entry.title (${entry.title}) does not match email (${email}), using value of entry`);
+                             email = entry.title;
+                         }
+                         swal(`Delete ${email}?`, "This action cannot be undone!", 'warning', {
+                             buttons: {
+                                 cancel: true,
+                                 confirm: {
+                                     text: "Proceed",
+                                     closeModal: false
+                                 }
+                             },
+                             dangerMode: true,
+                         })
+                             .then(value =>
+                             {
+                                 if (!value)
+                                     return;
+                                 $.ajax('/admin/api/admin_delete_registration', {
+                                     cache: false,
+                                     method: 'post',
+                                     data: { email: email },
+                                     dataType: 'json'
+                                 })
+                                     .then(function success(data)
+                                     {
+                                         swal("Success!", "The registration has been deleted.", 'success')
+                                             .finally(() => $('#btn-refresh').click());
+                                     }, function error(jqXHR)
+                                     {
+                                         window.console.error(jqXHR);
+                                         switch (jqXHR.status)
+                                         {
+                                             case 403:
+                                                 CommonSwals.notLoggedIn({ forceLogin: true, loginTarget: '/admin/statistics' });
+                                                 break;
+                                             case 404:
+                                                 swal("Error", "You have specified an invalid email address.", 'error', {
+                                                     buttons: [true, "Retry"]
+                                                 })
+                                                     .then(value =>
+                                                     {
+                                                         if (value)
+                                                         // Retry
+                                                             entry.buttons[1].clickHandler(entry, $entry, column);
+                                                     });
+                                                 break;
+                                             default:
+                                                 CommonSwals.internalError();
+                                                 break;
+                                         }
+                                     });
+                             });
+                     }
+                 };
+             };
+
              let makeEditButton = function(email)
              {
                  return {
@@ -102,7 +166,10 @@ var Statistics = (function(s)
                      clickHandler: function handleClick(entry, $entry, column)
                      {
                          if (entry.title !== email)
-                             throw new Error(`entry.title (${entry.title}) does not match email (${email})`);
+                         {
+                             console.warn(`entry.title (${entry.title}) does not match email (${email}), using value of entry`);
+                             email = entry.title;
+                         }
                          displayAndHandleEditRegPrompt(email)
                              .then(data =>
                              {
@@ -174,7 +241,8 @@ var Statistics = (function(s)
                          "Registered": formatDate(new Date(registrations[email].dateRegistered))
                      },
                      buttons: [
-                         makeEditButton(email)
+                         makeEditButton(email),
+                         makeDeleteButton(email)
                      ]
                  }));
              let registrationsColumn = {
