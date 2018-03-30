@@ -2,7 +2,6 @@ package de.znews.server.util;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -304,12 +303,12 @@ public class Str implements CharSequence, Cloneable, Comparable<CharSequence>, A
     }
     
     @Override
-    public int compareTo(@Nonnull CharSequence o)
+    public int compareTo(@NotNull CharSequence o)
     {
         return toString().compareTo(o.toString());
     }
     
-    public int compareToIgnoreCase(@Nonnull CharSequence o)
+    public int compareToIgnoreCase(@NotNull CharSequence o)
     {
         return toString().compareToIgnoreCase(o.toString());
     }

@@ -1,6 +1,7 @@
 package de.znews.server.util;
 
-import javax.annotation.concurrent.ThreadSafe;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.concurrent.ExecutionException;
 
 @ThreadSafe

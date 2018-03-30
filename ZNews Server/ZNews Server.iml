@@ -24,8 +24,17 @@
     <orderEntry type="library" name="commons-validator:commons-validator:1.6" level="project" />
     <orderEntry type="library" exported="" name="javax.mail:javax.mail-api:1.6.0" level="project" />
     <orderEntry type="library" exported="" name="com.sun.mail:javax.mail:1.6.0" level="project" />
-    <orderEntry type="library" exported="" name="jBCrypt-0.4" level="project" />
     <orderEntry type="module" module-name="LoggingApi" />
     <orderEntry type="library" name="mysql-connector-java-5.1.46-bin" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/jcip-annotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="org.mindrot:jbcrypt:0.4" level="project" />
   </component>
 </module>

@@ -1,6 +1,6 @@
 package de.znews.server.util;
+import net.jcip.annotations.ThreadSafe;
 
-import javax.annotation.concurrent.ThreadSafe;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -12,12 +12,12 @@ import java.util.concurrent.RunnableFuture;
 @ThreadSafe
 public class SoftLRUCache<K, V> implements Cache<K, V>
 {
-    
+
     private static final int   DEFAULT_CACHE_SIZE  = 32;
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
-    
+
     private final Map<K, RunnableFuture<SoftReference<V>>> map;
-    
+
     /**
      * Constructs a new Cache with the default cache size
      * ({@value DEFAULT_CACHE_SIZE}) and default load factor
@@ -27,7 +27,7 @@ public class SoftLRUCache<K, V> implements Cache<K, V>
     {
         this(DEFAULT_CACHE_SIZE);
     }
-    
+
     /**
      * Constructs a new Cache with the specified cache size
      * and the default load factor ({@value DEFAULT_LOAD_FACTOR}).
@@ -38,7 +38,7 @@ public class SoftLRUCache<K, V> implements Cache<K, V>
     {
         this(cacheSize, DEFAULT_LOAD_FACTOR);
     }
-    
+
     /**
      * Constructs a new Cache with the specified cache size
      * and load factor.
@@ -57,7 +57,7 @@ public class SoftLRUCache<K, V> implements Cache<K, V>
             }
         });
     }
-    
+
     @Override
     public V compute(K key, ThrowingFunction<? super K, ? extends V, ? extends Exception> mapperFunction) throws ExecutionException, InterruptedException
     {
@@ -66,19 +66,19 @@ public class SoftLRUCache<K, V> implements Cache<K, V>
         while (result == null);
         return result;
     }
-    
+
     SoftReference<V> computeRef(K key, ThrowingFunction<? super K, ? extends V, ? extends Exception> mapperFunction) throws ExecutionException, InterruptedException
     {
-        
+
         RunnableFuture<SoftReference<V>> f = map.get(key);
-        
+
         if (f == null && map.putIfAbsent(key, f = new FutureTask<>(() -> new SoftReference<V>(mapperFunction.apply(key)))) == null)
             f.run();
-        
+
         return f.get();
-        
+
     }
-    
+
     @Override
     public void purge()
     {
@@ -126,5 +126,5 @@ public class SoftLRUCache<K, V> implements Cache<K, V>
     {
         oldmap.put(key, new SoftReference<>(value));
     }*/
-    
+
 }

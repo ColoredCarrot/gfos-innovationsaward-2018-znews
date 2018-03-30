@@ -1,6 +1,6 @@
 package de.znews.server.util;
 
-import javax.annotation.concurrent.ThreadSafe;
+import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
 public interface CachedValue<T>

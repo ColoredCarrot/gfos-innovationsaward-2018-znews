@@ -1,8 +1,8 @@
 package de.znews.server.util;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.function.Supplier;
@@ -29,7 +29,7 @@ public class CharArraysReader extends Reader
     }
     
     @Override
-    public int read(@Nonnull char[] cbuf, int off, int len) throws IOException
+    public int read(@NotNull char[] cbuf, int off, int len) throws IOException
     {
         if (bufferIndex + 1 == buffer.length)
             readBuffer();

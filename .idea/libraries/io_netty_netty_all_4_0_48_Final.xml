@@ -9,7 +9,6 @@
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/netty-all-4.0.48.Final-javadoc.jar!/" />
-      <root url="https://netty.io/4.0/api/index.html" />
     </JAVADOC>
     <SOURCES />
   </library>
