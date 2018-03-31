@@ -1,0 +1,16 @@
+Wir haben uns ganz zu Anfang dazu entschieden,
+einen eigenen Webserver zu implementieren.
+Dabei nutzen wir Netty als eine robuste low-level API.
+
+Unser Webserver kann Anfragen grundlegend auf zwei verschiedene Arten beantworten:
+erst geht er eine Liste von registrierten Ressourcen
+(im Package \meta{de.znews.server.resources})
+durch,
+welche alle eine assoziierte URL besitzen
+(es besteht die Möglichkeit,
+Wildcards in die URL einzufügen,
+was URL-Parameter ermöglicht).
+Wurde keine passende Ressource gefunden,
+wird die Klasse \meta{StaticWeb} genutzt,
+welche statische Web-Anfragen beantwortet,
+indem sie diese an einen Cache und letztlich das File-System delegiert.
