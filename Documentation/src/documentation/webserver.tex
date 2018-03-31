@@ -14,3 +14,14 @@ Wurde keine passende Ressource gefunden,
 wird die Klasse \meta{StaticWeb} genutzt,
 welche statische Web-Anfragen beantwortet,
 indem sie diese an einen Cache und letztlich das File-System delegiert.
+
+Den genutzten Cache haben wir ebenfalls selbst in der Klasse \meta{SoftLRUCache} programmiert.
+Die Namensgebung orientierte sich an folgenden Prinzipien,
+die wir bei der Implementierung genutzt haben:
+\emph{Soft}, weil die Werte in \emph{SoftReference}s eingeschlossen (\emph{``wrapped''}) sind, und
+\emph{LRU} für \emph{least-recently-used}, weil die als letztes genutzten Werte verworfen werden.
+Hierbei war es von großer Wichtigkeit,
+die Klasse \emph{thread-safe} zu machen,
+sodass sie von mehreren konkurrent laufenden Threads gleichzeitig genutzt werden kann;
+ich (Julian) habe mich in diesem Kontext oft auf das Buch ``Java Concurrency in Practice''
+von Briant Goetz verlassen.
