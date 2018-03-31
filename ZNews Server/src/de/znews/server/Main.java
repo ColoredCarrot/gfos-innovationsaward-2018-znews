@@ -15,11 +15,14 @@ public class Main
     
     public static void main(String[] args) throws IOException
     {
-        
+
+        // Application will always start with "(Begin)" and end with "(End)"
         System.out.println("(Begin)");
-        
         Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("(End)")));
-        
+
+        // Replace uncaught exception handler to log to custom Logger, if ready,
+        // otherwise, forward to default default uncaught exception handler
+
         Thread.UncaughtExceptionHandler javaDefaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> Log.ifReadyOrElse(l -> l.err("Unhandled exception. Future behaviour is unspecified. It is recommended to restart (NOT using \"restart\") ", e),
                 () ->
@@ -68,6 +71,9 @@ public class Main
             }
             if (command.equalsIgnoreCase("restart"))
             {
+                // Shutdown server same as "end"
+                // Then, re-instantiate ZNews instance and initiate start
+
                 Log.out("Restarting...");
                 znews.shutdown();
                 try
@@ -106,6 +112,9 @@ public class Main
             }
             if (command.equalsIgnoreCase("restart server") || command.equalsIgnoreCase("srestart"))
             {
+                // A "light" restart, only affects server
+                // ZNews instance does not change
+
                 znews.stopServer();
                 try
                 {
@@ -122,7 +131,7 @@ public class Main
                 znews.staticWeb.purgeCache();
                 Log.out("[Command] Caches reset");
             }
-            else if (command.startsWith("addadmin "))
+            else if (command.startsWith("addadmin"))
                 cmdAddAdmin(command);
             
         }
@@ -131,6 +140,12 @@ public class Main
     
     private static void cmdAddAdmin(String command)
     {
+        if (command.equals("addadmin"))
+        {
+            // Display help
+            Log.out("[Command] Syntax: addadmin <email> <name> <password>");
+            return;
+        }
         
         String[] args     = command.split(" ");
         String   email    = args[1];
