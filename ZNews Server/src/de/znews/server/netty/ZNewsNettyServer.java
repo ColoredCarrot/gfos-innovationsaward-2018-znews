@@ -45,7 +45,8 @@ public class ZNewsNettyServer extends Thread
     {
     
         Log.out("Starting server on port " + port + "...");
-        
+
+        // Instantiate event loop groups
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
         
@@ -68,7 +69,7 @@ public class ZNewsNettyServer extends Thread
                           ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));  // Aggregate framed messages
                           ch.pipeline().addLast("chunking", new ChunkedWriteHandler());  // Handle chunked input (e.g. ChunkedFile)
                           ch.pipeline().addLast(new FullHttpRequestDecoder());  // Decode FullHttpRequest to URIFragment
-                          ch.pipeline().addLast(new ResourceProviderHandler(znews));
+                          ch.pipeline().addLast(new ResourceProviderHandler(znews));  // Answer requests using a Resource, falling back to StaticWeb
                       }
                   });
             
@@ -136,7 +137,11 @@ public class ZNewsNettyServer extends Thread
             throw new IllegalStateException("Already shut down");
         channel.close().addListener(f -> onChannelShutdown());
     }
-    
+
+    /**
+     * Registers a shutdown listener that will be called once this server has shut down.
+     * @param action The shutdown listener
+     */
     public void onShutdown(Runnable action)
     {
         synchronized (shutdownCallbackLock)
